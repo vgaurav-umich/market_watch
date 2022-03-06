@@ -2,6 +2,7 @@ Getting started
 ===============
 
 ## Prereqs
+0. Watch this [Video](https://www.youtube.com/watch?v=GH4TonRGL4o) to get started with Mac from scratch.
 1. Watch this [Video](https://www.youtube.com/watch?v=5HUL5lWkEyg) about how to use pipenv. We will be making use of  `pipenv` to create virtual environment.
 2. Upgrade pip or pip3 and install pyenv
     ```
