@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "7682952d77d67df4c1bee2f92d841686e72a04c02a7bd30cd58bbe21246c675d"
+            "sha256": "e094c01dc82fbb43d8172477bf5d92de61ef2090ad8087b7c90428a64039a6f3"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -528,7 +528,7 @@
                 "sha256:09ed0cde452d015fe77c4845a210eb642f28d245f5bc250d4b97808cb8f49078",
                 "sha256:f34088c08be2ec16279dfa9c3b4ff3d1453c5c67597a33e2819b000e18d4c546"
             ],
-            "index": "pypi",
+            "markers": "python_version >= '3.6'",
             "version": "==0.19.1"
         },
         "greenlet": {
@@ -591,10 +591,6 @@
             ],
             "markers": "python_version >= '3' and platform_machine == 'aarch64' or (platform_machine == 'ppc64le' or (platform_machine == 'x86_64' or (platform_machine == 'amd64' or (platform_machine == 'AMD64' or (platform_machine == 'win32' or platform_machine == 'WIN32')))))",
             "version": "==1.1.2"
-        },
-        "html5lib": {
-            "editable": true,
-            "file": "file:///Users/aiujdm2/market_watch"
         },
         "humanize": {
             "hashes": [
@@ -786,6 +782,10 @@
             ],
             "markers": "python_version ~= '3.6'",
             "version": "==1.1.0"
+        },
+        "market-watch": {
+            "editable": true,
+            "path": "."
         },
         "markupsafe": {
             "hashes": [
@@ -988,7 +988,7 @@
                 "sha256:badca914580eb46385e7f7e4e426fea6de0a37b9e06bec252e481ae7ec287082",
                 "sha256:d76a26c5118c4d96e264acc9e3242d72e1a2b92e739807b3b69d8d47684b6677"
             ],
-            "markers": "python_version >= '3.8'",
+            "markers": "python_version < '3.10' and platform_machine != 'aarch64' and platform_machine != 'arm64'",
             "version": "==1.22.2"
         },
         "packaging": {
