@@ -4,8 +4,6 @@ import pandas as pd
 from sklearn import datasets
 from pathlib import Path
 
-from dotenv import find_dotenv, load_dotenv
-
 # + tags=["parameters"]
 # declare a list tasks whose products you want to use as inputs
 upstream = None
