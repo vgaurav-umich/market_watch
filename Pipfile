@@ -4,7 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-src = {editable = true, file = "file:///Users/aiujdm2/market_watch"}
 click = "*"
 coverage = "*"
 awscli = "*"
