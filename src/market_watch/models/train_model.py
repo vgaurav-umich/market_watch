@@ -13,6 +13,7 @@ from sklearn_evaluation import plot
 # %% tags=["parameters"]
 upstream = ['build_features']
 product = None
+dummy = None
 
 # %%
 df = pd.read_parquet(str(upstream['build_features']['data']))
