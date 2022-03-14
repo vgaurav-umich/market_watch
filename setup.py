@@ -10,11 +10,14 @@ setup(
     author='Matt, Egor, and Gaurav',
     license='MIT',
     install_requires=[
-        'ploomber',
-        'pipenv',
         'graphviz',
         'pygraphviz',
     ],
-    setup_requires=['pytest-runner', 'jupyterlab'],
+    setup_requires=[
+        'pytest-runner',
+        'jupyterlab',
+        'ploomber',
+        'pipenv'
+    ],
     tests_require=['pytest', 'pytest-flask'],
 )
