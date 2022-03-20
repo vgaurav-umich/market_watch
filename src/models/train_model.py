@@ -16,7 +16,7 @@ import torch.optim as optim
 from ignite.engine import Engine
 from ignite.contrib.handlers import tensorboard_logger as tb_logger
 
-from src.models import environ, data, models, common, validation
+from src.models import data, models, common, validation
 
 SAVES_DIR = pathlib.Path("saves")
 STOCKS = "data/raw/YNDX_160101_161231.csv"
