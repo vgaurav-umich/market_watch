@@ -28,13 +28,16 @@ nltk = "*"
 pybullet = "*"
 ptan = "*"
 gdelt = "*"
+market_watch = {editable = true, path = "."}
+
 
 [dev-packages]
-jupyterlab = "*"
 graphviz = "*"
 pygraphviz = "*"
 pytest-runner = "*"
 pytest = "*"
+mistune = "==0.8.4"
+jupyterlab = "*"
 
 [requires]
 python_version = "3.9"
