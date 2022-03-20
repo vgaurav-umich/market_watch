@@ -10,10 +10,12 @@ setup(
     author='Matt, Egor, and Gaurav',
     license='MIT',
     install_requires=[
+        'ploomber',
+        'jupyterlab',
+        'pipenv'
     ],
     setup_requires=[
-        'ploomber',
-        'pipenv'
+
     ],
     tests_require=['pytest', 'pytest-flask'],
 )
