@@ -1,38 +1,20 @@
 # Content of pipeline.yaml
+meta:
+  import_tasks_from: pipeline.features.yaml
+
 tasks:
    # source is the code you want to execute (.ipynb also supported)
-  - source: src/market_watch/data/make_dataset.py
+  - source: src/data/make_dataset.py
     # products are task's outputs
     product:
       # scripts generate executed notebooks as outputs
-      nb: notebooks/make_dataset.ipynb
+      nb: output/notebooks/make_dataset.ipynb
       # you can define as many outputs as you want
-      data: data/raw/iris.parquet
+      data: output/data/interim/iris.parquet
 
-#  - source: src/market_watch/data/gdelt_dataset.py
-#    product:
-#      nb: notebooks/gdelt_dataset.ipynb
-#      data: data/external/gdelt_dataset.hdf5
-#
-#  - source: src/market_watch/data/clean_dataset.py
-#    product:
-#      nb: notebooks/clean_dataset.ipynb
-#      data: data/processed/clean_data.parquet
+  # Feature pipeline code will execute here.
 
-  - source: src/market_watch/features/build_features.py
+  - source: src/models/train_model.py
     product:
-      nb: notebooks/build_features.ipynb
-      data: data/features/features.parquet
-
-  - source: src/market_watch/models/train_model.py
-    product:
-      nb: notebooks/train_model.ipynb
-      model: models/model.pkl
-
-#  - source: src/market_watch/models/predict_model.py
-#    product:
-#      nb: notebooks/predict_model.ipynb
-#
-#  - source: src/market_watch/visualization/visualize.py
-#    product:
-#      nb: notebooks/visualize.ipynb
+      nb: output/notebooks/train_model.ipynb
+      model: output/models/model.pkl
