@@ -7,7 +7,6 @@ upstream = None
 # %%
 import ptan
 import pathlib
-import argparse
 import gym.wrappers
 import numpy as np
 
@@ -17,7 +16,7 @@ import torch.optim as optim
 from ignite.engine import Engine
 from ignite.contrib.handlers import tensorboard_logger as tb_logger
 
-from src.market_watch.models.lib import environ, data, models, common, validation
+from src.models import environ, data, models, common, validation
 
 SAVES_DIR = pathlib.Path("saves")
 STOCKS = "data/raw/YNDX_160101_161231.csv"

@@ -10,12 +10,8 @@ setup(
     author='Matt, Egor, and Gaurav',
     license='MIT',
     install_requires=[
-        'graphviz',
-        'pygraphviz',
     ],
     setup_requires=[
-        'pytest-runner',
-        'jupyterlab',
         'ploomber',
         'pipenv'
     ],
