@@ -35,12 +35,12 @@ Getting started
 1. Watch a couple of videos on Ploomber on  and checkout ploomber.io website.  
 2. You can use your choice of code editor and Jupyter Notebook. First make sure you open this project into IDE and run following - 
     ```
-   pipenv install -e . # builds local package and execute setup.py
+   pip install -e . # builds local package and execute setup.py
+   pipenv install -e . # builds dependencies form Pipfile
    ploomber build # installs all python package dependecies
    ```
 3. Now Open Terminal window from IDE and run - `jupyter lab` command
 4. In Jupyter lab, you will see typical `.py` file. Right-click on a `.py` file and select "Open As --> Notebook". Ploomber converts .py file into notebook and magically inserts upstream and product variables to make build easier.
 5. Add a new `.py` file NOT `.ipynb` if needed and open it as Notebook as explained in previous step. Make sure to add a task in to `pipline.yaml`
-6. 
 
 
