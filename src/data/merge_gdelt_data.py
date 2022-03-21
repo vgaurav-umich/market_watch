@@ -40,6 +40,6 @@ output_file = product['data']
 
 data.to_csv(output_file)
 # -
-
+print(f"Sucessfully generated merged file with {len(data)} records")
 
 
