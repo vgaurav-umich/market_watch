@@ -6,7 +6,7 @@ upstream = None
 from pathlib import Path
 from urllib.error import HTTPError, URLError
 from datetime import datetime, timedelta
-
+import gdelt
 import pandas as pd
 import os
 import sys
@@ -127,7 +127,7 @@ def read_and_filter_files():
 
         Path(file_path).parent.mkdir(exist_ok=True, parents=True)
         # Form a query friendly search terms     
-        search_terms = "|".join(query_params['search_terms'])
+        search_terms = "|".join(query_params['search_term'])
         organizations = search_results['V2Organizations'].str.lower()
         filter_cond = organizations.str.contains(search_terms, regex=True, case=False, na=False)
         df = search_results[filter_cond]
