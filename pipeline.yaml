@@ -1,20 +1,49 @@
 # Content of pipeline.yaml
-meta:
-  import_tasks_from: pipeline.features.yaml
+#meta:
+#  import_tasks_from: pipeline.features.yaml
 
 tasks:
-   # source is the code you want to execute (.ipynb also supported)
-  - source: src/data/make_dataset.py
-    # products are task's outputs
+  - source: src/data/fetch_n_filter_gdelt_bq.py
     product:
-      # scripts generate executed notebooks as outputs
-      nb: output/notebooks/make_dataset.ipynb
-      # you can define as many outputs as you want
-      data: output/data/interim/iris.parquet
+      nb: output/notebooks/fetch_n_filter_gdelt_bq.ipynb
+      data: output/data/raw/gdelt-gkg-bq.csv
+    params:
+      query_params:
+        rolling_window: '{{rolling_window}}'
+        search_term: '{{search_term}}'
+        bq_table_name: "{{bq_table_name}}"
+
+  - source: src/data/fetch_n_filter_gdelt_data.py
+    product:
+      nb: output/notebooks/fetch_n_filter_gdelt_data.ipynb
+      data: output/data/raw/gdelt-gkg-data.csv
+    params:
+      query_params:
+        rolling_window: '{{rolling_window}}'
+        search_term: '{{search_term}}'
+        gdelt_gkg_base_url: "{{gdelt_gkg_base_url}}"
+
+     
+ # - source: src/data/merge_gdelt_data.py
+ #   product:
+ #     nb: output/notebooks/filter_gdelt_data.ipynb
+ #     data: output/data/interim
+ #   params:
+ #     cameo_codefile_urls:
+ #       cameo_country_codes: '{{cameo_country_code_url}}'
+ #       fips_country_codes: '{{fips_country_code_url}}'
+ #       cameo_type_codes: '{{ cameo_type_code_url }}'
+ #       cameo_ethnic_codes: '{{cameo_ethnic_code_url}}'
+ #       cameo_religion_codes: '{{cameo_religion_code_url}}'
+ #       cameo_event_codes: '{{cameo_event_code_url}}'
+ #       cameo_goldsteinscale_mappings: '{{cameo_goldsteinscale_url}}'
+ #     gdelt_file_urls:
+ #       gdelt_lastupdate_url: '{{gdelt_lastupdate_url}}'
+ #       gdelt_lastupdate_translated_url: '{{gdelt_lastupdate_translated_url}}'
+ #       gdelt_master_url: '{{gdelt_master_url}}'
+ #       gdelt_master_translated_url: '{{gdelt_master_translated_url}}'
+ #     query_params:
+ #       search_terms: '{{search_terms}}'
 
   # Feature pipeline code will execute here.
 
-  - source: src/models/train_model.py
-    product:
-      nb: output/notebooks/train_model.ipynb
-      model: output/models/model.pkl
