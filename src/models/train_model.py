@@ -3,10 +3,10 @@
 # declare a list tasks whose products you want to use as inputs
 upstream = None
 
-
 # %%
 import ptan
 import pathlib
+import argparse
 import gym.wrappers
 import numpy as np
 
@@ -16,7 +16,7 @@ import torch.optim as optim
 from ignite.engine import Engine
 from ignite.contrib.handlers import tensorboard_logger as tb_logger
 
-from src.models import data, models, common, validation
+from src.models.lib import environ, data, models, common, validation
 
 SAVES_DIR = pathlib.Path("saves")
 STOCKS = "data/raw/YNDX_160101_161231.csv"
@@ -36,7 +36,6 @@ REPLAY_INITIAL = 10000
 REWARD_STEPS = 2
 LEARNING_RATE = 0.0001
 STATES_TO_EVALUATE = 1000
-
 
 # %%
 # parser = argparse.ArgumentParser()
@@ -87,6 +86,7 @@ buffer = ptan.experience.ExperienceReplayBuffer(
     exp_source, REPLAY_SIZE)
 optimizer = optim.Adam(net.parameters(), lr=LEARNING_RATE)
 
+
 def process_batch(engine, batch):
     optimizer.zero_grad()
     loss_v = common.calc_loss(
@@ -99,7 +99,7 @@ def process_batch(engine, batch):
     if getattr(engine.state, "eval_states", None) is None:
         eval_states = buffer.sample(STATES_TO_EVALUATE)
         eval_states = [np.array(transition.state, copy=False)
-                        for transition in eval_states]
+                       for transition in eval_states]
         engine.state.eval_states = np.array(eval_states, copy=False)
 
     return {
@@ -107,9 +107,11 @@ def process_batch(engine, batch):
         "epsilon": selector.epsilon,
     }
 
+
 engine = Engine(process_batch)
 tb = common.setup_ignite(engine, exp_source, f"conv-{run}",
-                            extra_metrics=('values_mean',))
+                         extra_metrics=('values_mean',))
+
 
 @engine.on(ptan.ignite.PeriodEvents.ITERS_1000_COMPLETED)
 def sync_eval(engine: Engine):
@@ -127,6 +129,7 @@ def sync_eval(engine: Engine):
         path = saves_path / ("mean_value-%.3f.data" % mean_val)
         torch.save(net.state_dict(), path)
         engine.state.best_mean_val = mean_val
+
 
 @engine.on(ptan.ignite.PeriodEvents.ITERS_10000_COMPLETED)
 def validate(engine: Engine):
