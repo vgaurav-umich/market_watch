@@ -1,9 +1,9 @@
 # partial yaml file to define feature generation tasks so we can reuse them between train and serving
-- source: src/features/build_features.py
-  product:
-    nb: output/notebooks/build_features.ipynb
-    data: output/data/features/features.parquet
-  params:
+#- source: src/features/build_features.py
+#  product:
+#    nb: output/notebooks/build_features.ipynb
+#    data: output/data/features/features.parquet
+#  params:
 #    debug: '{{debug}}'
 #    resources_:
 #      file: README.md
