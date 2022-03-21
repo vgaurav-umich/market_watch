@@ -11,6 +11,7 @@ tasks:
       query_params:
         rolling_window: '{{rolling_window}}'
         search_terms: '{{search_terms}}'
+        gdelt_gkg_base_url: "{{gdelt_gkg_base_url}}"
   - source: src/data/merge_gdelt_data.py
     product:
      nb: output/notebooks/merge_gdelt_data.ipynb
