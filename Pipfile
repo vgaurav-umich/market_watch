@@ -29,6 +29,8 @@ pybullet = "*"
 ptan = "*"
 gdelt = "*"
 market_watch = {editable = true, path = "."}
+python-dotenv = "*"
+google-cloud-bigquery = {extras = ["bqstorage", "pandas"], version = "*"}
 
 [dev-packages]
 graphviz = "*"
