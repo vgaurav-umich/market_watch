@@ -3,19 +3,26 @@
 #  import_tasks_from: pipeline.features.yaml
 
 tasks:
-  - source: src/data/fetch_gdelt_data.py
+  - source: src/data/fetch_n_filter_gdelt_bq.py
     product:
-      nb: output/notebooks/fetch_gdelt_data.ipynb
-      data: output/data/raw
+      nb: output/notebooks/fetch_n_filter_gdelt_bq.ipynb
+      data: output/data/raw/gdelt-gkg-bq.csv
     params:
       query_params:
         rolling_window: '{{rolling_window}}'
-        search_terms: '{{search_terms}}'
-        gdelt_gkg_base_url: "{{gdelt_gkg_base_url}}"
-  - source: src/data/merge_gdelt_data.py
+        search_term: '{{search_term}}'
+        bq_table_name: "{{bq_table_name}}"
+
+  - source: src/data/fetch_n_filter_gdelt_data.py
     product:
-     nb: output/notebooks/merge_gdelt_data.ipynb
-     data: output/data/interim/merged_data.csv
+      nb: output/notebooks/fetch_n_filter_gdelt_data.ipynb
+      data: output/data/raw/gdelt-gkg-data.csv
+    params:
+      query_params:
+        rolling_window: '{{rolling_window}}'
+        search_term: '{{search_term}}'
+        gdelt_gkg_base_url: "{{gdelt_gkg_base_url}}"
+
      
  # - source: src/data/merge_gdelt_data.py
  #   product:
