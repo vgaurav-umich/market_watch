@@ -20,9 +20,10 @@ data_df = read_data(input_file_path)
 
 data_df.info()
 
-data_df.head()
+data_df.sample(10)
 
-data_df.query("Polarity > 15")
+cond = (data_df['NegScore'] > 10) | (data_df['PosScore'] > 10)
+data_df[cond]
 
 
 

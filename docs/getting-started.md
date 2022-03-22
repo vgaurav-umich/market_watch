@@ -31,6 +31,16 @@ Getting started
     echo "source ~/.bash_rc" >> ~/.bash_profile
     ```
 
+## Working with Google Cloud
+1. We will be using Service Account to connect to Google Cloud.
+2. GCP [docs](https://cloud.google.com/docs/authentication/getting-started) lists clear steps to create and enable Service Account. Please check them out. For the purpose of this project I've already created a service account and generated a .json file containing private key.
+3. A more detailed [BigQuery Python API](https://github.com/googleapis/python-bigquery) can be found here. See also APPI [Usage Guide](https://googleapis.dev/python/bigquery/latest/usage/queries.html)
+4. Please contact me to obtain .json file that you can store in a safe place on your desktop. I typically put it inside `~/.ssh/`
+5. Once you have .json file placed on a safe location. Add that path to market_watch.env file. 
+   ```
+   GOOGLE_APPLICATION_CREDENTIALS="<<path to .json file>>"
+   ```
+
 ## Development and build
 1. Watch a couple of videos on Ploomber on  and checkout ploomber.io website.  
 2. You can use your choice of code editor and Jupyter Notebook. First make sure you open this project into IDE and run following - 

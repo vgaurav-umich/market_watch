@@ -18,10 +18,18 @@ tasks:
     product:
       nb: output/notebooks/clean_gdelt_data.ipynb
       data: output/data/interim/cleaned-gdelt-data.csv
+<<<<<<< HEAD
     params:
       path_params:
         sp_500_path: '{{sp_500_path}}'
     
+=======
+
+  - source: src/visualization/visualize_gdelt.py
+    product:
+      nb: output/notebooks/visualize_gdelt.ipynb
+
+>>>>>>> 2e49a7a (Added visualization task)
 #  - source: src/data/fetch_n_filter_gdelt_data.py
 #    product:
 #      nb: output/notebooks/fetch_n_filter_gdelt_data.ipynb
