@@ -31,6 +31,9 @@ gdelt = "*"
 market_watch = {editable = true, path = "."}
 python-dotenv = "*"
 google-cloud-bigquery = {extras = ["bqstorage", "pandas"], version = "*"}
+networkx = "*"
+altair = "*"
+matplotlib = "*"
 
 
 [dev-packages]

@@ -46,8 +46,6 @@ data_df['PosScore'] = data_df.Tone.apply(lambda x: x[1])
 data_df['NegScore'] = data_df.Tone.apply(lambda x: x[2])
 data_df['Polarity'] = data_df.Tone.apply(lambda x: x[3])
 
-data_df.drop(["Tone","SourceCollectionIdentifier", "DocumentIdentifier"], axis = 1, inplace=True)
-
 # +
 threshold = 1
 path = path_params['sp_500_path'] + 'sp500_list.xlsx'
@@ -114,11 +112,13 @@ def extract_company_articles(df, path, threshold):
 
     return df
 
-
 # -
 
 # %%time
 data_df = extract_company_articles(data_df, path, threshold)
+
+data_df.drop(["Tone", "DATE", "SourceCollectionIdentifier", "DocumentIdentifier"], axis = 1, inplace=True)
+
 
 output_file_path = product['data']
 Path(output_file_path).parent.mkdir(exist_ok=True, parents=True)
