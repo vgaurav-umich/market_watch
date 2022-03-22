@@ -12,11 +12,15 @@ tasks:
         rolling_window: '{{rolling_window}}'
         search_term: '{{search_term}}'
         bq_table_name: "{{bq_table_name}}"
+
         
   - source: src/data/clean_gdelt_data.py
     product:
       nb: output/notebooks/clean_gdelt_data.ipynb
       data: output/data/interim/cleaned-gdelt-data.csv
+    params:
+      path_params:
+        sp_500_path: '{{sp_500_path}}'
     
 #  - source: src/data/fetch_n_filter_gdelt_data.py
 #    product:

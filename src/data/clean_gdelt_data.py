@@ -50,7 +50,7 @@ data_df.drop(["Tone","SourceCollectionIdentifier", "DocumentIdentifier"], axis =
 
 # +
 threshold = 1
-path = 'sp500_list.xlsx'
+path = path_params['sp_500_path'] + 'sp500_list.xlsx'
 
 
 def get_rel_company_names(path):
@@ -110,7 +110,7 @@ def extract_company_articles(df, path, threshold):
         threshold= minimum count for related company to be included
     '''
     rel_company_dict = get_rel_company_names(path)
-    df['related_companies'] = df['Organizations'].map(lambda x: filter_org_col(x, rel_company_dict, threshold), na_action='ignore')
+    df['Org Count'] = df['Organizations'].map(lambda x: filter_org_col(x, rel_company_dict, threshold), na_action='ignore')
 
     return df
 
@@ -119,15 +119,6 @@ def extract_company_articles(df, path, threshold):
 
 # %%time
 data_df = extract_company_articles(data_df, path, threshold)
-
-# +
-print(data_df.loc[4155,'Organizations'])
-
-print('=')
-print(data_df.loc[4155,'related_companies'])
-# -
-
-
 
 output_file_path = product['data']
 Path(output_file_path).parent.mkdir(exist_ok=True, parents=True)
