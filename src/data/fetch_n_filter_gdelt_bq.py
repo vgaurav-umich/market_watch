@@ -4,7 +4,7 @@ upstream = None
 
 # +
 from pathlib import Path
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 from datetime import datetime, timedelta
 from google.cloud import bigquery
 
@@ -19,7 +19,7 @@ import warnings
 # alt.data_transformers.disable_max_rows()
 # alt.themes.enable('fivethirtyeight')
 
-load_dotenv("big-query.env")
+ret_value = load_dotenv(find_dotenv('market_watch.env'))
 warnings.filterwarnings('ignore')
 # -
 
@@ -49,17 +49,10 @@ def build_gdelt_query(table_name, search_term, start_date):
           DATE,
           SourceCollectionIdentifier,
           DocumentIdentifier,
-          V2Counts AS Counts,
-          V2Themes AS Themes,
           V2Locations AS Locations,
           V2Persons AS Persons,
           V2Organizations AS Organizations,
-          V2Tone AS Tone,
-          GCAM,
-          AllNames,
-          Amounts,
-          TranslationInfo,
-          Extras
+          V2Tone AS Tone
         FROM
           {table_name}
         WHERE
@@ -95,7 +88,10 @@ client = bigquery.Client()
 data_df = fetch_data(client, query)
 print(f"Processed merged file with {len(data_df)} records")
 
+
 # Save records
 Path(file_path).parent.mkdir(exist_ok=True, parents=True)
 data_df.to_csv(file_path)
 print(f"Saved file {file_path}")
+
+

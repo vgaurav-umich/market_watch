@@ -1,6 +1,6 @@
 # Content of pipeline.yaml
-#meta:
-#  import_tasks_from: pipeline.features.yaml
+meta:
+  import_tasks_from: pipeline.features.yaml
 
 tasks:
   - source: src/data/fetch_n_filter_gdelt_bq.py
@@ -12,7 +12,12 @@ tasks:
         rolling_window: '{{rolling_window}}'
         search_term: '{{search_term}}'
         bq_table_name: "{{bq_table_name}}"
-
+        
+  - source: src/data/clean_gdelt_data.py
+    product:
+      nb: output/notebooks/clean_gdelt_data.ipynb
+      data: output/data/interim/cleaned-gdelt-data.csv
+    
 #  - source: src/data/fetch_n_filter_gdelt_data.py
 #    product:
 #      nb: output/notebooks/fetch_n_filter_gdelt_data.ipynb
