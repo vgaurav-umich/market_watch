@@ -34,6 +34,7 @@ google-cloud-bigquery = {extras = ["bqstorage", "pandas"], version = "*"}
 networkx = "*"
 altair = "*"
 matplotlib = "*"
+openpyxl = "*"
 
 
 [dev-packages]
