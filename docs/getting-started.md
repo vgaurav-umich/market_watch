@@ -54,3 +54,16 @@ Getting started
 5. Add a new `.py` file NOT `.ipynb` if needed and open it as Notebook as explained in previous step. Make sure to add a task in to `pipline.yaml`
 
 
+## Quick Build and Smoke Testing
+We are going to create multiple environment files to facilitate Quick Build and Smoke Testing.
+
+Ploomber provide convenient way for us to create multiple environment files where we can have different value of parameters.
+
+
+In order for this to work we need to override default environment.yaml file by specifying below code at the time of build -
+
+```angular2html
+export PLOOMBER_ENV_FILENAME=env.test.yaml && ploomber build
+```
+
+

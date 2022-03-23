@@ -35,11 +35,11 @@ tasks:
 
   - source: src/visualization/visualize_gdelt.py
     product:
-      nb: output/notebooks/visualize_gdelt.ipynb
+      nb: output/notebooks/visualize_gdelt.html
 
   - source: src/visualization/visualize_yfinance.py
     product:
-      nb: output/notebooks/visualize_yfinance.ipynb
+      nb: output/notebooks/visualize_yfinance.html
     params:
       query_params:
         rolling_window: '{{rolling_window}}'
