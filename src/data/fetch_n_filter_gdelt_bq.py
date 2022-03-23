@@ -12,12 +12,6 @@ import sys
 import warnings
 from src import utils
 
-# import numpy as np
-# import altair as alt
-# from altair import datum
-# alt.data_transformers.disable_max_rows()
-# alt.themes.enable('fivethirtyeight')
-
 warnings.filterwarnings('ignore')
 # -
 
