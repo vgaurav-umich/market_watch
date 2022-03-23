@@ -5,13 +5,12 @@ upstream = None
 # +
 from pathlib import Path
 from dotenv import load_dotenv, find_dotenv
-from datetime import datetime, timedelta
 from google.cloud import bigquery
 
-import pandas as pd
 import os
 import sys
 import warnings
+from src import utils
 
 # import numpy as np
 # import altair as alt
@@ -19,30 +18,17 @@ import warnings
 # alt.data_transformers.disable_max_rows()
 # alt.themes.enable('fivethirtyeight')
 
-ret_value = load_dotenv(find_dotenv('market_watch.env'))
 warnings.filterwarnings('ignore')
 # -
+
+load_dotenv(find_dotenv('market_watch.env'))
 
 print(sys.executable)
 api_key_file = os.environ['GOOGLE_APPLICATION_CREDENTIALS']
 print(api_key_file)
 
 
-def get_start_date(window):
-    # get today's UTC datetime
-    today = datetime.utcnow()
-    # round datetime to nearest 15min slot
-    pd_ts = pd.Timestamp(today)
-    today_ts = pd_ts.round('15T')
-    # how far back we want to go?
-    how_far_back = timedelta(days=window)
-    start_date = today_ts - how_far_back
-    
-    return start_date.strftime("%Y%m%d%H%M00")
-
-
 def build_gdelt_query(table_name, search_term, start_date):
-
     query_string = f"""
         SELECT
           GKGRECORDID,
@@ -65,8 +51,8 @@ def build_gdelt_query(table_name, search_term, start_date):
 def fetch_data(bqclient, query_string):
     df = (
         bqclient.query(query_string)
-        .result()
-        .to_dataframe(
+            .result()
+            .to_dataframe(
             # Optionally, explicitly request to use the BigQuery Storage API. As of
             # google-cloud-bigquery version 1.26.0 and above, the BigQuery Storage
             # API is used by default.
@@ -80,7 +66,8 @@ rolling_window = query_params["rolling_window"]
 table_name = query_params["bq_table_name"]
 search_term = query_params["search_term"]
 file_path = product["data"]
-start_date = get_start_date(rolling_window)
+start_date = utils.get_start_date(rolling_window)
+start_date = utils.gdelt_date_format(start_date)
 query = build_gdelt_query(table_name, search_term, start_date)
 print(query)
 
@@ -88,10 +75,7 @@ client = bigquery.Client()
 data_df = fetch_data(client, query)
 print(f"Processed merged file with {len(data_df)} records")
 
-
 # Save records
 Path(file_path).parent.mkdir(exist_ok=True, parents=True)
 data_df.to_csv(file_path)
 print(f"Saved file {file_path}")
-
-

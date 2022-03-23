@@ -5,12 +5,14 @@ upstream = None
 # +
 from pathlib import Path
 from urllib.error import HTTPError, URLError
-from datetime import datetime, timedelta
+from datetime import timedelta, datetime
 import gdelt
 import pandas as pd
 import os
 import sys
 import warnings
+from src import utils
+from dotenv import load_dotenv, find_dotenv
 
 # import numpy as np
 # import altair as alt
@@ -21,23 +23,11 @@ import warnings
 warnings.filterwarnings('ignore')
 # -
 
+load_dotenv(find_dotenv('market_watch.env'))
+
 print(sys.executable)
 api_key_file = os.environ['GOOGLE_APPLICATION_CREDENTIALS']
 print(api_key_file)
-
-
-def get_start_date(window):
-    # get today's UTC datetime
-    today = datetime.utcnow()
-    # round datetime to nearest 15min slot
-    pd_ts = pd.Timestamp(today)
-    today_ts = pd_ts.round('15T')
-    # how far back we want to go?
-    how_far_back = timedelta(days=window)
-    start_date = today_ts - how_far_back
-
-    return start_date.strftime("%Y%m%d%H%M00")
-
 
 # +
 col_names = ['GKGRECORDID', 'DATE', 'SourceCollectionIdentifier', 'SourceCommonName',
@@ -79,29 +69,13 @@ gdelt_gkg_base_url = query_params["gdelt_gkg_base_url"]
 gd = gdelt.gdelt(version=2)
 
 
-# +
-
-
-def datetime_range(start, end, delta):
-    current = start
-    while current < end:
-        yield current
-        current += delta
-
-
 def get_gkg_file_url(rolling_window, base_url):
-    today = datetime.utcnow()
-
-    pd_ts = pd.Timestamp(today)
-    today_ts = pd_ts.round('15T')
-
-    how_far_back = timedelta(days=rolling_window)
-    start_date = today_ts - how_far_back
-    for dt in datetime_range(start_date, today_ts, timedelta(minutes=15)):
+    
+    start_date = utils.get_start_date(rolling_window)
+    today_ts = datetime.utcnow()
+    for dt in utils.datetime_range(start_date, today_ts, timedelta(minutes=15)):
         yield base_url + f'{dt.strftime("%Y%m%d%H%M00")}.gkg.csv.zip'
 
-
-# -
 
 def read_and_filter_files():
     data = []
