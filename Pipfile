@@ -28,13 +28,14 @@ nltk = "*"
 pybullet = "*"
 ptan = "*"
 gdelt = "*"
-market_watch = {editable = true, path = "."}
 python-dotenv = "*"
 google-cloud-bigquery = {extras = ["bqstorage", "pandas"], version = "*"}
 networkx = "*"
 altair = "*"
 matplotlib = "*"
 openpyxl = "*"
+yfinance = "*"
+market-watch = {editable = true, path = "."}
 
 [dev-packages]
 graphviz = "*"
