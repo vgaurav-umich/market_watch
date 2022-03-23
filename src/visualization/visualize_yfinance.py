@@ -30,6 +30,7 @@ import altair as alt
 
 alt.data_transformers.disable_max_rows()
 alt.themes.enable('fivethirtyeight')
+# alt.renderers.enable('mimetype')
 pd.set_option('display.float_format',  '{:,.2f}'.format)
 
 
@@ -49,16 +50,13 @@ ticker = yf.Ticker(tickers[0])
 ticker_history = ticker.history(start=start_date)
 
 # %%
-ticker_history
-
-# %%
 history = ticker_history.reset_index()
 base = alt.Chart(history).configure(
     font='monospace'
 )
 
 # %%
-base.mark_line().transform_calculate(
+line_chart = base.mark_line().transform_calculate(
     validation = 'if(datum.Date > datetime("2021-03-01"), "True", "False")'
 ).encode(
     alt.X('Date:T'),
@@ -73,9 +71,10 @@ base.mark_line().transform_calculate(
 ).properties(
     width=900
 )
+line_chart
 
 # %%
-base.mark_bar().transform_bin(
+hist_chart = base.mark_bar().transform_bin(
     'Stock Price (Binned)', 
     'Close',
     bin=alt.Bin(maxbins=25)
@@ -83,6 +82,7 @@ base.mark_bar().transform_bin(
         alt.Y('count()', title='Number of Days'),
     alt.X('Stock Price (Binned)', type='nominal'),
 )
+hist_chart
 
 
 # %%
