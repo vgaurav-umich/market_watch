@@ -3,6 +3,16 @@ meta:
   import_tasks_from: pipeline.features.yaml
 
 tasks:
+
+  - source: src/data/fetch_yfinance_data.py
+    product:
+      nb: output/notebooks/fetch_yfinance_data.ipynb
+      data: output/data/raw/finance_data.csv
+    params:
+      query_params:
+        rolling_window: '{{rolling_window}}'
+        tickers: '{{tickers}}'
+
   - source: src/data/fetch_n_filter_gdelt_bq.py
     product:
       nb: output/notebooks/fetch_n_filter_gdelt_bq.ipynb
@@ -18,27 +28,31 @@ tasks:
     product:
       nb: output/notebooks/clean_gdelt_data.ipynb
       data: output/data/interim/cleaned-gdelt-data.csv
-<<<<<<< HEAD
     params:
       path_params:
         sp_500_path: '{{sp_500_path}}'
-    
-=======
+
 
   - source: src/visualization/visualize_gdelt.py
     product:
       nb: output/notebooks/visualize_gdelt.ipynb
 
->>>>>>> 2e49a7a (Added visualization task)
-#  - source: src/data/fetch_n_filter_gdelt_data.py
-#    product:
-#      nb: output/notebooks/fetch_n_filter_gdelt_data.ipynb
-#      data: output/data/raw/gdelt-gkg-data.csv
-#    params:
-#      query_params:
-#        rolling_window: '{{rolling_window}}'
-#        search_term: '{{search_term}}'
-#        gdelt_gkg_base_url: "{{gdelt_gkg_base_url}}"
+  - source: src/visualization/visualize_yfinance.py
+    product:
+      nb: output/notebooks/visualize_yfinance.ipynb
+    params:
+      query_params:
+        rolling_window: '{{rolling_window}}'
+        tickers: '{{tickers}}'
 
+  - source: src/data/fetch_n_filter_gdelt_data.py
+    product:
+      nb: output/notebooks/fetch_n_filter_gdelt_data.ipynb
+      data: output/data/raw/gdelt-gkg-data.csv
+    params:
+      query_params:
+        rolling_window: '{{rolling_window}}'
+        search_term: '{{search_term}}'
+        gdelt_gkg_base_url: "{{gdelt_gkg_base_url}}"
   # Feature pipeline code will execute here.
 
