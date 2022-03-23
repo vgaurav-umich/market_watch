@@ -32,7 +32,6 @@ tasks:
       path_params:
         sp_500_path: '{{sp_500_path}}'
 
-
   - source: src/visualization/visualize_gdelt.py
     product:
       nb: output/notebooks/visualize_gdelt.html
@@ -45,14 +44,5 @@ tasks:
         rolling_window: '{{rolling_window}}'
         tickers: '{{tickers}}'
 
-  - source: src/data/fetch_n_filter_gdelt_data.py
-    product:
-      nb: output/notebooks/fetch_n_filter_gdelt_data.ipynb
-      data: output/data/raw/gdelt_gkg_data-raw.csv
-    params:
-      query_params:
-        rolling_window: '{{rolling_window}}'
-        search_term: '{{search_term}}'
-        gdelt_gkg_base_url: "{{gdelt_gkg_base_url}}"
   # Feature pipeline code will execute here.
 

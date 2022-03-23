@@ -71,11 +71,17 @@ There are multiple alternatives to do quick build
    ```angular2html
    ploomber build --env--sample_pct 1
    ```
+Note: *I personally prefer second option because first option sets an environment variable during the session which will require resetting it to different value when you want to use different .env file.*   
+
 ### Smoke Testing 
 
 Similarly, we can override default pipeline.yaml file with ENTRY POINT -
    ```angular2html
    export ENTRY_POINT=pipeline.serve.yaml && ploomber build
+   ```
+or --
+   ```angular2html
+   ploomber build --entry-point pipeline.serve.yaml
    ```
    ```angular2html
    ploomber build -p clean_gdelt_data
