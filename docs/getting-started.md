@@ -50,20 +50,34 @@ Getting started
    ploomber build # installs all python package dependecies
    ```
 3. Now Open Terminal window from IDE and run - `jupyter lab` command
-4. In Jupyter lab, you will see typical `.py` file. Right-click on a `.py` file and select "Open As --> Notebook". Ploomber converts .py file into notebook and magically inserts upstream and product variables to make build easier.
-5. Add a new `.py` file NOT `.ipynb` if needed and open it as Notebook as explained in previous step. Make sure to add a task in to `pipline.yaml`
+1. Jupyter lab, you will see typical `.py` file. Right-click on a `.py` file and select "Open As --> Notebook". Ploomber converts .py file into notebook and magically inserts upstream and product variables to make build easier. An alternative is to enable single click opening by running following command - 
+   ```angular2html
+   ploomber nb --single-click
+   ```
+6. Add a new `.py` file NOT `.ipynb` if needed and open it as Notebook as explained in previous step. Make sure to add a task in to `pipline.yaml`
 
 
 ## Quick Build and Smoke Testing
-We are going to create multiple environment files to facilitate Quick Build and Smoke Testing.
 
-Ploomber provide convenient way for us to create multiple environment files where we can have different value of parameters.
+### Quick Build
 
+There are multiple alternatives to do quick build
 
-In order for this to work we need to override default environment.yaml file by specifying below code at the time of build -
+1. We can use multiple environment files one for full build and another for quick build e.g. the full build one have sample_pct value set to 100% while quick build one set it to 1%.
+   ```angular2html
+   export PLOOMBER_ENV_FILENAME=env.test.yaml && ploomber build
+   ```
+2. We can override parameter value during build command 
+   ```angular2html
+   ploomber build --env--sample_pct 1
+   ```
+### Smoke Testing 
 
-```angular2html
-export PLOOMBER_ENV_FILENAME=env.test.yaml && ploomber build
-```
-
-
+Similarly, we can override default pipeline.yaml file with ENTRY POINT -
+   ```angular2html
+   export ENTRY_POINT=pipeline.serve.yaml && ploomber build
+   ```
+   ```angular2html
+   ploomber build -p clean_gdelt_data
+   ```
+Above will run a partial build up to the target specified. 

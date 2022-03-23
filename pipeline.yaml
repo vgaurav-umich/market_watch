@@ -7,7 +7,7 @@ tasks:
   - source: src/data/fetch_yfinance_data.py
     product:
       nb: output/notebooks/fetch_yfinance_data.ipynb
-      data: output/data/raw/finance_data.csv
+      data: output/data/raw/yfinance_ticker_data-raw.csv
     params:
       query_params:
         rolling_window: '{{rolling_window}}'
@@ -16,7 +16,7 @@ tasks:
   - source: src/data/fetch_n_filter_gdelt_bq.py
     product:
       nb: output/notebooks/fetch_n_filter_gdelt_bq.ipynb
-      data: output/data/raw/gdelt-gkg-bq.csv
+      data: output/data/raw/gdelt_gkg_bqdata-raw.csv
     params:
       query_params:
         rolling_window: '{{rolling_window}}'
@@ -27,7 +27,7 @@ tasks:
   - source: src/data/clean_gdelt_data.py
     product:
       nb: output/notebooks/clean_gdelt_data.ipynb
-      data: output/data/interim/cleaned-gdelt-data.csv
+      data: output/data/interim/gdelt_gkg_data-cleaned.csv
     params:
       path_params:
         sp_500_path: '{{sp_500_path}}'
@@ -48,7 +48,7 @@ tasks:
   - source: src/data/fetch_n_filter_gdelt_data.py
     product:
       nb: output/notebooks/fetch_n_filter_gdelt_data.ipynb
-      data: output/data/raw/gdelt-gkg-data.csv
+      data: output/data/raw/gdelt_gkg_data-raw.csv
     params:
       query_params:
         rolling_window: '{{rolling_window}}'
