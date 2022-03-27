@@ -37,7 +37,6 @@ openpyxl = "*"
 yfinance = "*"
 market-watch = {editable = true, path = "."}
 
-
 [dev-packages]
 graphviz = "*"
 pygraphviz = "*"
