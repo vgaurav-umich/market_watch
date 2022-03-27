@@ -23,6 +23,18 @@ tasks:
         search_term: '{{search_term}}'
         bq_table_name: "{{bq_table_name}}"
 
+  - source: src/data/fetch_fred.py
+    product:
+      nb: output/notebooks/fetch_fred.ipynb
+      data: output/data/raw/fred.csv
+    params:
+      api_params:
+        api_key: "{{fred_api_key}}"
+        obs_start: "{{fred_start}}"
+        obs_stop: "{{fred_stop}}"
+        units: "{{units}}"
+        series_list: "{{fred_series_list}}"
+
         
   - source: src/data/clean_gdelt_data.py
     product:
