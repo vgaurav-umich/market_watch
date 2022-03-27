@@ -6,9 +6,9 @@ Getting started
 1. Watch this [Video](https://www.youtube.com/watch?v=5HUL5lWkEyg) about how to use pipenv. We will be making use of  `pipenv` to create virtual environment.
 2. Upgrade pip or pip3 and install pyenv
     ```
-     pip install --upgrade pip
      pip install pyenv
      pip install --user --upgrade pipenv
+     pip install --upgrade pip
     ```
 3. Find user’s base directory
     ```
