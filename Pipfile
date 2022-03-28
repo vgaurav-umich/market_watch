@@ -14,19 +14,11 @@ scikit-learn = "*"
 pyarrow = "*"
 fastparquet = "*"
 sklearn-evaluation = "*"
-torch = "*"
 tensorboard = "*"
-atari-py = "*"
-gym = "*"
 numpy = "*"
-opencv-python = "*"
-torchvision = "*"
-pytorch-ignite = "*"
-tensorboardX = "*"
 tensorflow = "*"
 nltk = "*"
 pybullet = "*"
-ptan = "*"
 gdelt = "*"
 python-dotenv = "*"
 google-cloud-bigquery = {extras = ["bqstorage", "pandas"], version = "*"}
@@ -36,13 +28,15 @@ matplotlib = "*"
 openpyxl = "*"
 yfinance = "*"
 market-watch = {editable = true, path = "."}
+gym = {extras = ["atari"], version = "*"}
+opencv-python = "*"
+tensorboardx = "*"
 
 [dev-packages]
 graphviz = "*"
 pygraphviz = "*"
 pytest-runner = "*"
 pytest = "*"
-mistune = "==0.8.4"
 jupyterlab = "*"
 
 [requires]
