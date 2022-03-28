@@ -27,10 +27,11 @@ altair = "*"
 matplotlib = "*"
 openpyxl = "*"
 yfinance = "*"
-market-watch = {editable = true, path = "."}
 gym = {extras = ["atari"], version = "*"}
 opencv-python = "*"
 tensorboardx = "*"
+ptan = {git = "https://github.com/vgaurav-umich/ptan.git"}
+market-watch = {editable = true, path = "."}
 
 [dev-packages]
 graphviz = "*"
@@ -38,6 +39,7 @@ pygraphviz = "*"
 pytest-runner = "*"
 pytest = "*"
 jupyterlab = "*"
+setuptools = "*"
 
 [requires]
 python_version = "3.9"
