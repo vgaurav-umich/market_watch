@@ -59,42 +59,41 @@ path= path_params['sp_500_path']
 # C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\data\\external\\sp500_list.xlsx
 sp500= pd.read_excel(path + 'sp500_list.xlsx')
 
-
 # %%
-def tfidf_scores(df, sp500):
-    comp_names= list(sp500['Security'])
-    org_counts= list(df['Org Count'])
-    result= []
-    doc_freq= {}
-    n= len(org_counts)
-    for article in tqdm(org_counts):
-        if article != None:
-            for entity, val in article.items():
-                if entity in comp_names:
-                    if entity in doc_freq.keys():
-                        doc_freq.update({entity : doc_freq[entity] + 1})
-                    else:
-                        doc_freq.update({entity : 1})
-    for article in tqdm(org_counts):
-        tf= {}
-        article_list= []
-        if article != None:
-            for entity, val in article.items():
-                if entity in comp_names:
-                    tf.update({entity : val})
-                    tfidf= None
-                    if tf[entity] != None:
-                        tfidf= tf[entity] * np.log((n) / (1 + doc_freq[entity]))
-                    article_list.append([entity, tfidf])
+# def tfidf_scores(df, sp500):
+#     comp_names= list(sp500['Security'])
+#     org_counts= list(df['Org Count'])
+#     result= []
+#     doc_freq= {}
+#     n= len(org_counts)
+#     for article in tqdm(org_counts):
+#         if article != None:
+#             for entity, val in article.items():
+#                 if entity in comp_names:
+#                     if entity in doc_freq.keys():
+#                         doc_freq.update({entity : doc_freq[entity] + 1})
+#                     else:
+#                         doc_freq.update({entity : 1})
+#     for article in tqdm(org_counts):
+#         tf= {}
+#         article_list= []
+#         if article != None:
+#             for entity, val in article.items():
+#                 if entity in comp_names:
+#                     tf.update({entity : val})
+#                     tfidf= None
+#                     if tf[entity] != None:
+#                         tfidf= tf[entity] * np.log((n) / (1 + doc_freq[entity]))
+#                     article_list.append([entity, tfidf])
             
-            result= result.append(article_list)
-        else:
-            result= result.append([])
+#             result= result.append(article_list)
+#         else:
+#             result= result.append([])
             
-    return pd.DataFrame(result, columns=['Company','TFIDF'])
+#     return pd.DataFrame(result, columns=['Company','TFIDF'])
 
-tfidf= tfidf_scores(gdelt_df.iloc[:100], sp500)  
-tfidf.shape
+# tfidf= tfidf_scores(gdelt_df.iloc[:100], sp500)  
+# tfidf.shape
 
 # %%
 

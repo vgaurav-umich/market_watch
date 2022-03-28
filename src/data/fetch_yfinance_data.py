@@ -57,6 +57,8 @@ df= yf.download(l1, start= start_date)
 # %%
 
 # %%
+
+# %%
 df = df.reset_index()
 output_file_path = product['data']
 df.to_csv(output_file_path)

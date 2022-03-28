@@ -12,6 +12,7 @@ tasks:
       query_params:
         fin_ec_rolling_window: '{{fin_ec_rolling_window}}'
         sp_500_path: '{{sp_500_path}}'
+        yahoo_field: '{{yahoo_field}}'
 #        tickers: '{{tickers}}'
 
   - source: src/data/fetch_n_filter_gdelt_bq.py
@@ -45,13 +46,13 @@ tasks:
       path_params:
         sp_500_path: '{{sp_500_path}}'
 
-#  - source: src/features/create_tfidf_scores.py
-#    product:
-#      nb: output/notebooks/create_tfidf.ipynb
-#      data: output/data/tfid_vals.csv
-#    params:
-#      path_params:
-#        sp_500_path: '{{sp_500_path}}'
+  - source: src/features/create_tfidf_scores.py
+    product:
+      nb: output/notebooks/create_tfidf.ipynb
+      data: output/data/tfid_vals.csv
+    params:
+      path_params:
+        sp_500_path: '{{sp_500_path}}'
 
 #  - source: src/visualization/visualize_gdelt.py
 #    product:
