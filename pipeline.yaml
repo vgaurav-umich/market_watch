@@ -50,3 +50,18 @@ tasks:
     product:
       nb: output/notebooks/train_model.ipynb
       data: output/data/raw/model.pkl
+    params:
+      BATCH_SIZE: '{{BATCH_SIZE}}'
+      BARS_COUNT: '{{BARS_COUNT}}'
+      EPS_START: '{{EPS_START}}'
+      EPS_FINAL: "{{EPS_FINAL}}"
+      EPS_STEPS: '{{EPS_STEPS}}'
+      GAMMA: '{{GAMMA}}'
+      REPLAY_SIZE: '{{REPLAY_SIZE}}'
+      REPLAY_INITIAL: '{{REPLAY_INITIAL}}'
+      REWARD_STEPS: '{{REWARD_STEPS}}'
+      LEARNING_RATE: '{{LEARNING_RATE}}'
+      STATES_TO_EVALUATE: '{{STATES_TO_EVALUATE}}'
+      cuda: '{{cuda}}'
+      year: '{{year}}'
+      run: '{{run}}'

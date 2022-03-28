@@ -20,32 +20,8 @@ from src.models.lib import environ, data, models, common, validation
 SAVES_DIR = pathlib.Path("saves")
 STOCKS = "output/data/features/YNDX_160101_161231.csv"
 VAL_STOCKS = "output/data/features/YNDX_150101_151231.csv"
-
-BATCH_SIZE = 32
-BARS_COUNT = 10
-
-EPS_START = 1.0
-EPS_FINAL = 0.1
-EPS_STEPS = 1000000
-
-GAMMA = 0.99
-
-REPLAY_SIZE = 100000
-REPLAY_INITIAL = 10000
-REWARD_STEPS = 2
-LEARNING_RATE = 0.0001
-STATES_TO_EVALUATE = 1000
-
-# %%
-# parser = argparse.ArgumentParser()
-cuda = False
-# parser.add_argument("--data", default=STOCKS, help=f"Stocks file or dir, default={STOCKS}")
-# parser.add_argument("--year", type=int, help="Year to train on, overrides --data")
-year = '2016'
-# parser.add_argument("--val", default=VAL_STOCKS, help="Validation data, default=" + VAL_STOCKS)
 val = VAL_STOCKS
-# parser.add_argument("-r", "--run", required=False, help="Run name")
-run = 'test'
+
 # args = parser.parse_args()
 device = torch.device("cuda" if cuda else "cpu")
 
