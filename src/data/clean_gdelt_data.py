@@ -48,6 +48,7 @@ data_df['Polarity'] = data_df.Tone.apply(lambda x: x[3])
 
 # +
 threshold = 1
+# "C:\\Users\\mattd\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\data\\external\\sp500_list.xlsx"
 path = path_params['sp_500_path'] + 'sp500_list.xlsx'
 
 
@@ -124,5 +125,12 @@ output_file_path = product['data']
 Path(output_file_path).parent.mkdir(exist_ok=True, parents=True)
 data_df.to_csv(output_file_path)
 print(f"Saved file {output_file_path}")
+
+
+
+# +
+
+data_df.to_parquet('C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\output\\data\\interim\\gdelt_gkg_data-cleaned.pq')
+# -
 
 
