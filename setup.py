@@ -11,8 +11,7 @@ setup(
     license='MIT',
     install_requires=[
         'ploomber',
-        'jupyterlab',
-        'pipenv'
+        'jupyterlab'
     ],
     setup_requires=[
 
