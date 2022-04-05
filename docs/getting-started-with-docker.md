@@ -16,5 +16,5 @@
   ```
  - docker run
   ```
-  docker run -it --rm gaurav/devbox
+  docker run -it --rm --env-file ./market_watch.env veenagaurav/devbox
   ```
