@@ -42,8 +42,7 @@ graphviz = "*"
 pygraphviz = "*"
 pytest-runner = "*"
 pytest = "*"
-mistune = "==0.8.4"
 jupyterlab = "*"
 
 [requires]
-python_version = "3.9"
+python_version = "3.8"
