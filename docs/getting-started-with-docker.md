@@ -18,3 +18,4 @@
   ```
   docker run -it --rm --env-file ./market_watch.env veenagaurav/devbox
   ```
+for more details on environment variable and docker see this [article](https://aggarwal-rohan17.medium.com/docker-build-arguments-and-environment-variables-1bdca0c0ef92#:~:text=Docker%20environment%20variables%20are%20used%20to%20make%20the,be%20accessed%20in%20the%20application%20code%20as%20well.)
