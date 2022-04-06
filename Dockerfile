@@ -9,6 +9,7 @@ RUN export PATH="$PATH:/root/.local/bin"
 RUN echo 'export PATH="$PATH:/root/.local/bin"' >> ~/.bashrc
 RUN echo "source ~/.bash_rc" >> ~/.bash_profile
 RUN apt install git -y
+RUN apt install ffmpeg libsm6 libxext6  -y
 RUN pip install ploomber jupyterlab
 
 COPY . /root/$PNAME/
