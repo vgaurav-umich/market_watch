@@ -9,8 +9,9 @@ RUN export PATH="$PATH:/root/.local/bin"
 RUN echo 'export PATH="$PATH:/root/.local/bin"' >> ~/.bashrc
 RUN echo "source ~/.bash_rc" >> ~/.bash_profile
 RUN apt install git -y
+RUN apt install nano
 RUN pip install ploomber jupyterlab
 
-COPY . ./$PNAME/
+COPY . /root/$PNAME/
 
 ENTRYPOINT ["bash"]
