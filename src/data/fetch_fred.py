@@ -46,15 +46,15 @@ pd.options.display.max_rows=500
 pd.options.display.max_columns=100
 warnings.filterwarnings("ignore")
 
-
 # %%
-# r=requests.get('https://api.stlouisfed.org/fred/series', {
-#     'series_id' : 'VIXCLS',
-#     'api_key' : 'ebc6d771a26e9b8009c65cb0ab76ba3d', 
-#     'file_type':'json'
-# })
+r=requests.get('https://api.stlouisfed.org/fred/series', {
+    'series_id' : 'VIXCLS',
+    'api_key' : 'ebc6d771a26e9b8009c65cb0ab76ba3d', 
+    'file_type':'json'
+})
 
-# r.json()
+r.json()
+
 
 # %%
 # r=requests.get('https://api.stlouisfed.org/fred/series/observations', {
@@ -85,14 +85,18 @@ def get_series_metainfo(series_id, api_key):
                      json['frequency_short'],
                      json['seasonal_adjustment'],
                      json['popularity'],
-                     json['notes']], index= ['Title','ID','Frequency','Seasonally Adjusted', 'Popularity','Notes'])
+                     json['observation_start'],
+                     json['observation_end'],
+                     json['notes']], index= ['Title','ID','Frequency','Seasonally Adjusted', 'Popularity','Observation Start', 'Observation End', 'Notes'])
     except:
         result= pd.Series([json['title'],
                      json['id'],
                      json['frequency_short'],
                      json['seasonal_adjustment'],
                      json['popularity'],
-                     None], index= ['Title','ID','Frequency','Seasonally Adjusted', 'Popularity','Notes'])
+                     json['observation_start'],
+                     json['observation_end'],
+                     None], index= ['Title','ID','Frequency','Seasonally Adjusted', 'Popularity','Observation Start', 'Observation End', 'Notes'])
     return result
 
 def get_series_obs(series_id, api_key, obs_start, obs_end, freq, units= 'lin'):
@@ -164,6 +168,9 @@ for id_ in series_ids:
     obs_df= obs_df.merge(series_df, how='outer', on='DATE')
 obs_df.dropna(axis=0, inplace=True)
 obs_df.reset_index(drop=True, inplace=True)
+
+# %%
+meta_df
 
 # %%
 dt= "<class 'pandas._libs.tslibs.timestamps.Timestamp'>"

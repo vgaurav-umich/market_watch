@@ -11,7 +11,7 @@ from pathlib import Path
 pd.options.display.max_colwidth = 200
 
 # +
-input_file_path = upstream['fetch_n_filter_gdelt_bq']['data']
+input_file_path = upstream['fetch_n_filter_gdelt_bq']['data'] + '\\gdelt_gkg_bqdata-raw.csv'
 
 data_df = pd.read_csv(input_file_path, index_col=0)
 print(data_df.columns)
@@ -48,7 +48,7 @@ data_df['Polarity'] = data_df.Tone.apply(lambda x: x[3])
 
 # +
 threshold = 1
-# "C:\\Users\\mattd\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\data\\external\\sp500_list.xlsx"
+# "C:\\Users\\mattd\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\data\\external\\"
 path = path_params['sp_500_path'] + 'sp500_list.xlsx'
 
 
@@ -118,19 +118,21 @@ def extract_company_articles(df, path, threshold):
 # %%time
 data_df = extract_company_articles(data_df, path, threshold)
 
+data_df
+
 data_df.drop(["Tone", "DATE", "SourceCollectionIdentifier", "DocumentIdentifier"], axis = 1, inplace=True)
 
 
 output_file_path = product['data']
-Path(output_file_path).parent.mkdir(exist_ok=True, parents=True)
-data_df.to_csv(output_file_path)
-print(f"Saved file {output_file_path}")
+# Path(output_file_path).parent.mkdir(exist_ok=True, parents=True)
+# data_df.to_csv(output_file_path)
+# print(f"Saved file {output_file_path}")
 
 
 
 # +
 
-data_df.to_parquet('C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\output\\data\\interim\\gdelt_gkg_data-cleaned.pq')
+data_df.to_parquet(output_file_path)
 # -
-
+data_df.loc[0,'Org Count']
 

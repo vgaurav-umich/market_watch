@@ -28,7 +28,7 @@
 # %% tags=["parameters"]
 # If this task has dependencies, list them them here
 # (e.g. upstream = ['some_task']), otherwise leave as None.
-upstream = ['clean_gdelt_data']
+upstream = ['clean_gdelt_data', 'fetch_n_filter_gdelt_bq']
 
 # This is a placeholder, leave it as None
 product = None
@@ -42,39 +42,64 @@ import pandas as pd
 import numpy as np
 import warnings
 from tqdm import tqdm
+import json
+from collections import Counter
 
 warnings.simplefilter("ignore")
 
 # %%
+# %%time
 file= upstream['clean_gdelt_data']['data']
 gdelt_df= pd.read_parquet(file)
+gdelt_df.dropna(subset= 'Org Count', inplace=True)
+gdelt_df['Org Count']= gdelt_df['Org Count'].map(lambda x : {k.lower() : int(v) for k,v in x.items() if v != None})
 
+print(f'Filtered GDELT contains { gdelt_df.shape[0]} articles.')
 gdelt_df.head(2)
 
 # %%
-gdelt_df.shape
+counter_file= upstream['fetch_n_filter_gdelt_bq']['data'] + '\\org_totals.txt'
+f= open(counter_file)
+counter= json.load(f)
+f.close()
+print(f'Organization Counter has {len(counter)} orgs')
+{k: counter[k] for k in list(counter)[1:5]}
 
 # %%
 path= path_params['sp_500_path']
-# C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\data\\external\\sp500_list.xlsx
+# C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\data\\external\\
 sp500= pd.read_excel(path + 'sp500_list.xlsx')
 
+
 # %%
-# def tfidf_scores(df, sp500):
-#     comp_names= list(sp500['Security'])
-#     org_counts= list(df['Org Count'])
-#     result= []
-#     doc_freq= {}
-#     n= len(org_counts)
-#     for article in tqdm(org_counts):
-#         if article != None:
-#             for entity, val in article.items():
-#                 if entity in comp_names:
-#                     if entity in doc_freq.keys():
-#                         doc_freq.update({entity : doc_freq[entity] + 1})
-#                     else:
-#                         doc_freq.update({entity : 1})
-#     for article in tqdm(org_counts):
+# %%time
+def tfidf_scores(df, org_counter, sp500):
+    # comp_names= list(sp500['Security'])
+    # comp_names= [val.lower() for val in comp_names]
+    tf_org_counts= list(df['Org Count'])
+    doc_freq= Counter()
+    n= sum(org_counter.values())
+    #== get tf ==
+    print(len(tf_org_counts))
+    for article in tqdm(tf_org_counts):
+        if article != None:
+            for entity, val in article.items():
+                # if entity in comp_names:
+                doc_freq.update({entity : 1})
+    #====
+    result= {}
+    for entity, count in doc_freq.items():
+        try:
+            idf= np.log(n / (1 + org_counter[entity]))
+            tfidf= count * idf
+            result.update({entity : tfidf})      
+        except:
+            None
+    return result
+                
+                
+                
+#     for article in tqdm(tf_org_counts):
 #         tf= {}
 #         article_list= []
 #         if article != None:
@@ -92,9 +117,16 @@ sp500= pd.read_excel(path + 'sp500_list.xlsx')
             
 #     return pd.DataFrame(result, columns=['Company','TFIDF'])
 
-# tfidf= tfidf_scores(gdelt_df.iloc[:100], sp500)  
-# tfidf.shape
+tfidf= tfidf_scores(gdelt_df.iloc[:100], counter, sp500)  
+
+# %%
+print(len(tfidf))
+comp_names= list(sp500['Security'])
+comp_names= [val.lower() for val in comp_names]
+{k : v for k,v in sorted(tfidf.items(), key= lambda x: x[1], reverse=True) if k in comp_names}
+
+
 
 # %%
 
-# %%
+{k : v for k,v in sorted(tfidf.items(), key= lambda x: x[1], reverse=True)}

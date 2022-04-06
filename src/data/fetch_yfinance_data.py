@@ -36,6 +36,7 @@ pd.set_option('display.float_format',  '{:,.2f}'.format)
 
 
 # %%
+#C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\data\\external\\
 ticker_path= query_params['sp_500_path']
 rolling_window = query_params['fin_ec_rolling_window']
 
@@ -48,17 +49,25 @@ start_date = utils.general_date_format(start_date)
 # %%
 l1= list(ticker_names[:250]) 
 l2= list(ticker_names[250:])
-df= yf.download(l1, start= start_date)
+df1= yf.download(l1, start= start_date)
 # time.sleep(61)
 # df2= yf.download(l2, start= start_date)
 # df= df.concat([df,df2])
 
 
 # %%
+# df1= pd.read_csv(product['data'], header= [0,1], infer_datetime_format=True, parse_dates= [('Date', 'Unnamed: 2_level_1')])
+# df1= df1.set_index(('Date', 'Unnamed: 2_level_1'))
 
 # %%
+df= pd.concat((df1['Open'], df2['Open']),axis=1)
+# c= sorted(df.columns)
+# df= df[c]
 
 # %%
-df = df.reset_index()
+df
+
+# %%
+# df = df.reset_index()
 output_file_path = product['data']
 df.to_csv(output_file_path)

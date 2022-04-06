@@ -18,12 +18,13 @@ tasks:
   - source: src/data/fetch_n_filter_gdelt_bq.py
     product:
       nb: output/notebooks/fetch_n_filter_gdelt_bq.ipynb
-      data: output/data/raw/gdelt_gkg_bqdata-raw.csv
+      data: output/data/raw/
     params:
       query_params:
         rolling_window: '{{rolling_window}}'
         search_term: '{{search_term}}'
         bq_table_name: "{{bq_table_name}}"
+        sp500_path : '{{sp_500_path}}'
 
   - source: src/data/fetch_fred.py
     product:
@@ -37,6 +38,10 @@ tasks:
         units: "{{units}}"
         series_list: "{{fred_series_list}}"
 
+  - source: src/data/combine_fred_yahoo.py
+    product:
+      nb : output/notebooks/combine_fred_yahoo.ipynb
+      data: output/data/raw/fred_yahoo.csv
         
   - source: src/data/clean_gdelt_data.py
     product:
