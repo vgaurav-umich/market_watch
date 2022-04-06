@@ -3,7 +3,7 @@
 - Before we build, first download the secret files like - git hub ssh key file and google cloud service key files to `~/.ssh` directopry.
 - Build docker image 
   ```
-  docker build https://github.com/vgaurav-umich/market_watch.git#main -t veenagaurav/market_watch
+  docker build https://github.com/vgaurav-umich/market_watch.git#main --build-arg PNAME=market_watch -t veenagaurav/market_watch
   ```
 - or Download a pre-built image
   ```
