@@ -11,6 +11,6 @@ RUN echo "source ~/.bash_rc" >> ~/.bash_profile
 RUN apt install git -y
 RUN pip install ploomber jupyterlab
 
-COPY . ./$PNAME/
+COPY . /root/$PNAME/
 
 ENTRYPOINT ["bash"]
