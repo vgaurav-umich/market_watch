@@ -1,7 +1,7 @@
 # syntax = docker/dockerfile:1.3
 FROM python:3.8-bullseye
 
-ARG PNAME
+ARG PNAME=/root/code
 
 RUN apt update && apt upgrade -y
 RUN pip install --user --upgrade pipenv
