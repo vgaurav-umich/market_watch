@@ -14,8 +14,6 @@ scikit-learn = "*"
 pyarrow = "*"
 fastparquet = "*"
 sklearn-evaluation = "*"
-<<<<<<< HEAD
-=======
 torch = "*"
 tensorboard = "*"
 atari-py = "*"
@@ -37,20 +35,7 @@ altair = "*"
 matplotlib = "*"
 openpyxl = "*"
 yfinance = "*"
->>>>>>> main
 market-watch = {editable = true, path = "."}
-torch = "==1.7.0"
-tensorboard = "==2.5.0"
-atari-py = "==0.2.6"
-gym = "==0.17.3"
-numpy = "==1.19.2"
-opencv-python = "==4.4.0.46"
-torchvision = "==0.8.0"
-pytorch-ignite = "==0.4.2"
-tensorboardX = "==2.1"
-tensorflow = "==2.5.1"
-nltk = "==3.5"
-pybullet = "==3.0.7"
 ptan = "==0.7"
 
 [dev-packages]
