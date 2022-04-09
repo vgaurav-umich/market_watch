@@ -9,7 +9,11 @@ RUN export PATH="$PATH:/root/.local/bin"
 RUN echo 'export PATH="$PATH:/root/.local/bin"' >> ~/.bashrc
 RUN echo "source ~/.bash_rc" >> ~/.bash_profile
 RUN apt install git -y
+<<<<<<< HEAD
+RUN apt install ffmpeg libsm6 libxext6  -y
+=======
 RUN apt install nano
+>>>>>>> e5973062290d4f74bf3dea991dacdc195960deb7
 RUN pip install ploomber jupyterlab
 
 COPY . /root/$PNAME/
