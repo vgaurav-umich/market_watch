@@ -1,6 +1,6 @@
 # Content of pipeline.yaml
-meta:
-  import_tasks_from: pipeline.features.yaml
+#meta:
+#  import_tasks_from: pipeline.features.yaml
 
 tasks:
 
@@ -10,8 +10,9 @@ tasks:
       data: output/data/raw/yfinance_ticker_data-raw.csv
     params:
       query_params:
-        rolling_window: '{{rolling_window}}'
-        tickers: '{{tickers}}'
+        fin_ec_rolling_window: '{{fin_ec_rolling_window}}'
+        sp_500_path: '{{sp_500_path}}'
+#        tickers: '{{tickers}}'
 
   - source: src/data/fetch_n_filter_gdelt_bq.py
     product:
@@ -23,26 +24,46 @@ tasks:
         search_term: '{{search_term}}'
         bq_table_name: "{{bq_table_name}}"
 
+  - source: src/data/fetch_fred.py
+    product:
+      nb: output/notebooks/fetch_fred.ipynb
+      data: output/data/raw/fred.csv
+    params:
+      api_params:
+        api_key: "{{fred_api_key}}"
+        obs_start: "{{fred_start}}"
+        obs_stop: "{{fred_stop}}"
+        units: "{{units}}"
+        series_list: "{{fred_series_list}}"
+
         
   - source: src/data/clean_gdelt_data.py
     product:
       nb: output/notebooks/clean_gdelt_data.ipynb
-      data: output/data/interim/gdelt_gkg_data-cleaned.csv
+      data: output/data/interim/gdelt_gkg_data-cleaned.pq
     params:
       path_params:
         sp_500_path: '{{sp_500_path}}'
 
-  - source: src/visualization/visualize_gdelt.py
-    product:
-      nb: output/notebooks/visualize_gdelt.html
+#  - source: src/features/create_tfidf_scores.py
+#    product:
+#      nb: output/notebooks/create_tfidf.ipynb
+#      data: output/data/tfid_vals.csv
+#    params:
+#      path_params:
+#        sp_500_path: '{{sp_500_path}}'
 
-  - source: src/visualization/visualize_yfinance.py
-    product:
-      nb: output/notebooks/visualize_yfinance.html
-    params:
-      query_params:
-        rolling_window: '{{rolling_window}}'
-        tickers: '{{tickers}}'
+#  - source: src/visualization/visualize_gdelt.py
+#    product:
+#      nb: output/notebooks/visualize_gdelt.html
+#
+#  - source: src/visualization/visualize_yfinance.py
+#    product:
+#      nb: output/notebooks/visualize_yfinance.html
+#    params:
+#      query_params:
+#        rolling_window: '{{rolling_window}}'
+#        tickers: '{{tickers}}'
 
   # Feature pipeline code will execute here.
 
