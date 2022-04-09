@@ -2,7 +2,7 @@ import numpy as np
 
 import torch
 
-from src.market_watch.models.lib import environ
+from src.models.lib import environ
 
 METRICS = (
     'episode_reward',
