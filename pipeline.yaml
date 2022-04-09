@@ -46,3 +46,10 @@ tasks:
 
   # Feature pipeline code will execute here.
 
+  - source: src/models/train_model.py
+    product:
+      nb: output/notebooks/train_model.ipynb
+    # params:
+      # query_params:
+      #   rolling_window: '{{rolling_window}}'
+      #   tickers: '{{tickers}}'

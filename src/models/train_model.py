@@ -19,8 +19,8 @@ from ignite.contrib.handlers import tensorboard_logger as tb_logger
 from src.models.lib import environ, data, models, common, validation
 
 SAVES_DIR = pathlib.Path("saves")
-STOCKS = "data/raw/YNDX_160101_161231.csv"
-VAL_STOCKS = "data/raw/YNDX_150101_151231.csv"
+STOCKS = "data/YNDX_160101_161231.csv"
+VAL_STOCKS = "data/YNDX_150101_151231.csv"
 
 BATCH_SIZE = 32
 BARS_COUNT = 10
