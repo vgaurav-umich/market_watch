@@ -2,7 +2,25 @@
 # your parameters here...
 upstream = ['fetch_n_filter_gdelt_bq']
 
-# +
+# + tags=["injected-parameters"]
+# This cell was injected automatically based on your stated upstream dependencies (cell above) and pipeline.yaml preferences. It is temporary and will be removed when you save this notebook
+path_params = {
+    "sp_500_path": "data/external/",
+    "exchanges_path": "C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\data\\external\\nasdaq_nyse_amex.csv",
+}
+upstream = {
+    "fetch_n_filter_gdelt_bq": {
+        "nb": "C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\output\\notebooks\\fetch_n_filter_gdelt_bq.ipynb",
+        "data": "C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\output\\data\\raw",
+    }
+}
+product = {
+    "nb": "C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\output\\notebooks\\clean_gdelt_data.ipynb",
+    "data": "C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\output\\data\\interim\\gdelt_gkg_data-cleaned.pq",
+}
+
+
+# + tags=[]
 # your code here...
 import pandas as pd
 import numpy as np
@@ -10,14 +28,14 @@ from pathlib import Path
 
 pd.options.display.max_colwidth = 200
 
-# +
+# + tags=[]
 input_file_path = upstream['fetch_n_filter_gdelt_bq']['data'] + '\\gdelt_gkg_bqdata-raw.csv'
 
 data_df = pd.read_csv(input_file_path, index_col=0)
 print(data_df.columns)
 
 
-# +
+# + tags=[]
 def split_locations(location_list):
     location_names = []
     if type(location_list) is not float:
@@ -28,43 +46,56 @@ def split_locations(location_list):
     return location_names
 
 data_df.Locations = data_df.Locations.str.split(';').apply(split_locations)
-# -
 
 
+# + tags=[]
 #  Clean some data elements
 data_df.Persons = data_df.Persons.str.findall(pat="[A-Z][a-z]+ [A-Z][a-z]+")
 
-# +
+# + tags=[]
 # data_df.Organizations = data_df.Organizations.str.replace("Tesla|Tesla Motors|Tesla Inc", '').str.findall(pat="[A-Z][a-z]+ [A-Z][a-z]+")
-# -
 
+# + tags=[]
 data_df.Tone = data_df.Tone.str.split(',')
 
+# + tags=[]
 # Clean Tone
 data_df['AvgTone'] = data_df.Tone.apply(lambda x: x[0])
 data_df['PosScore'] = data_df.Tone.apply(lambda x: x[1])
 data_df['NegScore'] = data_df.Tone.apply(lambda x: x[2])
 data_df['Polarity'] = data_df.Tone.apply(lambda x: x[3])
 
-# +
+# + tags=[]
 threshold = 1
-# "C:\\Users\\mattd\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\data\\external\\"
-path = path_params['sp_500_path'] + 'sp500_list.xlsx'
+# C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\data\\external\\
+path = path_params['exchanges_path']
 
 
 def get_rel_company_names(path):
-    rel_company = pd.read_excel(path)
-    rel_company = rel_company['Security']
+    rel_company = pd.read_csv(path)
+    rel_company = rel_company['Name']
+    rel_company = rel_company.str.lower()
+    rel_company = rel_company[rel_company.str.contains('common|ordinary', regex=True)]
+    rel_company = rel_company.str.split('(corp|ltd|inc|corporation|limited|incorporation|incorporated)',regex=True)
+    rel_company = rel_company.map(lambda x: ''.join(x[:2]))
     expand_rel_company = {}
+    # stop_words= ['unit', 'common', 'class', 'warrants', 'warrant', 'depository']
     for company in rel_company:
-        company = company.lower()
+        # company = company.lower()
         company_name_list = []
         company_name_list.append(company)
-        for postfix in ['inc', 'inc.', 'incorporation', 'corp.', 'corp', 'corporation']:
-            if postfix in company_name_list[0]:
-                break
-        for postfix in ['inc', 'incorporation', 'corp', 'corporation']:
-            company_name_list.append(company_name_list[0] + ' ' + postfix)
+        if 'inc' in company_name_list[0]:
+            company_name_list.append(company_name_list[0] + 'orporation')
+            company_name_list.append(company_name_list[0] + 'orporated')
+        elif 'corp' in company_name_list[0]:
+            company_name_list.append(company_name_list[0] + 'oration')
+        elif 'ltd' in company_name_list[0]:
+            w_name= company_name_list[0].split('ltd')[0]
+            company_name_list.append(w_name + 'limited ')
+            company_name_list.append(w_name + 'limited company')
+        elif 'corporation' in company_name_list[0]:
+            w_name= company_name_list[0].split('corporation')[0]
+            company_name_list.append(w_name + 'corp')
         words = company.split(' ')
         for n in range(1, len(words)):
             if words[0:n] not in company_name_list:
@@ -113,26 +144,30 @@ def extract_company_articles(df, path, threshold):
 
     return df
 
-# -
 
+# + tags=[]
 # %%time
 data_df = extract_company_articles(data_df, path, threshold)
 
+# + tags=[]
 data_df
 
+# + tags=[]
 data_df.drop(["Tone", "DATE", "SourceCollectionIdentifier", "DocumentIdentifier"], axis = 1, inplace=True)
 
 
+# + tags=[]
 output_file_path = product['data']
 # Path(output_file_path).parent.mkdir(exist_ok=True, parents=True)
 # data_df.to_csv(output_file_path)
 # print(f"Saved file {output_file_path}")
 
+# + tags=[]
 
 
-# +
+# + tags=[]
 
 data_df.to_parquet(output_file_path)
-# -
+# + tags=[]
 data_df.loc[0,'Org Count']
 

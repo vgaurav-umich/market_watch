@@ -4,17 +4,6 @@
 
 tasks:
 
-  - source: src/data/fetch_yfinance_data.py
-    product:
-      nb: output/notebooks/fetch_yfinance_data.ipynb
-      data: output/data/raw/yfinance_ticker_data-raw.csv
-    params:
-      query_params:
-        fin_ec_rolling_window: '{{fin_ec_rolling_window}}'
-        sp_500_path: '{{sp_500_path}}'
-        yahoo_field: '{{yahoo_field}}'
-#        tickers: '{{tickers}}'
-
   - source: src/data/fetch_n_filter_gdelt_bq.py
     product:
       nb: output/notebooks/fetch_n_filter_gdelt_bq.ipynb
@@ -25,6 +14,7 @@ tasks:
         search_term: '{{search_term}}'
         bq_table_name: "{{bq_table_name}}"
         sp500_path : '{{sp_500_path}}'
+        exchanges_path : '{{exchanges_path}}'
 
   - source: src/data/fetch_fred.py
     product:
@@ -37,11 +27,6 @@ tasks:
         obs_stop: "{{fred_stop}}"
         units: "{{units}}"
         series_list: "{{fred_series_list}}"
-
-  - source: src/data/combine_fred_yahoo.py
-    product:
-      nb : output/notebooks/combine_fred_yahoo.ipynb
-      data: output/data/raw/fred_yahoo.csv
         
   - source: src/data/clean_gdelt_data.py
     product:
@@ -50,6 +35,24 @@ tasks:
     params:
       path_params:
         sp_500_path: '{{sp_500_path}}'
+        exchanges_path : '{{exchanges_path}}'
+
+  - source: src/data/fetch_yfinance_data.py
+      product:
+        nb: output/notebooks/fetch_yfinance_data.ipynb
+        data: output/data/raw/yfinance_ticker_data-raw.csv
+      params:
+        query_params:
+          fin_ec_rolling_window: '{{fin_ec_rolling_window}}'
+          sp_500_path: '{{sp_500_path}}'
+          exchanges_path : '{{exchanges_path}}'
+          yahoo_field: '{{yahoo_field}}'
+  #        tickers: '{{tickers}}'
+
+  - source: src/data/combine_fred_yahoo.py
+    product:
+      nb: output/notebooks/combine_fred_yahoo.ipynb
+      data: output/data/raw/fred_yahoo.csv
 
   - source: src/features/create_tfidf_scores.py
     product:
@@ -58,6 +61,7 @@ tasks:
     params:
       path_params:
         sp_500_path: '{{sp_500_path}}'
+        exchanges_path : '{{exchanges_path}}'
 
 #  - source: src/visualization/visualize_gdelt.py
 #    product:
