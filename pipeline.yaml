@@ -38,15 +38,15 @@ tasks:
         exchanges_path : '{{exchanges_path}}'
 
   - source: src/data/fetch_yfinance_data.py
-      product:
-        nb: output/notebooks/fetch_yfinance_data.ipynb
-        data: output/data/raw/yfinance_ticker_data-raw.csv
-      params:
-        query_params:
-          fin_ec_rolling_window: '{{fin_ec_rolling_window}}'
-          sp_500_path: '{{sp_500_path}}'
-          exchanges_path : '{{exchanges_path}}'
-          yahoo_field: '{{yahoo_field}}'
+    product:
+      nb: output/notebooks/fetch_yfinance_data.ipynb
+      data: output/data/raw/yfinance_ticker_data-raw.csv
+    params:
+      query_params:
+        fin_ec_rolling_window: '{{fin_ec_rolling_window}}'
+        sp_500_path: '{{sp_500_path}}'
+        exchanges_path : '{{exchanges_path}}'
+        yahoo_field: '{{yahoo_field}}'
   #        tickers: '{{tickers}}'
 
   - source: src/data/combine_fred_yahoo.py

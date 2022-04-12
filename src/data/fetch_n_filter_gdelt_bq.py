@@ -2,22 +2,7 @@
 # declare a list tasks whose products you want to use as inputs
 upstream = None
 
-# + tags=["injected-parameters"]
-# This cell was injected automatically based on your stated upstream dependencies (cell above) and pipeline.yaml preferences. It is temporary and will be removed when you save this notebook
-query_params = {
-    "rolling_window": 90,
-    "search_term": "tesla",
-    "bq_table_name": "`gdelt-bq.gdeltv2.gkg`",
-    "sp500_path": "data/external/",
-    "exchanges_path": "C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\data\\external\\nasdaq_nyse_amex.csv",
-}
-product = {
-    "nb": "C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\output\\notebooks\\fetch_n_filter_gdelt_bq.ipynb",
-    "data": "C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\output\\data\\raw",
-}
-
-
-# + tags=[]
+# +
 from pathlib import Path
 from dotenv import load_dotenv, find_dotenv
 from google.cloud import bigquery
@@ -40,18 +25,16 @@ from src import utils
 # alt.themes.enable('fivethirtyeight')
 
 warnings.filterwarnings('ignore')
+# -
 
 
-# + tags=[]
 load_dotenv(find_dotenv('market_watch.env'))
 
-# + tags=[]
 print(sys.executable)
 api_key_file = os.environ['GOOGLE_APPLICATION_CREDENTIALS']
 print(api_key_file)
 
 
-# + tags=[]
 def build_gdelt_query(table_name, search_term, start_date):
     query_string = f"""
         SELECT
@@ -72,7 +55,6 @@ def build_gdelt_query(table_name, search_term, start_date):
     return query_string
 
 
-# + tags=[]
 def build_gdelt_query_for_counter(table_name, start_date, end_date):
     query_string= f'''
         Select
@@ -85,7 +67,6 @@ def build_gdelt_query_for_counter(table_name, start_date, end_date):
     return query_string
 
 
-# + tags=[]
 def fetch_data(bqclient, query_string):
     df = (
         bqclient.query(query_string)
@@ -100,7 +81,6 @@ def fetch_data(bqclient, query_string):
     return df
 
 
-# + tags=[]
 rolling_window = query_params["rolling_window"]
 table_name = query_params["bq_table_name"]
 search_term = query_params["search_term"]
@@ -111,16 +91,13 @@ start_date = utils.gdelt_date_format(start_date)
 query = build_gdelt_query(table_name, search_term, start_date)
 # counter_query= build_gdelt_query_for_counter(table_name, start_date)
 # print(query)
-# -
 
 client = bigquery.Client()
 
-# + tags=[]
-
+# %%time
 data_df = fetch_data(client, query)
 print(f"Processed merged file with {len(data_df)} records")
 
-# + tags=[]
 # Save records
 Path(file_path).parent.mkdir(exist_ok=True, parents=True)
 data_df.to_csv(file_path)
@@ -128,7 +105,7 @@ print(f"Saved file {file_path}")
 del data_df
 
 
-# + tags=[]
+# +
 def create_increments(start_date):
     '''
     Helper function that builds 2day increments to be passed to the GDELT Query.
@@ -194,7 +171,7 @@ def get_rel_company_names(path):
 # # len(exchanges_dict)
 # [val for list_ in exchanges_dict.values() for val in list_][0:10]
 
-# + tags=[]
+# +
 # %%time
 # C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\data\\external\\
 
@@ -276,43 +253,42 @@ def fetch_counter_data(bqclient, table_name, start, sp500_dict):
 
 # counts= fetch_counter_data(client, table_name, start_date, exchanges_dict)
 counts= fetch_counter_data(client, table_name, '20220221141500', exchanges_dict)
+# -
 
 
-# + tags=[]
 with open(product['data'] + '\\org_totals.txt', 'w') as convert_file:
      convert_file.write(json.dumps(counts))
-# -
 
 # with open(product['data'] + '\\cache\\org_totals.txt', 'r') as convert_file:
 #      t=json.loads(convert_file.read())
-t['apple inc']
+# t['apple inc']
 
 
 # +
 # r= create_increments(start_date)
 # r[-1][0]
 
-# + tags=[]
-start_date, end_date= ('20220101231500', '20220101233000')
-query_string= build_gdelt_query_for_counter(table_name, start_date, end_date)
-text= (
-            client.query(query_string)
-                .result()
-                .to_dataframe(
-                # Optionally, explicitly request to use the BigQuery Storage API. As of
-                # google-cloud-bigquery version 1.26.0 and above, the BigQuery Storage
-                # API is used by default.
-                create_bqstorage_client=True,
-               ))
+# +
+# start_date, end_date= ('20220101231500', '20220101233000')
+# query_string= build_gdelt_query_for_counter(table_name, start_date, end_date)
+# text= (
+#             client.query(query_string)
+#                 .result()
+#                 .to_dataframe(
+#                 # Optionally, explicitly request to use the BigQuery Storage API. As of
+#                 # google-cloud-bigquery version 1.26.0 and above, the BigQuery Storage
+#                 # API is used by default.
+#                 create_bqstorage_client=True,
+#                ))
 
-# + tags=[]
+# +
 # x= text.copy().replace('Organizations', '', limit= 1)
 # x= x.dropna()
 # x= x['Organizations'].map(lambda x: re.sub('\s{2,}', '', x))
 # x=x.map(lambda x: re.split(',\d+;?', x))
 
 
-# + tags=[]
+# +
 # with open(product['data'] + '\\org_totals.txt', 'w') as convert_file:
 #      convert_file.write(json.dumps({'a':'b'}))
 

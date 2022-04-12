@@ -12,13 +12,13 @@
 #     name: python3
 # ---
 
-# %% tags=[]
+# %%
 # Add description here
 #
 # *Note:* You can open this file as a notebook (JupyterLab: right-click on it in the side bar -> Open With -> Notebook)
 
 
-# %% tags=[]
+# %%
 # Uncomment the next two lines to enable auto reloading for imported modules
 # # %load_ext autoreload
 # # %autoreload 2
@@ -34,32 +34,10 @@ upstream = ['clean_gdelt_data', 'fetch_n_filter_gdelt_bq']
 product = None
 
 
-# %% tags=["injected-parameters"]
-# This cell was injected automatically based on your stated upstream dependencies (cell above) and pipeline.yaml preferences. It is temporary and will be removed when you save this notebook
-path_params = {
-    "sp_500_path": "C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\data\\external\\",
-    "exchanges_path": "C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\data\\external\\",
-}
-upstream = {
-    "clean_gdelt_data": {
-        "nb": "C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\output\\notebooks\\clean_gdelt_data.ipynb",
-        "data": "C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\output\\data\\interim\\gdelt_gkg_data-cleaned.pq",
-    },
-    "fetch_n_filter_gdelt_bq": {
-        "nb": "C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\output\\notebooks\\fetch_n_filter_gdelt_bq.ipynb",
-        "data": "C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\output\\data\\raw",
-    },
-}
-product = {
-    "nb": "C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\output\\notebooks\\create_tfidf.ipynb",
-    "data": "C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\output\\data\\tfid_vals.csv",
-}
-
-
-# %% tags=[]
+# %%
 # your code here...
 
-# %% tags=[]
+# %%
 import pandas as pd
 import numpy as np
 import warnings
@@ -73,7 +51,7 @@ warnings.simplefilter("ignore")
 # %%
 # os.chdir('C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\')
 
-# %% tags=[]
+# %%
 # %%time
 file= upstream['clean_gdelt_data']['data']
 gdelt_df= pd.read_parquet(file)
@@ -83,7 +61,7 @@ gdelt_df['Org Count']= gdelt_df['Org Count'].map(lambda x : {k.lower() : int(v) 
 print(f'Filtered GDELT contains { gdelt_df.shape[0]} articles.')
 gdelt_df.head(2)
 
-# %% tags=[]
+# %%
 counter_file= upstream['fetch_n_filter_gdelt_bq']['data'] + '\\org_totals.txt'
 f= open(counter_file)
 counter= json.load(f)
@@ -91,14 +69,14 @@ f.close()
 print(f'Organization Counter has {len(counter)} orgs')
 {k: counter[k] for k in list(counter)[1:5]}
 
-# %% tags=[]
+# %%
 path= path_params['sp_500_path']
 # C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\data\\external\\
 # sp500= pd.read_excel(path + 'sp500_list.xlsx')
 exchanges_list= pd.read_csv(path)
 
 
-# %% tags=[]
+# %%
 # %%time
 def tfidf_scores(df, org_counter, sp500):
     # comp_names= list(sp500['Security'])
@@ -147,13 +125,13 @@ def tfidf_scores(df, org_counter, sp500):
 
 tfidf= tfidf_scores(gdelt_df, counter, sp500)  
 
-# %% tags=[]
+# %%
 comp_names= list(exchanges_list['Name'])
 comp_names= [val.lower() for val in comp_names]
 {k : v for k,v in sorted(tfidf.items(), key= lambda x: x[1], reverse=True) if k in comp_names}
 
 
 
-# %% tags=[]
+# %%
 
 # {k : v for k,v in sorted(tfidf.items(), key= lambda x: x[1], reverse=True)}

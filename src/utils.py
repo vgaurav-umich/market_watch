@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 import pandas as pd
+import os
 
 
 # +
@@ -31,24 +32,44 @@ def get_start_date(window):
 
 
 def get_rel_company_names(path):
-    rel_company = pd.read_excel(path)
-    rel_company = rel_company['Security']
+    '''
+    Helper function that takes the stock names and adds variations to the name. 
+    Example: American Airlines Group Inc. becomes a dict that includes: 
+    American, American Airlines, American Airlines Group, & American Airlines Group Incorporated.
+    '''
+    rel_company = pd.read_csv(path)
+    rel_company = rel_company[rel_company['Market Cap'] >= 100000000]
+    rel_company = rel_company['Name']
+    rel_company = rel_company.str.lower()
+    rel_company = rel_company[rel_company.str.contains('common|ordinary', regex=True)]
+    rel_company = rel_company.str.split('(corp|ltd|inc|corporation|limited|incorporation|incorporated)',regex=True)
+    rel_company = rel_company.map(lambda x: ''.join(x[:2]))
     expand_rel_company = {}
+    # stop_words= ['unit', 'common', 'class', 'warrants', 'warrant', 'depository']
     for company in rel_company:
-        company = company.lower()
+        # company = company.lower()
         company_name_list = []
         company_name_list.append(company)
-        for postfix in ['inc', 'inc.', 'incorporation', 'corp.', 'corp', 'corporation']:
-            if postfix in company_name_list[0]:
-                break
-        for postfix in ['inc', 'incorporation', 'corp', 'corporation']:
-            company_name_list.append(company_name_list[0] + ' ' + postfix)
+        if 'inc' in company_name_list[0]:
+            company_name_list.append(company_name_list[0] + 'orporation')
+            company_name_list.append(company_name_list[0] + 'orporated')
+        elif 'corp' in company_name_list[0]:
+            company_name_list.append(company_name_list[0] + 'oration')
+        elif 'ltd' in company_name_list[0]:
+            w_name= company_name_list[0].split('ltd')[0]
+            company_name_list.append(w_name + 'limited ')
+            company_name_list.append(w_name + 'limited company')
+        elif 'corporation' in company_name_list[0]:
+            w_name= company_name_list[0].split('corporation')[0]
+            company_name_list.append(w_name + 'corp')
         words = company.split(' ')
         for n in range(1, len(words)):
             if words[0:n] not in company_name_list:
                 company_name_list.append(' '.join(words[0:n]))
         expand_rel_company.update({company: company_name_list})
     return expand_rel_company
+
+
 
 
 def filter_org_col(org_cell, rel_comp_dict, rel_company_names, threshold):
