@@ -45,6 +45,7 @@ from tqdm import tqdm
 import json
 from collections import Counter
 import os
+from src import utils
 
 warnings.simplefilter("ignore")
 
@@ -70,23 +71,27 @@ print(f'Organization Counter has {len(counter)} orgs')
 {k: counter[k] for k in list(counter)[1:5]}
 
 # %%
-path= path_params['sp_500_path']
+path= path_params['exchanges_path']
+if not os.path.exists(path):
+    os.chdir('..')
+    os.chdir('..')
 # C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\data\\external\\
 # sp500= pd.read_excel(path + 'sp500_list.xlsx')
-exchanges_list= pd.read_csv(path)
+exchanges_dict= utils.get_rel_company_names(path)
+exchanges_list= list(exchanges_dict.keys())
 
 
 # %%
 # %%time
-def tfidf_scores(df, org_counter, sp500):
+def tfidf_scores(df, org_counter):
     # comp_names= list(sp500['Security'])
     # comp_names= [val.lower() for val in comp_names]
     tf_org_counts= list(df['Org Count'])
     doc_freq= Counter()
-    print(len(org_counter))
+    print(f'Number of unique from all articles: {len(org_counter)}')
     n= sum(org_counter.values())
     #== get tf ==
-    print(len(tf_org_counts))
+    print(f'Number of unique orgs from articles mentioning Tesla: {len(tf_org_counts)}')
     for article in tqdm(tf_org_counts):
         if article != None:
             for entity, val in article.items():
@@ -123,15 +128,45 @@ def tfidf_scores(df, org_counter, sp500):
             
 #     return pd.DataFrame(result, columns=['Company','TFIDF'])
 
-tfidf= tfidf_scores(gdelt_df, counter, sp500)  
+tfidf= tfidf_scores(gdelt_df, counter)  
+
 
 # %%
-comp_names= list(exchanges_list['Name'])
+def normalize_company_names(path):
+    '''
+    Helper function that takes the stock names and adds variations to the name. 
+    Example: American Airlines Group Inc. becomes a dict that includes: 
+    American, American Airlines, American Airlines Group, & American Airlines Group Incorporated.
+    '''
+    rel_company = pd.read_csv(path)
+    rel_company = rel_company[rel_company['Market Cap'] >= 100000000]
+    ticker= rel_company['Symbol']
+    rel_company = rel_company['Name']
+    rel_company = rel_company.str.lower()
+    rel_company = rel_company[rel_company.str.contains('common|ordinary', regex=True)]
+    rel_company = rel_company.str.split('(corp|ltd|inc|corporation|limited|incorporation|incorporated)',regex=True)
+    rel_company = rel_company.map(lambda x: ''.join(x[:2]))
+    expand_rel_company = {}
+    # stop_words= ['unit', 'common', 'class', 'warrants', 'warrant', 'depository']
+    for i, company in rel_company.iteritems():
+        expand_rel_company.update({company : ticker[i]})
+    return expand_rel_company
+ticker_dict= normalize_company_names(path)
+
+# %%
+
+# %% jupyter={"outputs_hidden": true}
+comp_names= exchanges_list
 comp_names= [val.lower() for val in comp_names]
-{k : v for k,v in sorted(tfidf.items(), key= lambda x: x[1], reverse=True) if k in comp_names}
+result_names= {k : v for k,v in sorted(tfidf.items(), key= lambda x: x[1], reverse=True) if k in comp_names}
+result_ticker= {ticker_dict[k] : v for k,v in sorted(tfidf.items(), key= lambda x: x[1], reverse=True) if k in comp_names}
 
 
+result_names
 
 # %%
+output_path= product['data']
+with open(output_path,'w') as op:
+    json.dump(result_ticker, op)
 
-# {k : v for k,v in sorted(tfidf.items(), key= lambda x: x[1], reverse=True)}
+# %%

@@ -46,13 +46,34 @@ fred_df.drop(columns= 'Unnamed: 0', inplace=True)
 fred_df
 
 # %%
-yahoo_df= pd.read_csv(upstream['fetch_yfinance_data']['data'], parse_dates=['Date'])
-yahoo_df
+# %%time
+yahoo_path = upstream['fetch_yfinance_data']['data']
+df_dict= {}
+lv1= ['Open','Close','High','Low']
+for table_name in lv1:
+    df_dict.update({table_name : pd.read_excel(yahoo_path, sheet_name=table_name, index_col= 0)})
 
 # %%
-df= fred_df.merge(yahoo_df, how='inner', left_on= 'DATE', right_on='Date')
-df
+# t=df_dict['Open']
+i=0
+for n in t.columns:
+    if '.' in n:
+        i+=1
+i
 
 # %%
-path= product['data']
-df.to_csv(path, index=False)
+output_file_path = product['data']
+i=False
+for name, dataframe in df_dict.items():
+    if i == False:
+        dataframe= fred_df.merge(df_dict[name],how='inner', left_on='DATE', right_on='Date')
+        dataframe.to_excel(output_file_path, sheet_name= name)
+    else:
+        with pd.ExcelWriter(output_file_path, engine='openpyxl', mode='a') as writer:  
+            dataframe.to_excel(writer, sheet_name=name)
+    i= True
+
+# %%
+# fred_df.merge(df_dict['Open'],how='inner', left_on='DATE', right_on='Date')
+
+# %%

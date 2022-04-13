@@ -69,7 +69,7 @@ def normalize_company_names(path):
     rel_company = rel_company.map(lambda x: ''.join(x[:2]))
     expand_rel_company = {}
     # stop_words= ['unit', 'common', 'class', 'warrants', 'warrant', 'depository']
-    for i, company in enumerate(rel_company):
+    for i, company in rel_company.iteritems():
         # company = company.lower()
         company_name_list = []
         company_name_list.append(company)
@@ -119,42 +119,66 @@ for n, dict_ in gdelt_df.iteritems():
     companies.update(dict_)
 del gdelt_df
 filter_list= companies.intersection(exchange_company_list)
+tickers= []
+for comp in filter_list:
+    for t, names in exchange_dict.items():
+        if comp in names:
+            tickers.append(t)
 
 
 # %%
-for v in filter_list:
-    if 'honda' in v:
-        print(v)
+len(tickers)
 
 # %%
-tickers=pd.read_csv(exchange_path)
-# tickers= tickers[tickers['Name'].isin(filter_list)]
-# tickers.shape
-print(tickers.shape)
-print(len(exchange_dict))
-
-# %%
-l1= list(ticker_names[:250]) 
-l2= list(ticker_names[250:])
+l1= list(tickers[:100]) 
+l2= list(tickers[100:200])
+l3= list(tickers[300:400])
+l4=list(tickers[500:600])
+l5= list(tickers[600:700])
+l6= list(tickers[700:])
 df1= yf.download(l1, start= start_date)
-# time.sleep(61)
-# df2= yf.download(l2, start= start_date)
-# df= df.concat([df,df2])
+time.sleep(70)
+df2= yf.download(l2, start= start_date)
+time.sleep(70)
+df3= yf.download(l3, start= start_date)
+time.sleep(70)
+df4= yf.download(l4, start= start_date)
+time.sleep(70)
+df5= yf.download(l5, start= start_date)
+time.sleep(70)
+df6= yf.download(l6, start= start_date)
 
 
 # %%
-# df1= pd.read_csv(product['data'], header= [0,1], infer_datetime_format=True, parse_dates= [('Date', 'Unnamed: 2_level_1')])
-# df1= df1.set_index(('Date', 'Unnamed: 2_level_1'))
+##for pulling parts of the file back into RAM if the yfinance pull does not finish
+# output_file_path = product['data']
+# df_dict= {}
+# lv1= ['Open','Close','High','Low']
+# for table_name in lv1:
+#     df_dict.update({table_name : pd.read_excel(output_file_path, sheet_name=table_name, index_col= 0)})
 
 # %%
-df= pd.concat((df1['Open'], df2['Open']),axis=1)
-# c= sorted(df.columns)
-# df= df[c]
 
 # %%
-df
+
+lv1= ['Open','Close','High','Low']
+df_dict= {}
+for table_name in lv1:
+    df_dict.update({table_name : df1[table_name]})
+for dataframe in [df1,df2,df3,df4,df5,df6]:
+    for table_name in lv1:
+        df_dict[table_name]= pd.concat((df_dict[table_name], dataframe[table_name]), axis=1)
+
+
+
 
 # %%
-# df = df.reset_index()
 output_file_path = product['data']
-df.to_csv(output_file_path)
+i=False
+for name, dataframe in df_dict.items():
+    if i == False:
+        dataframe.to_excel(output_file_path, sheet_name= name)
+    else:
+        with pd.ExcelWriter(output_file_path, engine='openpyxl', mode='a') as writer:  
+            dataframe.to_excel(writer, sheet_name=name)
+    i= True
