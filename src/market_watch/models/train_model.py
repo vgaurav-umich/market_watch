@@ -58,24 +58,38 @@ saves_path.mkdir(parents=True, exist_ok=True)
 data_path = pathlib.Path(STOCKS)
 val_path = pathlib.Path(val)
 
-if year is not None or data_path.is_file():
-    if year is not None:
-        stock_data = data.load_year_data(year, 'data/raw')
-    else:
-        stock_data = {"YNDX": data.load_relative(data_path)}
-    env = environ.StocksEnv(stock_data, bars_count=BARS_COUNT, state_1d=True)
-    env_tst = environ.StocksEnv(stock_data, bars_count=BARS_COUNT, state_1d=True)
-elif data_path.is_dir():
-    env = environ.StocksEnv.from_dir(data_path, bars_count=BARS_COUNT, state_1d=True)
-    env_tst = environ.StocksEnv.from_dir(data_path, bars_count=BARS_COUNT, state_1d=True)
-else:
-    raise RuntimeError("No data to train on")
+
+import pandas as pd
+# df = pd.read_csv('~/Downloads/fred_yahoo.csv')
+
+# stock_data = {"YNDX": data.load_relative(data_path)}
+stock_data = pd.read_csv('~/Downloads/fred_yahoo.csv')
+cols = [c for c in stock_data.columns if 'date' not in c.lower()]
+data = np.array(stock_data[cols]).astype(np.float32)
+data = data.reshape((1, *data.shape))
+
+env = environ.MarketWatchStocksEnv(data, bars_count=BARS_COUNT, state_1d=True)
+env_tst = environ.MarketWatchStocksEnv(data, bars_count=BARS_COUNT, state_1d=True)
+
+# if year is not None or data_path.is_file():
+#     if year is not None:
+#         stock_data = data.load_year_data(year, 'data/raw')
+#     else:
+#         stock_data = {"YNDX": data.load_relative(data_path)}
+#     env = environ.StocksEnv(stock_data, bars_count=BARS_COUNT, state_1d=True)
+#     env_tst = environ.StocksEnv(stock_data, bars_count=BARS_COUNT, state_1d=True)
+# elif data_path.is_dir():
+#     env = environ.StocksEnv.from_dir(data_path, bars_count=BARS_COUNT, state_1d=True)
+#     env_tst = environ.StocksEnv.from_dir(data_path, bars_count=BARS_COUNT, state_1d=True)
+# else:
+#     raise RuntimeError("No data to train on")
 
 env = gym.wrappers.TimeLimit(env, max_episode_steps=1000)
-val_data = {"YNDX": data.load_relative(val_path)}
-env_val = environ.StocksEnv(val_data, bars_count=BARS_COUNT, state_1d=True)
+# val_data = {"YNDX": data.load_relative(val_path)}
+# env_val = environ.StocksEnv(val_data, bars_count=BARS_COUNT, state_1d=True)
+env_val = env_tst
 
-net = models.DQNConv1D(env.observation_space.shape, env.action_space.n).to(device)
+net = models.DQNConv1DMarketWatch(env.observation_space.shape, env.action_space.n).to(device)
 tgt_net = ptan.agent.TargetNet(net)
 
 selector = ptan.actions.EpsilonGreedyActionSelector(EPS_START)
@@ -163,4 +177,6 @@ val_handler = tb_logger.OutputHandler(
 tb.attach(engine, log_handler=val_handler, event_name=event)
 
 engine.run(common.batch_generator(buffer, REPLAY_INITIAL, BATCH_SIZE))
+# %%
+
 # %%

@@ -55,6 +55,45 @@ class SimpleFFDQN(nn.Module):
         adv = self.fc_adv(x)
         return val + (adv - adv.mean(dim=1, keepdim=True))
 
+class DQNConv1DMarketWatch(nn.Module):
+    def __init__(self, shape, actions_n):
+        super(DQNConv1DMarketWatch, self).__init__()
+
+        self.conv = nn.Sequential(
+            nn.Conv2d(shape[0], 128, 5),
+            nn.ReLU(),
+            nn.Conv2d(128, 128, 5),
+            nn.ReLU(),
+        )
+        self.fred_net = nn.Sequential(
+           nn.ReLU(), 
+        )
+
+        out_size = self._get_conv_out(shape)
+
+        self.fc_val = nn.Sequential(
+            nn.Linear(out_size, 512),
+            nn.ReLU(),
+            nn.Linear(512, 1)
+        )
+
+        self.fc_adv = nn.Sequential(
+            nn.Linear(out_size, 512),
+            nn.ReLU(),
+            nn.Linear(512, actions_n)
+        )
+
+    def _get_conv_out(self, shape):
+        o = self.conv(torch.zeros(1, *shape))
+        return int(np.prod(o.size()))
+
+    def forward(self, x):
+        conv_out = self.conv(x).view(x.size()[0], -1)
+        fred_out = self.fred_net(x)
+
+        val = self.fc_val(conv_out)
+        adv = self.fc_adv(conv_out)
+        return val + (adv - adv.mean(dim=1, keepdim=True))
 
 class DQNConv1D(nn.Module):
     def __init__(self, shape, actions_n):

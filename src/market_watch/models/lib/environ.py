@@ -34,7 +34,7 @@ class State:
         self.volumes = volumes
 
     def reset(self, prices, offset):
-        assert isinstance(prices, data.Prices)
+        # assert isinstance(prices, data.Prices)
         assert offset >= self.bars_count-1
         self.have_position = False
         self.open_price = 0.0
@@ -78,9 +78,14 @@ class State:
         """
         Calculate real close price for the current bar
         """
-        open = self._prices.open[self._offset]
-        rel_close = self._prices.close[self._offset]
-        return open * (1.0 + rel_close)
+        # open = self._prices.open[self._offset]
+        # rel_close = self._prices.close[self._offset]
+
+        return self._prices[
+            0, # change this to close feature order
+            self._offset,
+            0 # change this to company offset
+        ]
 
     def step(self, action):
         """
@@ -89,6 +94,7 @@ class State:
         :param action:
         :return: reward, done
         """
+        # print(action)
         assert isinstance(action, Actions)
         reward = 0.0
         done = False
@@ -108,7 +114,7 @@ class State:
         self._offset += 1
         prev_close = close
         close = self._cur_close()
-        done |= self._offset >= self._prices.close.shape[0]-1
+        done |= self._offset >= self._prices.shape[1]-1
 
         if self.have_position and not self.reward_on_close:
             reward += 100.0 * (close / prev_close - 1.0)
@@ -182,6 +188,110 @@ class StocksEnv(gym.Env):
                 prices.high.shape[0]-bars*10) + bars
         else:
             offset = bars
+        self._state.reset(prices, offset)
+        return self._state.encode()
+
+    def step(self, action_idx):
+        action = Actions(action_idx)
+        reward, done = self._state.step(action)
+        obs = self._state.encode()
+        info = {
+            "instrument": self._instrument,
+            "offset": self._state._offset
+        }
+        return obs, reward, done, info
+
+    def render(self, mode='human', close=False):
+        pass
+
+    def close(self):
+        pass
+
+    def seed(self, seed=None):
+        self.np_random, seed1 = seeding.np_random(seed)
+        seed2 = seeding.hash_seed(seed1 + 1) % 2 ** 31
+        return [seed1, seed2]
+
+    @classmethod
+    def from_dir(cls, data_dir, **kwargs):
+        prices = {
+            file: data.load_relative(file)
+            for file in data.price_files(data_dir)
+        }
+        return StocksEnv(prices, **kwargs)
+
+
+class MarketWatchState(State):
+    """
+    State with shape suitable for market watch input
+    """
+    @property
+    def shape(self):
+        # conv2d
+        # [batch_size, input_channels, input_height, input_width]
+        # [1, NUM_FEAT, NUM_COMP, BARS ]
+
+        # conv1d
+        # [batch_size, input_channels, signal_length]
+        # [1, BARS, NUM_COMP]
+        num_of_features = 1
+        num_of_companies = 515
+        num_of_periods = self.bars_count
+        return [
+            num_of_features,
+            num_of_periods,
+            num_of_companies
+        ]
+
+    def encode(self):
+        start = self._offset - (self.bars_count-1)
+        stop = self._offset+1
+
+        return self._prices[:, start:stop,:]
+        res = np.zeros(shape=self.shape, dtype=np.float32)
+        res[0] = self._prices.high[start:stop]
+        res[1] = self._prices.low[start:stop]
+        res[2] = self._prices.close[start:stop]
+        if self.volumes:
+            res[3] = self._prices.volume[start:stop]
+            dst = 4
+        else:
+            dst = 3
+        if self.have_position:
+            res[dst] = 1.0
+            res[dst+1] = self._cur_close() / self.open_price - 1.0
+        return res
+
+class MarketWatchStocksEnv(gym.Env):
+    metadata = {'render.modes': ['human']}
+    spec = EnvSpec("StocksEnv-v0")
+
+    def __init__(self, prices, bars_count=DEFAULT_BARS_COUNT,
+                 commission=DEFAULT_COMMISSION_PERC,
+                 reset_on_close=True, state_1d=False,
+                 random_ofs_on_reset=True, reward_on_close=False,
+                 volumes=False):
+        self._prices = prices
+        self._state = MarketWatchState(bars_count, commission, reset_on_close,
+                reward_on_close=reward_on_close, volumes=volumes)
+
+        self.action_space = gym.spaces.Discrete(n=len(Actions))
+        self.observation_space = gym.spaces.Box(
+            low=-np.inf, high=np.inf,
+            shape=self._state.shape, dtype=np.float32)
+        self.random_ofs_on_reset = random_ofs_on_reset
+        self.seed()
+
+    def reset(self):
+        self._instrument = 'TSLA'
+        prices = self._prices
+        bars = self._state.bars_count
+        offset = bars
+        # if self.random_ofs_on_reset:
+        #     offset = self.np_random.choice(
+        #         prices.high.shape[0]-bars*10) + bars
+        # else:
+        #     offset = bars
         self._state.reset(prices, offset)
         return self._state.encode()
 
