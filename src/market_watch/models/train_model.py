@@ -64,9 +64,26 @@ import pandas as pd
 
 # stock_data = {"YNDX": data.load_relative(data_path)}
 stock_data = pd.read_csv('~/Downloads/fred_yahoo.csv')
-cols = [c for c in stock_data.columns if 'date' not in c.lower()]
-data = np.array(stock_data[cols]).astype(np.float32)
-data = data.reshape((1, *data.shape))
+
+
+features = [
+    'High', 'Close', 'Low',
+    # 'Open' # open is broken. has shape (558, 415) vs (692, 403)
+    ]
+dfs = pd.read_excel('~/Downloads/fred_yahoo.xlsx', sheet_name=features)
+
+cols = None
+for feature in features:
+    if cols is None:
+        cols = dfs[feature].columns
+    else:
+        cols = np.intersect1d(cols, dfs[feature].columns)
+
+cols = [c for c in cols if 'date' not in c.lower()]
+
+data = np.array([
+    dfs[feature][cols] for feature in features
+]).astype(np.float32)
 
 env = environ.MarketWatchStocksEnv(data, bars_count=BARS_COUNT, state_1d=True)
 env_tst = environ.MarketWatchStocksEnv(data, bars_count=BARS_COUNT, state_1d=True)
@@ -95,12 +112,16 @@ tgt_net = ptan.agent.TargetNet(net)
 selector = ptan.actions.EpsilonGreedyActionSelector(EPS_START)
 eps_tracker = ptan.actions.EpsilonTracker(
     selector, EPS_START, EPS_FINAL, EPS_STEPS)
-agent = ptan.agent.DQNAgent(net, selector, device=device)
+
+# %%
+agent = ptan.agent.DQNAgent(net, selector, device=device, preprocessor=common.state_preprocessor)
 exp_source = ptan.experience.ExperienceSourceFirstLast(
     env, agent, GAMMA, steps_count=REWARD_STEPS)
 buffer = ptan.experience.ExperienceReplayBuffer(
     exp_source, REPLAY_SIZE)
 optimizer = optim.Adam(net.parameters(), lr=LEARNING_RATE)
+
+# %% 
 
 def process_batch(engine, batch):
     optimizer.zero_grad()
@@ -177,6 +198,3 @@ val_handler = tb_logger.OutputHandler(
 tb.attach(engine, log_handler=val_handler, event_name=event)
 
 engine.run(common.batch_generator(buffer, REPLAY_INITIAL, BATCH_SIZE))
-# %%
-
-# %%

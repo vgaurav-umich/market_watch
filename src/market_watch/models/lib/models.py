@@ -4,6 +4,10 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import torch as tf
+
+def replacenan(tensor):
+    return tf.where(tf.isnan(tensor), tf.zeros_like(tensor), tensor)
 
 
 class NoisyLinear(nn.Linear):
@@ -65,14 +69,11 @@ class DQNConv1DMarketWatch(nn.Module):
             nn.Conv2d(128, 128, 5),
             nn.ReLU(),
         )
-        self.fred_net = nn.Sequential(
-           nn.ReLU(), 
-        )
-
         out_size = self._get_conv_out(shape)
 
+
         self.fc_val = nn.Sequential(
-            nn.Linear(out_size, 512),
+            nn.Linear(out_size + 2, 512), # out of conv layer + state values
             nn.ReLU(),
             nn.Linear(512, 1)
         )
@@ -88,11 +89,14 @@ class DQNConv1DMarketWatch(nn.Module):
         return int(np.prod(o.size()))
 
     def forward(self, x):
-        conv_out = self.conv(x).view(x.size()[0], -1)
-        fred_out = self.fred_net(x)
+        stocks_values = x[0]
+        state_values = x[1]
+        conv_out = replacenan(self.conv(stocks_values).view(stocks_values.size()[0], -1))
+        val_inp = torch.hstack([state_values, conv_out])
+        # fred_out = self.fred_net(x)
 
-        val = self.fc_val(conv_out)
-        adv = self.fc_adv(conv_out)
+        val = replacenan(self.fc_val(val_inp))
+        adv = replacenan(self.fc_adv(conv_out))
         return val + (adv - adv.mean(dim=1, keepdim=True))
 
 class DQNConv1D(nn.Module):

@@ -4,12 +4,12 @@ from gym.utils import seeding
 from gym.envs.registration import EnvSpec
 import enum
 import numpy as np
+import torch
 
 from . import data
 
 DEFAULT_BARS_COUNT = 10
 DEFAULT_COMMISSION_PERC = 0.1
-
 
 class Actions(enum.Enum):
     Skip = 0
@@ -19,7 +19,7 @@ class Actions(enum.Enum):
 
 class State:
     def __init__(self, bars_count, commission_perc,
-                 reset_on_close, reward_on_close=True,
+                 reset_on_close, input_shape=tuple(), reward_on_close=True,
                  volumes=True):
         assert isinstance(bars_count, int)
         assert bars_count > 0
@@ -32,6 +32,8 @@ class State:
         self.reset_on_close = reset_on_close
         self.reward_on_close = reward_on_close
         self.volumes = volumes
+        self._steps_passed = 0
+        self._input_shape = input_shape
 
     def reset(self, prices, offset):
         # assert isinstance(prices, data.Prices)
@@ -40,6 +42,7 @@ class State:
         self.open_price = 0.0
         self._prices = prices
         self._offset = offset
+        self._steps_passed = 0
 
     @property
     def shape(self):
@@ -112,9 +115,11 @@ class State:
             self.open_price = 0.0
 
         self._offset += 1
+        self._steps_passed += 1
         prev_close = close
         close = self._cur_close()
-        done |= self._offset >= self._prices.shape[1]-1
+        # done |= self._offset >= self._prices.shape[1]-1
+        done |= self._steps_passed >= 30
 
         if self.have_position and not self.reward_on_close:
             reward += 100.0 * (close / prev_close - 1.0)
@@ -234,8 +239,8 @@ class MarketWatchState(State):
         # conv1d
         # [batch_size, input_channels, signal_length]
         # [1, BARS, NUM_COMP]
-        num_of_features = 1
-        num_of_companies = 515
+        num_of_features = self._input_shape[0]
+        num_of_companies = self._input_shape[2]
         num_of_periods = self.bars_count
         return [
             num_of_features,
@@ -247,7 +252,13 @@ class MarketWatchState(State):
         start = self._offset - (self.bars_count-1)
         stop = self._offset+1
 
-        return self._prices[:, start:stop,:]
+        state = [0, 0]
+        if self.have_position:
+            state = [1, self.open_price]
+        state = np.array(state)
+
+        return (self._prices[:, start:stop,:], state)
+        # return self._prices[:, start:stop,:]
         res = np.zeros(shape=self.shape, dtype=np.float32)
         res[0] = self._prices.high[start:stop]
         res[1] = self._prices.low[start:stop]
@@ -264,7 +275,7 @@ class MarketWatchState(State):
 
 class MarketWatchStocksEnv(gym.Env):
     metadata = {'render.modes': ['human']}
-    spec = EnvSpec("StocksEnv-v0")
+    spec = EnvSpec("MarketWatchStocksEnv-v0")
 
     def __init__(self, prices, bars_count=DEFAULT_BARS_COUNT,
                  commission=DEFAULT_COMMISSION_PERC,
@@ -273,7 +284,7 @@ class MarketWatchStocksEnv(gym.Env):
                  volumes=False):
         self._prices = prices
         self._state = MarketWatchState(bars_count, commission, reset_on_close,
-                reward_on_close=reward_on_close, volumes=volumes)
+                reward_on_close=reward_on_close, volumes=volumes, input_shape=prices.shape)
 
         self.action_space = gym.spaces.Discrete(n=len(Actions))
         self.observation_space = gym.spaces.Box(
@@ -315,11 +326,3 @@ class MarketWatchStocksEnv(gym.Env):
         self.np_random, seed1 = seeding.np_random(seed)
         seed2 = seeding.hash_seed(seed1 + 1) % 2 ** 31
         return [seed1, seed2]
-
-    @classmethod
-    def from_dir(cls, data_dir, **kwargs):
-        prices = {
-            file: data.load_relative(file)
-            for file in data.price_files(data_dir)
-        }
-        return StocksEnv(prices, **kwargs)

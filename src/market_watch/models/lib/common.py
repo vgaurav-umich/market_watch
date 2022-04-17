@@ -13,6 +13,22 @@ from ignite.engine import Engine
 from ignite.metrics import RunningAverage
 from ignite.contrib.handlers import tensorboard_logger as tb_logger
 
+def state_preprocessor(states, device=None):
+
+    t1 = torch.tensor([
+            state[0] for state in states
+        ], dtype=torch.float32)
+    t2 = torch.tensor([
+            state[1] for state in states
+        ], dtype=torch.float32)
+    if device is not None:
+        t1 = t1.to(device)
+        t2 = t2.to(device)
+    
+    return (
+        t1,
+        t2
+    )
 @torch.no_grad()
 def calc_values_of_states(states, net, device="cpu"):
     mean_vals = []
@@ -43,8 +59,8 @@ def unpack_batch(batch):
 def calc_loss(batch, net, tgt_net, gamma, device="cpu"):
     states, actions, rewards, dones, next_states = unpack_batch(batch)
 
-    states_v = torch.tensor(states).to(device)
-    next_states_v = torch.tensor(next_states).to(device)
+    states_v = state_preprocessor(states, device=device)
+    next_states_v = state_preprocessor(next_states, device=device)
     actions_v = torch.tensor(actions).to(device)
     rewards_v = torch.tensor(rewards).to(device)
     done_mask = torch.BoolTensor(dones).to(device)
