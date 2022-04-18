@@ -13,7 +13,7 @@ from ignite.engine import Engine
 from ignite.metrics import RunningAverage
 from ignite.contrib.handlers import tensorboard_logger as tb_logger
 
-def state_preprocessor(states, device=None):
+def state_preprocessor(states, device="cpu"):
 
     t1 = torch.tensor([
             state[0] for state in states
@@ -33,7 +33,7 @@ def state_preprocessor(states, device=None):
 def calc_values_of_states(states, net, device="cpu"):
     mean_vals = []
     for batch in np.array_split(states, 64):
-        states_v = torch.tensor(batch).to(device)
+        states_v = state_preprocessor(batch, device=device)
         action_values_v = net(states_v)
         best_action_values_v = action_values_v.max(1)[0]
         mean_vals.append(best_action_values_v.mean().item())

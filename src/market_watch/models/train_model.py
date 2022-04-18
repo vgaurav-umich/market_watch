@@ -5,11 +5,12 @@ upstream = None
 
 
 # %%
+import os
 import ptan
 import pathlib
-import argparse
 import gym.wrappers
 import numpy as np
+import pandas as pd
 
 import torch
 import torch.optim as optim
@@ -20,8 +21,6 @@ from ignite.contrib.handlers import tensorboard_logger as tb_logger
 from src.market_watch.models.lib import environ, data, models, common, validation
 
 SAVES_DIR = pathlib.Path("saves")
-STOCKS = "data/raw/YNDX_160101_161231.csv"
-VAL_STOCKS = "data/raw/YNDX_150101_151231.csv"
 
 BATCH_SIZE = 32
 BARS_COUNT = 10
@@ -33,21 +32,14 @@ EPS_STEPS = 1000000
 GAMMA = 0.99
 
 REPLAY_SIZE = 100000
-REPLAY_INITIAL = 10000
+REPLAY_INITIAL = 1000
 REWARD_STEPS = 2
 LEARNING_RATE = 0.0001
 STATES_TO_EVALUATE = 1000
 
 
 # %%
-# parser = argparse.ArgumentParser()
-cuda = False
-# parser.add_argument("--data", default=STOCKS, help=f"Stocks file or dir, default={STOCKS}")
-# parser.add_argument("--year", type=int, help="Year to train on, overrides --data")
-year = '2016'
-# parser.add_argument("--val", default=VAL_STOCKS, help="Validation data, default=" + VAL_STOCKS)
-val = VAL_STOCKS
-# parser.add_argument("-r", "--run", required=False, help="Run name")
+cuda = torch.cuda.is_available()
 run = 'test'
 # args = parser.parse_args()
 device = torch.device("cuda" if cuda else "cpu")
@@ -55,22 +47,14 @@ device = torch.device("cuda" if cuda else "cpu")
 saves_path = SAVES_DIR / f"conv-{run}"
 saves_path.mkdir(parents=True, exist_ok=True)
 
-data_path = pathlib.Path(STOCKS)
-val_path = pathlib.Path(val)
-
-
-import pandas as pd
-# df = pd.read_csv('~/Downloads/fred_yahoo.csv')
-
-# stock_data = {"YNDX": data.load_relative(data_path)}
-stock_data = pd.read_csv('~/Downloads/fred_yahoo.csv')
-
 
 features = [
     'High', 'Close', 'Low',
-    # 'Open' # open is broken. has shape (558, 415) vs (692, 403)
+    'Open' # open is broken. has shape (558, 415) vs (692, 403)
     ]
-dfs = pd.read_excel('~/Downloads/fred_yahoo.xlsx', sheet_name=features)
+
+stock_data_path = os.environ.get('DATA_PATH', '~/Downloads/fred_yahoo-2.xlsx')
+dfs = pd.read_excel(stock_data_path, sheet_name=features)
 
 cols = None
 for feature in features:
@@ -80,7 +64,6 @@ for feature in features:
         cols = np.intersect1d(cols, dfs[feature].columns)
 
 cols = [c for c in cols if 'date' not in c.lower()]
-
 data = np.array([
     dfs[feature][cols] for feature in features
 ]).astype(np.float32)
@@ -88,33 +71,19 @@ data = np.array([
 env = environ.MarketWatchStocksEnv(data, bars_count=BARS_COUNT, state_1d=True)
 env_tst = environ.MarketWatchStocksEnv(data, bars_count=BARS_COUNT, state_1d=True)
 
-# if year is not None or data_path.is_file():
-#     if year is not None:
-#         stock_data = data.load_year_data(year, 'data/raw')
-#     else:
-#         stock_data = {"YNDX": data.load_relative(data_path)}
-#     env = environ.StocksEnv(stock_data, bars_count=BARS_COUNT, state_1d=True)
-#     env_tst = environ.StocksEnv(stock_data, bars_count=BARS_COUNT, state_1d=True)
-# elif data_path.is_dir():
-#     env = environ.StocksEnv.from_dir(data_path, bars_count=BARS_COUNT, state_1d=True)
-#     env_tst = environ.StocksEnv.from_dir(data_path, bars_count=BARS_COUNT, state_1d=True)
-# else:
-#     raise RuntimeError("No data to train on")
 
 env = gym.wrappers.TimeLimit(env, max_episode_steps=1000)
-# val_data = {"YNDX": data.load_relative(val_path)}
-# env_val = environ.StocksEnv(val_data, bars_count=BARS_COUNT, state_1d=True)
 env_val = env_tst
 
+
+# %%
 net = models.DQNConv1DMarketWatch(env.observation_space.shape, env.action_space.n).to(device)
 tgt_net = ptan.agent.TargetNet(net)
 
 selector = ptan.actions.EpsilonGreedyActionSelector(EPS_START)
 eps_tracker = ptan.actions.EpsilonTracker(
     selector, EPS_START, EPS_FINAL, EPS_STEPS)
-
-# %%
-agent = ptan.agent.DQNAgent(net, selector, device=device, preprocessor=common.state_preprocessor)
+agent = ptan.agent.DQNAgent(net, selector, device=device, preprocessor=lambda x: common.state_preprocessor(x, device=device))
 exp_source = ptan.experience.ExperienceSourceFirstLast(
     env, agent, GAMMA, steps_count=REWARD_STEPS)
 buffer = ptan.experience.ExperienceReplayBuffer(
@@ -147,24 +116,29 @@ engine = Engine(process_batch)
 tb = common.setup_ignite(engine, exp_source, f"conv-{run}",
                             extra_metrics=('values_mean',))
 
-@engine.on(ptan.ignite.PeriodEvents.ITERS_1000_COMPLETED)
+@engine.on(ptan.ignite.PeriodEvents.ITERS_10_COMPLETED)
 def sync_eval(engine: Engine):
     tgt_net.sync()
 
     mean_val = common.calc_values_of_states(
         engine.state.eval_states, net, device=device)
     engine.state.metrics["values_mean"] = mean_val
+    is_first = False
     if getattr(engine.state, "best_mean_val", None) is None:
         engine.state.best_mean_val = mean_val
-    if engine.state.best_mean_val < mean_val:
+        is_first = True
+
+    if engine.state.best_mean_val < mean_val or is_first:
         print("%d: Best mean value updated %.3f -> %.3f" % (
             engine.state.iteration, engine.state.best_mean_val,
             mean_val))
-        path = saves_path / ("mean_value-%.3f.data" % mean_val)
+        path = saves_path / ("mean_value_%.3f.data" % mean_val)
         torch.save(net.state_dict(), path)
         engine.state.best_mean_val = mean_val
+    else:
+        print(f'mean_val ${mean_val}, less than best {engine.state.best_mean_val}')
 
-@engine.on(ptan.ignite.PeriodEvents.ITERS_10000_COMPLETED)
+@engine.on(ptan.ignite.PeriodEvents.ITERS_10_COMPLETED)
 def validate(engine: Engine):
     res = validation.validation_run(env_tst, net, device=device)
     print("%d: tst: %s" % (engine.state.iteration, res))
@@ -186,7 +160,7 @@ def validate(engine: Engine):
         torch.save(net.state_dict(), path)
 
 
-event = ptan.ignite.PeriodEvents.ITERS_10000_COMPLETED
+event = ptan.ignite.PeriodEvents.ITERS_100_COMPLETED
 tst_metrics = [m + "_tst" for m in validation.METRICS]
 tst_handler = tb_logger.OutputHandler(
     tag="test", metric_names=tst_metrics)
@@ -198,3 +172,5 @@ val_handler = tb_logger.OutputHandler(
 tb.attach(engine, log_handler=val_handler, event_name=event)
 
 engine.run(common.batch_generator(buffer, REPLAY_INITIAL, BATCH_SIZE))
+
+# %%

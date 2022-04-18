@@ -1,6 +1,7 @@
 import numpy as np
 
 import torch
+from src.market_watch.models.lib.common import state_preprocessor
 
 from src.market_watch.models.lib import environ
 
@@ -24,7 +25,7 @@ def validation_run(env, net, episodes=100, device="cpu", epsilon=0.02, comission
         episode_steps = 0
 
         while True:
-            obs_v = torch.tensor([obs]).to(device)
+            obs_v = state_preprocessor([obs], device=device)
             out_v = net(obs_v)
 
             action_idx = out_v.max(dim=1)[1].item()
