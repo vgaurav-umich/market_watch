@@ -5,6 +5,9 @@ __pycache__/
 # C extensions
 *.so
 
+# scerets
+secrets/
+
 # Distribution / packaging
 .Python
 env/
@@ -19,7 +22,7 @@ lib64/
 parts/
 sdist/
 var/
-data/
+runs/
 *.egg-info/
 .installed.cfg
 *.egg
@@ -78,7 +81,7 @@ target/
 .ipynb_checkpoints/
 
 # exclude data from source control by default
-/data/
+/output/data/
 
 # Mac OS-specific storage files
 .DS_Store
