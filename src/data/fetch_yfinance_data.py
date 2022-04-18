@@ -15,7 +15,7 @@
 # %% tags=["parameters"]
 # If this task has dependencies, list them them here
 # (e.g. upstream = ['some_task']), otherwise leave as None.
-upstream = None
+upstream = ['total_org_count']
 
 # This is a placeholder, leave it as None
 product = None
@@ -26,37 +26,56 @@ product = None
 import yfinance as yf
 import pandas as pd
 from src import utils
-import altair as alt
 from tqdm import tqdm
 import time
+from pathlib import Path
 
-alt.data_transformers.disable_max_rows()
-alt.themes.enable('fivethirtyeight')
 pd.set_option('display.float_format',  '{:,.2f}'.format)
 
 
 # %%
-ticker_path= query_params['sp_500_path']
-rolling_window = query_params['fin_ec_rolling_window']
+securities_file_path = upstream['total_org_count']['data']
 
-# C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\data\\external\\sp500_list.xlsx
-ticker_names= pd.read_excel(ticker_path + 'sp500_list.xlsx')['Symbol']
+securities_df = pd.read_csv(securities_file_path, index_col=0)
+securities_df.info()
 
+# %%
+ticker_names = securities_df.ticker.to_list()
+
+# %%
 start_date = utils.get_start_date(rolling_window)
 start_date = utils.general_date_format(start_date)
 
 # %%
-l1= list(ticker_names[:250]) 
-l2= list(ticker_names[250:])
-df= yf.download(l1, start= start_date)
-# time.sleep(61)
-# df2= yf.download(l2, start= start_date)
-# df= df.concat([df,df2])
+df= yf.download(ticker_names, start=start_date, threads=True, progress=True, timeout=1)
 
 
 # %%
+df = df.sort_index()
 
 # %%
-df = df.reset_index()
 output_file_path = product['data']
+file_prefix = "snp500" if snp_filter == True else "all"
+
+parent_path = Path(output_file_path).parent
+
+for field in yahoo_fields:
+    file_path = str(parent_path) + f"/yfinance_{file_prefix}_ticker_data_{field}-raw.csv"
+    df[field].to_csv(file_path)
+    print(f"Saved file {file_path}")
+
 df.to_csv(output_file_path)
+print(f"Saved file {output_file_path}")  
+
+# %%
+with pd.ExcelWriter(output_file_path, engine='openpyxl') as writer:
+    for field in yahoo_fields:
+        df[field].to_excel(writer, sheet_name=field)
+        print(f"Saved sheet {field}")
+    
+print(f"Saved file {output_file_path}")
+
+# %%
+del df, securities_df
+
+# %%

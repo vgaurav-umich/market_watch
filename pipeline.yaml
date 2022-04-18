@@ -1,19 +1,23 @@
 # Content of pipeline.yaml
-#meta:
-#  import_tasks_from: pipeline.features.yaml
-
+meta:
+  import_tasks_from: pipeline.features.yaml
 tasks:
 
-  - source: src/data/fetch_yfinance_data.py
+  - source: src/data/fetch_all_securities_list.py
     product:
-      nb: output/notebooks/fetch_yfinance_data.ipynb
-      data: output/data/raw/yfinance_ticker_data-raw.csv
+      nb: output/notebooks/fetch_all_securities_list.ipynb
+      data: output/data/raw/all_securities_list.csv
     params:
-      query_params:
-        fin_ec_rolling_window: '{{fin_ec_rolling_window}}'
-        sp_500_path: '{{sp_500_path}}'
-#        tickers: '{{tickers}}'
-
+      sec_ticker_url: "https://www.sec.gov/files/company_tickers.json"
+      retry_count: 6
+      
+  - source: src/data/fetch_snp500_securities_list.py
+    product:
+      nb: output/notebooks/fetch_snp500_securities_list.ipynb
+      data: output/data/raw/snp500_securities_list.csv
+    params:
+      source_url: 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
+      
   - source: src/data/fetch_n_filter_gdelt_bq.py
     product:
       nb: output/notebooks/fetch_n_filter_gdelt_bq.ipynb
@@ -23,54 +27,75 @@ tasks:
         rolling_window: '{{rolling_window}}'
         search_term: '{{search_term}}'
         bq_table_name: "{{bq_table_name}}"
+        
+  - source: src/data/fetch_securities.py
+    product:
+      nb: output/notebooks/fetch_securities.ipynb
+      data: output/data/raw/securities.csv
+    params:
+      sec_base_url: "https://data.sec.gov/submissions/CIK{cik_str}.json"  
+      sample_pct: '{{sample_pct}}'
+      snp_filter: False 
+
+  - source: src/data/fetch_yfinance_data.py
+    product:
+      nb: output/notebooks/fetch_yfinance_data.ipynb
+      data: output/data/raw/yfinance_ticker_data-raw.xlsx
+    params:
+      sample_pct: '{{sample_pct}}'
+      rolling_window: '{{rolling_window}}'
+      yahoo_fields: '{{yahoo_fields}}'
+      snp_filter: True 
 
   - source: src/data/fetch_fred.py
     product:
       nb: output/notebooks/fetch_fred.ipynb
-      data: output/data/raw/fred.csv
+      data: output/data/raw/fred_series_data.csv
     params:
-      api_params:
-        api_key: "{{fred_api_key}}"
-        obs_start: "{{fred_start}}"
-        obs_stop: "{{fred_stop}}"
-        units: "{{units}}"
-        series_list: "{{fred_series_list}}"
+      api_key: "{{fred_api_key}}"
+      obs_start: "{{fred_start}}"
+      obs_stop: "{{fred_stop}}"
+      units: "{{units}}"
+      series_list: "{{fred_series_list}}"
+      fred_series_info_url: '{{fred_series_info_url}}'
+      fred_series_observations_url: '{{fred_series_observations_url}}'
 
-        
   - source: src/data/clean_gdelt_data.py
     product:
       nb: output/notebooks/clean_gdelt_data.ipynb
-      data: output/data/interim/gdelt_gkg_data-cleaned.pq
+      data: output/data/interim/gdelt_gkg_data-cleaned.csv
+
+  - source: src/data/normalize_security_names.py
+    product:
+      nb: output/notebooks/normalize_security_names.ipynb
+      data: output/data/interim/normalized_security_names.csv
+
+
+  - source: src/data/total_org_count.py
+    product:
+      nb: output/notebooks/total_org_count.ipynb
+      data: output/data/interim/total_org_counts.csv
+
+
+  # - source: src/data/combine_fred_yahoo.py
+  #   product:
+  #     nb: output/notebooks/combine_fred_yahoo.ipynb
+  #     data: output/data/raw/fred_yahoo.csv
+
+
+  - source: src/visualization/visualize_gdelt.py
+    product:
+      nb: output/notebooks/visualize_gdelt.html
+
+  - source: src/visualization/visualize_yfinance.py
+    product:
+      nb: output/notebooks/visualize_yfinance.html
     params:
-      path_params:
-        sp_500_path: '{{sp_500_path}}'
-
-#  - source: src/features/create_tfidf_scores.py
-#    product:
-#      nb: output/notebooks/create_tfidf.ipynb
-#      data: output/data/tfid_vals.csv
-#    params:
-#      path_params:
-#        sp_500_path: '{{sp_500_path}}'
-
-#  - source: src/visualization/visualize_gdelt.py
-#    product:
-#      nb: output/notebooks/visualize_gdelt.html
-#
-#  - source: src/visualization/visualize_yfinance.py
-#    product:
-#      nb: output/notebooks/visualize_yfinance.html
-#    params:
-#      query_params:
-#        rolling_window: '{{rolling_window}}'
-#        tickers: '{{tickers}}'
+      rolling_window: '{{rolling_window}}'
+      tickers: '{{tickers}}'
 
   # Feature pipeline code will execute here.
 
-  - source: src/models/train_model.py
-    product:
-      nb: output/notebooks/train_model.ipynb
-    # params:
-      # query_params:
-      #   rolling_window: '{{rolling_window}}'
-      #   tickers: '{{tickers}}'
+#  - source: src/models/train_model.py
+#    product:
+#      nb: output/notebooks/train_model.ipynb

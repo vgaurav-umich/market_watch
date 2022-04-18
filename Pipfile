@@ -16,7 +16,7 @@ fastparquet = "*"
 sklearn-evaluation = "*"
 torch = "*"
 tensorboard = "*"
-gym = "*"
+gym = {extras = ["atari"], version = "*"}
 numpy = "*"
 opencv-python = "*"
 torchvision = "*"
@@ -35,6 +35,7 @@ openpyxl = "*"
 yfinance = "*"
 market-watch = {editable = true, path = "."}
 ptan = "==0.7"
+sparse-dot-topn = "*"
 
 [dev-packages]
 graphviz = "*"
@@ -44,4 +45,4 @@ pytest = "*"
 jupyterlab = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.9"

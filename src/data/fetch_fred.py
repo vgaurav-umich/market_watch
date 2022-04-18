@@ -12,19 +12,6 @@
 #     name: python3
 # ---
 
-# %%
-# Add description here
-#
-# *Note:* You can open this file as a notebook (JupyterLab: right-click on it in the side bar -> Open With -> Notebook)
-
-
-# %%
-# Uncomment the next two lines to enable auto reloading for imported modules
-# # %load_ext autoreload
-# # %autoreload 2
-# For more info, see:
-# https://docs.ploomber.io/en/latest/user-guide/faq_index.html#auto-reloading-code-in-jupyter
-
 # %% tags=["parameters"]
 # If this task has dependencies, list them them here
 # (e.g. upstream = ['some_task']), otherwise leave as None.
@@ -41,6 +28,9 @@ import requests
 import pandas as pd
 import numpy as np
 import warnings
+from tqdm import tqdm
+import json
+from pathlib import Path
 
 pd.options.display.max_rows=500
 pd.options.display.max_columns=100
@@ -48,140 +38,125 @@ warnings.filterwarnings("ignore")
 
 
 # %%
-# r=requests.get('https://api.stlouisfed.org/fred/series', {
-#     'series_id' : 'VIXCLS',
-#     'api_key' : 'ebc6d771a26e9b8009c65cb0ab76ba3d', 
-#     'file_type':'json'
-# })
-
-# r.json()
-
-# %%
-# r=requests.get('https://api.stlouisfed.org/fred/series/observations', {
-#     'series_id' : 'SP500',
-#     'api_key' : 'ebc6d771a26e9b8009c65cb0ab76ba3d',
-#     'file_type': 'json',
-#     'observation_start': '2022-01-01',
-#     'observation_end' : '2022-01-05',
-#     'units' : 'lin',
-#     'frequencies': 'D'   
-# })
-
-# r= r.json()
-
-# %%
-def get_series_metainfo(series_id, api_key):
-    '''Returns the metadata for the series_id'''
-    r= requests.get('https://api.stlouisfed.org/fred/series', {
-    'series_id' : series_id,
-    'file_type': 'json',
-    'api_key' : api_key})
-    json= r.json()
-    json=json['seriess'][0]
+def fetch_fred_data(fred_url, series_list, api_key, obs_start, obs_stop, record_path, meta_columns=None):
     
-    try:
-        result= pd.Series([json['title'],
-                     json['id'],
-                     json['frequency_short'],
-                     json['seasonal_adjustment'],
-                     json['popularity'],
-                     json['notes']], index= ['Title','ID','Frequency','Seasonally Adjusted', 'Popularity','Notes'])
-    except:
-        result= pd.Series([json['title'],
-                     json['id'],
-                     json['frequency_short'],
-                     json['seasonal_adjustment'],
-                     json['popularity'],
-                     None], index= ['Title','ID','Frequency','Seasonally Adjusted', 'Popularity','Notes'])
-    return result
-
-def get_series_obs(series_id, api_key, obs_start, obs_end, freq, units= 'lin'):
-    '''Returns the observations for series_id'''
-    
-    json= requests.get('https://api.stlouisfed.org/fred/series/observations',{
-        'series_id' : series_id,
+    session = requests.Session()
+    query_params =  {
         'file_type': 'json',
         'api_key' : api_key,
         'observation_start': obs_start,
-        'observation_end' : obs_end,
-        'units' : units,
-        'frequencies': freq 
-    }).json()
-    json= json['observations']
-    df= pd.DataFrame(json)
-    df= df[['date','value']]
-    df.columns= ['DATE',series_id]
+        'observation_end' : obs_stop,
+    }
+    
+    df_lst = []
+    for series_id in tqdm(series_list):
+        query_params['series_id'] = series_id
+        response = session.get(
+           fred_url,
+           params=query_params
+        )
+        data = json.loads(response.text)
+        df = pd.json_normalize(
+            data, 
+            record_path=record_path, 
+            meta=meta_columns,
+        )
+        df['id'] = series_id
+        df_lst.append(df)
+
+    df = pd.concat(df_lst)
+    
     return df
 
-def convert_dfs_to_daily(df):
-    '''
-    Takes FRED data and returns a df convertion to daily timeframe
-    using ffill. Example... a monthly frequency will be converted to daily (weekdays only) where the last recorded value
-    will be propagated forward.
-    '''
 
-    cols= df.columns
-    df.iloc[:,1]= df.iloc[:,1].replace('.', np.nan)
-    df.dropna(inplace=True)
-    df.reset_index(inplace=True, drop=True)
-    all_days_df= pd.DataFrame()
-    for i, row in df.iterrows():
-        all_days_df= all_days_df.append(row)
-        if i+1 < df.shape[0]:
-            time_delta= df.loc[i+1, 'DATE'] - row['DATE']
-            if time_delta > pd.Timedelta(1,'D'):
-                range_= pd.date_range(row['DATE'],df.loc[i+1,'DATE'])[1:-1]
-                for n, d in enumerate(range_, 1):
-                    all_days_df= all_days_df.append({df.columns[0] : pd.to_datetime(d),
-                                                    df.columns[1]: np.nan}, ignore_index=True)
-                all_days_df.fillna(method='ffill',inplace=True)  
-    return all_days_df
+# %%
+def get_series_info(fred_series_info_url, series_list, api_key, obs_start, obs_stop):
+    
+    record_path = ['seriess']
+    df = fetch_fred_data(fred_series_info_url, series_list, api_key, obs_start, obs_stop, record_path)
+    
+    return df
 
 
 # %%
+def get_series_observations(fred_series_observations_url, series_list, api_key, obs_start, obs_stop):
+    
+    record_path = ['observations']
+    df = fetch_fred_data(fred_series_observations_url, series_list, api_key, obs_start, obs_stop, record_path)
+    df = df[['id','date','value']]
+    return df
+
 
 # %%
-# %%time
-series_ids= api_params['series_list'].split(' ')
-key= api_params['api_key']
-obs_start= api_params['obs_start']
-obs_stop= api_params['obs_stop']
-unit= api_params['units']
+def clean_series_data(series_df):
+    
+    series_df.date = pd.to_datetime(series_df.date)
+    # holidays are represented as . in dataset, let's replace them by null values
+    series_df.value = series_df.value.replace('.', np.nan)
+    # convert value to float as it comes as object
+    series_df.value = series_df.value.astype(float)
+    
+    return series_df
 
-
-meta_df= pd.DataFrame()
-obs_df= pd.DataFrame(columns= ['DATE'])
-
-for id_ in series_ids:
-    meta_df= meta_df.append(get_series_metainfo(id_, key), ignore_index=True)
-
-for id_ in series_ids:
-    print(id_)
-    freq= meta_df[meta_df['ID'] == id_]['Frequency']
-    series_df= get_series_obs(id_, key, obs_start, obs_stop, freq)
-    series_df['DATE']= series_df['DATE'].astype('datetime64')
-    series_df= convert_dfs_to_daily(series_df)
-    obs_df= obs_df.merge(series_df, how='outer', on='DATE')
-obs_df.dropna(axis=0, inplace=True)
-obs_df.reset_index(drop=True, inplace=True)
 
 # %%
-dt= "<class 'pandas._libs.tslibs.timestamps.Timestamp'>"
-
-def fix_value(cell):
-    '''Corrects issue where floats were becoming pd.datetimes from the API'''
-    if str(type(cell)) == dt:
-        if int(cell.month) < 10:
-            return f'{cell.year}.0{cell.month}'
-        else:
-            return f'{cell.year}.{cell.month}'
-    else:
-        return cell
-obs_df.iloc[:,1:]= obs_df.iloc[:,1:].applymap(fix_value)
+def resample(series_df, method='ffill'):
+    series_df = series_df.set_index('date')
+    sampled = series_df.resample('B')
+    sampled_df = sampled.interpolate(method=method)
+    sampled_df = sampled_df.reset_index()
+    return sampled_df
 
 
+# %%
+def convert_to_wide_format(series_obs_df):
+    df_lst = []
+    #  we need to resample each series individually becuase of date collission
+    series_list = series_obs_df.id.unique()
+    for series_id in series_list:
+        # filter for given series id    
+        filter_cond = series_obs_df['id'] == series_id
+        # get individual series dataframe    
+        series_df = series_obs_df[filter_cond]
+        series_df = resample(series_df)
+        series_df = series_df.pivot(index='date', columns='id', values='value')
+        df_lst.append(series_df)
+    
+    df = pd.concat(df_lst, axis=1).sort_index()
+    
+    return df
 
-obs_df.iloc[:, 1:]= obs_df.iloc[:, 1:].astype(float)
-obs_df.to_csv(product['data'])
-meta_df.to_csv('C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\data\\meta\\fred_series_meta.csv')
 
+# %%
+series_info_df = get_series_info(fred_series_info_url, series_list, api_key, obs_start, obs_stop)
+series_info_df.columns
+
+# %%
+# need to call below functions in order
+series_obs_df = get_series_observations(fred_series_observations_url, series_list, api_key, obs_start, obs_stop)
+series_obs_df.columns
+
+# %%
+series_obs_df = clean_series_data(series_obs_df)
+series_obs_df.info()
+
+# %%
+series_wide_df = convert_to_wide_format(series_obs_df)
+series_wide_df = series_wide_df.fillna(method='ffill')
+series_wide_df.columns
+
+# %%
+series_wide_df.tail(25)
+
+# %%
+output_file_path = product['data']
+parent_file_path = Path(output_file_path).parent
+series_info_file_path = str(parent_file_path) + "/fred_series_info.csv"
+print(f"Writing to {output_file_path} \n {series_info_file_path}")
+
+# %%
+series_wide_df.to_csv(output_file_path)
+series_info_df.to_csv(series_info_file_path)
+
+
+# %%

@@ -1,136 +1,109 @@
 # + tags=["parameters"]
 # your parameters here...
-upstream = ['fetch_n_filter_gdelt_bq']
+upstream = ['fetch_n_filter_gdelt_bq', 'normalize_security_names']
+# -
 
-# +
 # your code here...
 import pandas as pd
 import numpy as np
 from pathlib import Path
+import nltk
+import time
+import re
+from time import time
+import json
+import ast
+from src.utils import preprocess_text
+from collections import Counter
+from src.utils import fuzz_similarity, preprocess_text
+from nltk.corpus import stopwords
 
+nltk.download('stopwords')
+nltk.download('omw-1.4')
+stops = set(stopwords.words('english'))
 pd.options.display.max_colwidth = 200
 
+gdelt_file_path = upstream['fetch_n_filter_gdelt_bq']['data']
+securities_file_path = upstream['normalize_security_names']['data']
+gdelt_df = pd.read_csv(gdelt_file_path, index_col=0)
+securities_df = pd.read_csv(securities_file_path, index_col=0)
+securities_df.dropna(subset=['former_name'], inplace=True)
+securities_df.info()
+
+gdelt_df.columns
+
+securities_df.head()
+
+#  drop rows where no organizations names were extracted
+gdelt_df = gdelt_df.dropna(subset=['Organizations'])
+gdelt_df = gdelt_df.replace(to_replace= ['Google', 'Facebook', 'YouTube', 'Youtube'], value=['alphabet', 'meta platforms', 'alphabet', 'alphabet'], regex=True)
+
+#  get rid of numeric position of org name mention by only extracting alpha names
+# Extract only names not the index
+gdelt_df.Organizations = gdelt_df.Organizations.map(lambda x: re.split(r',\d+;?', x))
+
+
 # +
-input_file_path = upstream['fetch_n_filter_gdelt_bq']['data']
+def preprocess_orgs(x):
+    return preprocess_text(x, eng=True)
 
-data_df = pd.read_csv(input_file_path, index_col=0)
-print(data_df.columns)
+gdelt_df.Organizations = gdelt_df.Organizations.apply(preprocess_orgs)
+# -
+
+gdelt_df.Organizations = gdelt_df.Organizations.replace(to_replace=securities_df.former_name.to_list(), value=securities_df.full_name.to_list())
 
 
 # +
+def count_orgs(x):
+    return x if type(x) is float or len(x) == 0 else Counter(x)
+
+gdelt_df.Organizations = gdelt_df.Organizations.apply(count_orgs)
+# -
+securities_names = preprocess_text(securities_df.full_name)
+gdelt_df.Organizations = gdelt_df.Organizations.apply(lambda x: { key:x[key] for key in x.keys() if key in securities_names and key != 'Tooshorttext'})
+gdelt_df = gdelt_df[gdelt_df.Organizations.str.len() != 0]
+
+gdelt_df.info()
+
+
 def split_locations(location_list):
     location_names = []
     if type(location_list) is not float:
         for location_string in location_list:
             loc_parts = location_string.split('#')
+            # We are only interested in full location name which is second entry in location string           
             location_names.append(loc_parts[1]) if len(loc_parts) > 1 else np.nan
             
     return location_names
-
-data_df.Locations = data_df.Locations.str.split(';').apply(split_locations)
-# -
+# Locations are semi-colons(;) seperated and each location string is further seperated by hash(#)
+gdelt_df.Locations = gdelt_df.Locations.str.split(';').apply(split_locations)
+#  Remove duplicates
+gdelt_df.Locations = gdelt_df.Locations.map(set)
 
 
 #  Clean some data elements
-data_df.Persons = data_df.Persons.str.findall(pat="[A-Z][a-z]+ [A-Z][a-z]+")
+gdelt_df.Persons = gdelt_df.Persons.str.findall(pat="[A-Z][a-z]+ [A-Z][a-z]+")
+#  Remove duplicates
+gdelt_df.Persons = gdelt_df.Persons.map(set, na_action='ignore')
 
-# +
-# data_df.Organizations = data_df.Organizations.str.replace("Tesla|Tesla Motors|Tesla Inc", '').str.findall(pat="[A-Z][a-z]+ [A-Z][a-z]+")
-# -
-
-data_df.Tone = data_df.Tone.str.split(',')
+gdelt_df.Tone = gdelt_df.Tone.str.split(',')
 
 # Clean Tone
-data_df['AvgTone'] = data_df.Tone.apply(lambda x: x[0])
-data_df['PosScore'] = data_df.Tone.apply(lambda x: x[1])
-data_df['NegScore'] = data_df.Tone.apply(lambda x: x[2])
-data_df['Polarity'] = data_df.Tone.apply(lambda x: x[3])
+gdelt_df['AvgTone'] = gdelt_df.Tone.apply(lambda x: x[0])
+gdelt_df['PosScore'] = gdelt_df.Tone.apply(lambda x: x[1])
+gdelt_df['NegScore'] = gdelt_df.Tone.apply(lambda x: x[2])
+gdelt_df['Polarity'] = gdelt_df.Tone.apply(lambda x: x[3])
 
-# +
-threshold = 1
-# "C:\\Users\\mattd\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\data\\external\\sp500_list.xlsx"
-path = path_params['sp_500_path'] + 'sp500_list.xlsx'
+gdelt_df.drop(["Tone", "DATE", "SourceCollectionIdentifier", "DocumentIdentifier"], axis = 1, inplace=True)
 
 
-def get_rel_company_names(path):
-    rel_company = pd.read_excel(path)
-    rel_company = rel_company['Security']
-    expand_rel_company = {}
-    for company in rel_company:
-        company = company.lower()
-        company_name_list = []
-        company_name_list.append(company)
-        for postfix in ['inc', 'inc.', 'incorporation', 'corp.', 'corp', 'corporation']:
-            if postfix in company_name_list[0]:
-                break
-        for postfix in ['inc', 'incorporation', 'corp', 'corporation']:
-            company_name_list.append(company_name_list[0] + ' ' + postfix)
-        words = company.split(' ')
-        for n in range(1, len(words)):
-            if words[0:n] not in company_name_list:
-                company_name_list.append(' '.join(words[0:n]))
-        expand_rel_company.update({company: company_name_list})
-    return expand_rel_company
-
-
-def filter_org_col(org_cell, rel_comp_dict, threshold):
-    result_dict = {}
-    if org_cell != None:
-        try:
-            org_cell.split(';')
-        except:
-            print(org_cell)
-        for item in org_cell.split(';'):
-            word = item.split(',')[0]
-            rel_company_names = [val for list_ in rel_comp_dict.values() for val in list_]
-            if word in rel_company_names:
-                for key, names_list in rel_comp_dict.items():
-                    if word in names_list:
-                        if key in result_dict.keys():
-                            result_dict.update({key: result_dict[key] + 1})
-                        else:
-                            result_dict.update({key : 1})
-            else:
-                if word in result_dict.keys():
-                    result_dict.update({word : result_dict[word] +1})
-                else:
-                    result_dict.update({word : 1})
-    result_dict = {key: val for key, val in result_dict.items() if val >= threshold}
-    return result_dict
-
-
-def extract_company_articles(df, path, threshold):
-    '''
-    Ectract all article that contain company_name from csv files.
-    Parameters:
-        Company_name= main company to filter for
-        path= path to GDELT csv's
-        path2= path to list to SP500 csv
-        threshold= minimum count for related company to be included
-    '''
-    rel_company_dict = get_rel_company_names(path)
-    df['Org Count'] = df['Organizations'].map(lambda x: filter_org_col(x, rel_company_dict, threshold), na_action='ignore')
-
-    return df
-
-# -
-
-# %%time
-data_df = extract_company_articles(data_df, path, threshold)
-
-data_df.drop(["Tone", "DATE", "SourceCollectionIdentifier", "DocumentIdentifier"], axis = 1, inplace=True)
-
+gdelt_df.sample(10)
 
 output_file_path = product['data']
 Path(output_file_path).parent.mkdir(exist_ok=True, parents=True)
-data_df.to_csv(output_file_path)
+gdelt_df.to_csv(output_file_path)
 print(f"Saved file {output_file_path}")
 
-
-
-# +
-
-data_df.to_parquet('C:\\Users\\mattd\\OneDrive\\Masters\\SIADS-697 Capstone Project III\\market_watch2\\output\\data\\interim\\gdelt_gkg_data-cleaned.pq')
-# -
+del gdelt_df, securities_df
 
 

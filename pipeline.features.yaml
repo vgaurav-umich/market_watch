@@ -1,10 +1,5 @@
 # partial yaml file to define feature generation tasks so we can reuse them between train and serving
-- source: src/features/build_features.py
-  product:
-    nb: output/notebooks/build_features.ipynb
-#    data: output/data/features/features.parquet
-
-- source: src/features/build_financial_features.py
-  product:
-    nb: output/notebooks/build_financial_features.ipynb
-#    data: output/data/features/financial_features.parquet
+  - source: src/features/create_tfidf_scores.py
+    product:
+      nb: output/notebooks/create_tfidf.ipynb
+      data: output/data/features/tfidf_vector.csv
