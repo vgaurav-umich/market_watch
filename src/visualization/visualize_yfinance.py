@@ -35,11 +35,6 @@ pd.set_option('display.float_format',  '{:,.2f}'.format)
 
 
 # %%
-tickers = query_params['tickers']
-rolling_window = query_params['rolling_window']
-# temp override
-rolling_window = 1800 if rolling_window == 1 else rolling_window
-
 start_date = utils.get_start_date(rolling_window)
 start_date = utils.general_date_format(start_date)
 
