@@ -25,7 +25,6 @@ tensorboardX = "*"
 tensorflow = "*"
 nltk = "*"
 pybullet = "*"
-gdelt = "*"
 python-dotenv = "*"
 google-cloud-bigquery = {extras = ["bqstorage", "pandas"], version = "*"}
 networkx = "*"
