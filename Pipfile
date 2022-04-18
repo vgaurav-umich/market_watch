@@ -36,6 +36,8 @@ yfinance = "*"
 market-watch = {editable = true, path = "."}
 ptan = "==0.7"
 sparse-dot-topn = "*"
+fuzzywuzzy = "*"
+python-levenshtein = "*"
 
 [dev-packages]
 graphviz = "*"

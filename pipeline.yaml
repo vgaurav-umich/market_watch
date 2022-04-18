@@ -45,7 +45,7 @@ tasks:
       sample_pct: '{{sample_pct}}'
       rolling_window: '{{rolling_window}}'
       yahoo_fields: '{{yahoo_fields}}'
-      snp_filter: True 
+      snp_filter: False
 
   - source: src/data/fetch_fred.py
     product:
