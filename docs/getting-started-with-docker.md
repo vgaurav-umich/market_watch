@@ -7,7 +7,7 @@
   ```
 - or Download a pre-built image
   ```
-  docker pull veenagaurav/market_watch:beta
+  docker pull veenagaurav/market_watch:rc1
   ```
  - docker run
     ```
