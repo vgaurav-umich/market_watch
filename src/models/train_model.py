@@ -152,10 +152,11 @@ def train_model(
             path = saves_path / ("mean_value_%.3f.data" % mean_val)
             torch.save(net.state_dict(), path)
             engine.state.best_mean_val = mean_val
-        else:
-            print(
-                f'mean_val ${mean_val}, less than best {engine.state.best_mean_val}')
+        # else:
+        #     print(
+        #         f'mean_val ${mean_val}, less than best {engine.state.best_mean_val}')
 
+    @engine.on(ptan.ignite.PeriodEvents.ITERS_1000_COMPLETED)
     def validate(engine: Engine):
         res = validation.validation_run(env_tst, net, device=device)
         print("%d: tst: %s" % (engine.state.iteration, res))
@@ -166,9 +167,11 @@ def train_model(
         for key, val in res.items():
             engine.state.metrics[key + "_val"] = val
         val_reward = res['episode_reward']
+        is_new = False
         if getattr(engine.state, "best_val_reward", None) is None:
             engine.state.best_val_reward = val_reward
-        if engine.state.best_val_reward < val_reward:
+            is_new = True
+        if engine.state.best_val_reward < val_reward or is_new:
             print("Best validation reward updated: %.3f -> %.3f, model saved" % (
                 engine.state.best_val_reward, val_reward
             ))
