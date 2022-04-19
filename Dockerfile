@@ -19,6 +19,8 @@ ENV PDIR /root/$PNAME
 
 WORKDIR $PDIR
 
+RUN mkdir /root/.ssh
+
 RUN pipenv update
 RUN pipenv install --system
 
