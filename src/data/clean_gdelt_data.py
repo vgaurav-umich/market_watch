@@ -18,6 +18,7 @@ from collections import Counter
 from src.utils import fuzz_similarity, preprocess_text
 from nltk.corpus import stopwords
 
+nltk.download('wordnet')
 nltk.download('stopwords')
 nltk.download('omw-1.4')
 stops = set(stopwords.words('english'))
