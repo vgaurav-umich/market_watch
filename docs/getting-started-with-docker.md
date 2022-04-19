@@ -11,7 +11,7 @@
   ```
  - docker run
     ```
-     docker run -it --rm -v ~/market_watch:/root/market_watch -p 8888:8888 veenagaurav/market_watch:rc1
+     docker run -it -v ~/market_watch:/root/market_watch -p 8888:8888 veenagaurav/market_watch:rc1
     ```
     replace ~/market_watch after -v option with your local folder. -p option does port mapping to enable jupyter notebook access.
     
