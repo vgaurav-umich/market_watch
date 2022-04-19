@@ -26,6 +26,7 @@ pd.options.display.max_colwidth = 200
 
 gdelt_file_path = upstream['fetch_n_filter_gdelt_bq']['data']
 securities_file_path = upstream['normalize_security_names']['data']
+
 gdelt_df = pd.read_csv(gdelt_file_path, index_col=0)
 securities_df = pd.read_csv(securities_file_path, index_col=0)
 securities_df.dropna(subset=['former_name'], inplace=True)

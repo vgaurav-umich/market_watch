@@ -1,5 +1,9 @@
 from datetime import datetime, timedelta
 import pandas as pd
+import nltk
+nltk.download('wordnet')
+nltk.download('stopwords')
+nltk.download('omw-1.4')
 
 
 # +

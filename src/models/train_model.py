@@ -37,6 +37,11 @@ STATES_TO_EVALUATE = 1000
 
 # %%
 cuda = torch.cuda.is_available()
+print(f"GPU support is {'enabled' if cuda else 'not available'}")
+cuda
+
+
+# %%
 run = 'test'
 # args = parser.parse_args()
 device = torch.device("cuda" if cuda else "cpu")

@@ -9,7 +9,6 @@ from google.cloud import bigquery
 from tqdm import tqdm
 from src import utils
 
-
 import re
 import collections
 import pandas as pd
@@ -65,17 +64,14 @@ def fetch_data(bqclient, query_string):
     return df
 
 
-# +
 rolling_window = query_params["rolling_window"]
 table_name = query_params["bq_table_name"]
 search_term = query_params["search_term"]
 gkg_file_path = product["data"]
 
-
 start_date = utils.get_start_date(rolling_window)
 start_date = utils.gdelt_date_format(start_date)
 gkg_query = build_gdelt_query(table_name, search_term, start_date)
-# -
 
 client = bigquery.Client()
 data_df = fetch_data(client, gkg_query)

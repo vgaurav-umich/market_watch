@@ -2,16 +2,19 @@
 # declare a list tasks whose products you want to use as inputs
 upstream = ['fetch_securities']
 
-# -
-
+# +
 import ast
 import pandas as pd
 import numpy as np
 import json
 from pathlib import Path
 from src.utils import preprocess_text
+
 import nltk
 nltk.download('wordnet')
+nltk.download('stopwords')
+nltk.download('omw-1.4')
+# -
 
 securities_file_path = upstream['fetch_securities']['data']
 securities_df = pd.read_csv(securities_file_path, index_col=0)
@@ -57,7 +60,3 @@ output_file_path = product['data']
 Path(output_file_path).parent.mkdir(exist_ok=True, parents=True)
 securities_df.to_csv(output_file_path)
 print(f"Saved file {output_file_path}")
-
-
-
-
