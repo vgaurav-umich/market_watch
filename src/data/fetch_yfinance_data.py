@@ -43,7 +43,7 @@ securities_df.info()
 ticker_names = securities_df.ticker.to_list()
 
 # %%
-start_date = utils.get_start_date(rolling_window)
+start_date = utils.get_start_date(yfinance_rolling_window)
 start_date = utils.general_date_format(start_date)
 
 # %%

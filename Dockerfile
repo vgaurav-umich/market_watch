@@ -4,6 +4,7 @@ FROM python:3.8-bullseye
 ARG PNAME=/root/code
 
 RUN apt update && apt upgrade -y
+
 RUN pip install pipenv
 RUN export PATH="$PATH:/root/.local/bin"
 RUN echo 'export PATH="$PATH:/root/.local/bin"' >> ~/.bashrc
@@ -13,16 +14,15 @@ RUN apt install ffmpeg libsm6 libxext6  -y
 RUN apt install nano
 RUN pip install ploomber jupyterlab
 
+RUN mkdir /root/.ssh
+
 COPY . /root/$PNAME/
 
 ENV PDIR /root/$PNAME
 
 WORKDIR $PDIR
 
-RUN mkdir /root/.ssh
-
 RUN pipenv update
 RUN pipenv install --system
-
 
 ENTRYPOINT ["bash"]

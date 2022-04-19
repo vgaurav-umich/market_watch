@@ -43,7 +43,7 @@ tasks:
       data: output/data/raw/yfinance_ticker_data-raw.xlsx
     params:
       sample_pct: '{{sample_pct}}'
-      rolling_window: '{{rolling_window}}'
+      yfinance_rolling_window: '{{yfinance_rolling_window}}'
       yahoo_fields: '{{yahoo_fields}}'
       snp_filter: False
 
