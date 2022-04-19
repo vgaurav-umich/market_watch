@@ -1,7 +1,7 @@
 import numpy as np
 
 import torch
-from src.market_watch.models.lib.common import state_preprocessor
+from src.models.lib.common import state_preprocessor
 
 from src.models.lib import environ
 

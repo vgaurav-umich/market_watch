@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # %% tags=["parameters"]
 # declare a list tasks whose products you want to use as inputs
-upstream = None
+upstream = ['combine_fred_yahoo']
 
 # %%
 import os
@@ -50,7 +50,7 @@ features = [
     'Open' # open is broken. has shape (558, 415) vs (692, 403)
     ]
 
-stock_data_path = os.environ.get('DATA_PATH', '~/Downloads/fred_yahoo-2.xlsx')
+stock_data_path = upstream['combine_fred_yahoo']['data']
 dfs = pd.read_excel(stock_data_path, sheet_name=features)
 
 cols = None

@@ -77,10 +77,10 @@ tasks:
       data: output/data/interim/total_org_counts.csv
 
 
-  # - source: src/data/combine_fred_yahoo.py
-  #   product:
-  #     nb: output/notebooks/combine_fred_yahoo.ipynb
-  #     data: output/data/raw/fred_yahoo.csv
+  - source: src/data/combine_fred_yahoo.py
+    product:
+      nb: output/notebooks/combine_fred_yahoo.ipynb
+      data: output/data/raw/fred_yahoo.xlsx
 
 
   - source: src/visualization/visualize_gdelt.py
@@ -96,6 +96,6 @@ tasks:
 
   # Feature pipeline code will execute here.
 
-#  - source: src/models/train_model.py
-#    product:
-#      nb: output/notebooks/train_model.ipynb
+  - source: src/models/train_model.py
+    product:
+      nb: output/notebooks/train_model.ipynb

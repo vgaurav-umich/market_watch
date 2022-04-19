@@ -52,12 +52,16 @@ gdelt_df.Organizations = gdelt_df.Organizations.apply(preprocess_orgs)
 
 gdelt_df.Organizations = gdelt_df.Organizations.replace(to_replace=securities_df.former_name.to_list(), value=securities_df.full_name.to_list())
 
+gdelt_df.info()
+
 
 # +
 def count_orgs(x):
-    return x if type(x) is float or len(x) == 0 else Counter(x)
+    return x if type(x) is float or x is None or len(x) == 0 else Counter(x)
 
 gdelt_df.Organizations = gdelt_df.Organizations.apply(count_orgs)
+gdelt_df.dropna(subset=['Organizations'], inplace=True)
+gdelt_df.info()
 # -
 securities_names = preprocess_text(securities_df.full_name)
 gdelt_df.Organizations = gdelt_df.Organizations.apply(lambda x: { key:x[key] for key in x.keys() if key in securities_names and key != 'Tooshorttext'})

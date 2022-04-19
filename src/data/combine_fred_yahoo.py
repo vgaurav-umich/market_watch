@@ -12,19 +12,6 @@
 #     name: python3
 # ---
 
-# %%
-# Add description here
-#
-# *Note:* You can open this file as a notebook (JupyterLab: right-click on it in the side bar -> Open With -> Notebook)
-
-
-# %%
-# Uncomment the next two lines to enable auto reloading for imported modules
-# # %load_ext autoreload
-# # %autoreload 2
-# For more info, see:
-# https://docs.ploomber.io/en/latest/user-guide/faq_index.html#auto-reloading-code-in-jupyter
-
 # %% tags=["parameters"]
 # If this task has dependencies, list them them here
 # (e.g. upstream = ['some_task']), otherwise leave as None.
@@ -41,17 +28,34 @@ product = None
 import pandas as pd
 
 # %%
-fred_df = pd.read_csv(upstream['fetch_fred']['data'], parse_dates=["date"], index_col=0)
-fred_df
+fred_df= pd.read_csv(upstream['fetch_fred']['data'], parse_dates=["date"], index_col=0)
+fred_df.info()
 
 # %%
-yahoo_df = pd.read_csv(upstream['fetch_yfinance_data']['data'],  index_col=0)
-yahoo_df
+fred_df.index.name = 'Date'
 
 # %%
-df= fred_df.merge(yahoo_df, how='inner', left_on= 'DATE', right_on='Date')
-df
+yahoo_path = upstream['fetch_yfinance_data']['data']
+df_dict= {}
+lv1= ['Open','Close','High','Low', 'Volume']
+for table_name in lv1:
+    df_dict.update({table_name : pd.read_excel(yahoo_path, sheet_name=table_name, index_col= 0)})
 
 # %%
-path= product['data']
-df.to_csv(path, index=False)
+df_dict['Open'].info()
+
+# %%
+df_dict['Open'].index.name
+
+# %%
+output_file_path = product['data']
+
+# %%
+with pd.ExcelWriter(output_file_path, engine='openpyxl') as writer:  
+    print(f"Saved file with {output_file_path}")
+    for name, dataframe in df_dict.items(): 
+        dataframe = fred_df.merge(df_dict[name], how='inner', left_on='Date', right_on='Date')
+        dataframe.to_excel(writer, sheet_name=name)
+        print(f"Saved file with {len(dataframe)} records.")
+
+# %%
