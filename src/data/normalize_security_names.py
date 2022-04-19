@@ -10,6 +10,8 @@ import numpy as np
 import json
 from pathlib import Path
 from src.utils import preprocess_text
+import nltk
+nltk.download('wordnet')
 
 securities_file_path = upstream['fetch_securities']['data']
 securities_df = pd.read_csv(securities_file_path, index_col=0)
