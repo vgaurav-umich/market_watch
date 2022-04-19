@@ -13,22 +13,15 @@ from ignite.engine import Engine
 from ignite.metrics import RunningAverage
 from ignite.contrib.handlers import tensorboard_logger as tb_logger
 
-def state_preprocessor(states, device="cpu"):
 
-    t1 = torch.tensor([
-            state[0] for state in states
-        ], dtype=torch.float32)
-    t2 = torch.tensor([
-            state[1] for state in states
-        ], dtype=torch.float32)
-    if device is not None:
-        t1 = t1.to(device)
-        t2 = t2.to(device)
-    
-    return (
-        t1,
-        t2
-    )
+def state_preprocessor(states, device="cpu"):
+    zipped = list(zip(*states))
+
+    return [
+        torch.tensor(arr, dtype=torch.float32).to(device=device
+                                                  ) for arr in zipped]
+
+
 @torch.no_grad()
 def calc_values_of_states(states, net, device="cpu"):
     mean_vals = []
@@ -53,7 +46,7 @@ def unpack_batch(batch):
         else:
             last_states.append(np.array(exp.last_state, copy=False))
     return np.array(states, copy=False), np.array(actions), np.array(rewards, dtype=np.float32), \
-           np.array(dones, dtype=np.uint8), np.array(last_states, copy=False)
+        np.array(dones, dtype=np.uint8), np.array(last_states, copy=False)
 
 
 def calc_loss(batch, net, tgt_net, gamma, device="cpu"):
@@ -65,12 +58,15 @@ def calc_loss(batch, net, tgt_net, gamma, device="cpu"):
     rewards_v = torch.tensor(rewards).to(device)
     done_mask = torch.BoolTensor(dones).to(device)
 
-    state_action_values = net(states_v).gather(1, actions_v.unsqueeze(-1)).squeeze(-1)
+    state_action_values = net(states_v).gather(
+        1, actions_v.unsqueeze(-1)).squeeze(-1)
     next_state_actions = net(next_states_v).max(1)[1]
-    next_state_values = tgt_net(next_states_v).gather(1, next_state_actions.unsqueeze(-1)).squeeze(-1)
+    next_state_values = tgt_net(next_states_v).gather(
+        1, next_state_actions.unsqueeze(-1)).squeeze(-1)
     next_state_values[done_mask] = 0.0
 
-    expected_state_action_values = next_state_values.detach() * gamma + rewards_v
+    expected_state_action_values = next_state_values.detach() * gamma + \
+        rewards_v.detach()
     return nn.MSELoss()(state_action_values, expected_state_action_values)
 
 
@@ -87,7 +83,8 @@ def setup_ignite(engine: Engine, exp_source, run_name: str,
     # get rid of missing metrics warning
     warnings.simplefilter("ignore", category=UserWarning)
 
-    handler = ptan_ignite.EndOfEpisodeHandler(exp_source, subsample_end_of_episode=100)
+    handler = ptan_ignite.EndOfEpisodeHandler(
+        exp_source, subsample_end_of_episode=100)
     handler.attach(engine)
     ptan_ignite.EpisodeFPSHandler().attach(engine)
 
@@ -96,10 +93,10 @@ def setup_ignite(engine: Engine, exp_source, run_name: str,
         passed = trainer.state.metrics.get('time_passed', 0)
         print("Episode %d: reward=%.0f, steps=%s, "
               "speed=%.1f f/s, elapsed=%s" % (
-            trainer.state.episode, trainer.state.episode_reward,
-            trainer.state.episode_steps,
-            trainer.state.metrics.get('avg_fps', 0),
-            timedelta(seconds=int(passed))))
+                  trainer.state.episode, trainer.state.episode_reward,
+                  trainer.state.episode_steps,
+                  trainer.state.metrics.get('avg_fps', 0),
+                  timedelta(seconds=int(passed))))
 
     now = datetime.now().isoformat(timespec='minutes')
     logdir = f"runs/{now}-{run_name}"

@@ -9,10 +9,13 @@ import torch.nn.functional as F
 class NoisyLinear(nn.Linear):
     def __init__(self, in_features, out_features, sigma_init=0.017, bias=True):
         super(NoisyLinear, self).__init__(in_features, out_features, bias=bias)
-        self.sigma_weight = nn.Parameter(torch.full((out_features, in_features), sigma_init))
-        self.register_buffer("epsilon_weight", torch.zeros(out_features, in_features))
+        self.sigma_weight = nn.Parameter(torch.full(
+            (out_features, in_features), sigma_init))
+        self.register_buffer(
+            "epsilon_weight", torch.zeros(out_features, in_features))
         if bias:
-            self.sigma_bias = nn.Parameter(torch.full((out_features,), sigma_init))
+            self.sigma_bias = nn.Parameter(
+                torch.full((out_features,), sigma_init))
             self.register_buffer("epsilon_bias", torch.zeros(out_features))
         self.reset_parameters()
 

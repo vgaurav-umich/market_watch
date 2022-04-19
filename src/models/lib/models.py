@@ -6,6 +6,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch as tf
 
+
 def replacenan(tensor):
     return tf.where(tf.isnan(tensor), tf.zeros_like(tensor), tensor)
 
@@ -13,10 +14,13 @@ def replacenan(tensor):
 class NoisyLinear(nn.Linear):
     def __init__(self, in_features, out_features, sigma_init=0.017, bias=True):
         super(NoisyLinear, self).__init__(in_features, out_features, bias=bias)
-        self.sigma_weight = nn.Parameter(torch.full((out_features, in_features), sigma_init))
-        self.register_buffer("epsilon_weight", torch.zeros(out_features, in_features))
+        self.sigma_weight = nn.Parameter(torch.full(
+            (out_features, in_features), sigma_init))
+        self.register_buffer(
+            "epsilon_weight", torch.zeros(out_features, in_features))
         if bias:
-            self.sigma_bias = nn.Parameter(torch.full((out_features,), sigma_init))
+            self.sigma_bias = nn.Parameter(
+                torch.full((out_features,), sigma_init))
             self.register_buffer("epsilon_bias", torch.zeros(out_features))
         self.reset_parameters()
 
@@ -59,8 +63,9 @@ class SimpleFFDQN(nn.Module):
         adv = self.fc_adv(x)
         return val + (adv - adv.mean(dim=1, keepdim=True))
 
+
 class DQNConv1DMarketWatch(nn.Module):
-    def __init__(self, shape, actions_n):
+    def __init__(self, shape, actions_n, bars_count):
         super(DQNConv1DMarketWatch, self).__init__()
 
         self.conv = nn.Sequential(
@@ -69,35 +74,39 @@ class DQNConv1DMarketWatch(nn.Module):
             nn.Conv2d(128, 128, 5),
             nn.ReLU(),
         )
-        out_size = self._get_conv_out(shape)
-
+        fc_params_n = self._get_fc_params_n(shape, bars_count)
 
         self.fc_val = nn.Sequential(
-            nn.Linear(out_size + 2, 512), # out of conv layer + state values
+            nn.Linear(fc_params_n, 512),
             nn.ReLU(),
             nn.Linear(512, 1)
         )
 
         self.fc_adv = nn.Sequential(
-            nn.Linear(out_size, 512),
+            nn.Linear(fc_params_n, 512),
             nn.ReLU(),
             nn.Linear(512, actions_n)
         )
 
-    def _get_conv_out(self, shape):
-        o = self.conv(torch.zeros(1, *shape))
-        return int(np.prod(o.size()))
+    def _get_fc_params_n(self, shape, bars_count):
+        conv_out = self.conv(torch.zeros(1, *shape))
+        state_len = 2
+        traded_stock_prices_len = bars_count
 
-    def forward(self, x):
-        stocks_values = x[0]
-        state_values = x[1]
-        conv_out = replacenan(self.conv(stocks_values).view(stocks_values.size()[0], -1))
-        val_inp = torch.hstack([state_values, conv_out])
-        # fred_out = self.fred_net(x)
+        # out of conv layer + state values
+        return int(np.prod(conv_out.size())) + state_len + traded_stock_prices_len
+
+    def forward(self, input):
+        stocks_values, state_values, traded_stock_prices = input
+
+        conv_out = replacenan(self.conv(stocks_values).view(
+            stocks_values.size()[0], -1))
+        val_inp = torch.hstack([conv_out, state_values, traded_stock_prices])
 
         val = replacenan(self.fc_val(val_inp))
-        adv = replacenan(self.fc_adv(conv_out))
+        adv = replacenan(self.fc_adv(val_inp))
         return val + (adv - adv.mean(dim=1, keepdim=True))
+
 
 class DQNConv1D(nn.Module):
     def __init__(self, shape, actions_n):

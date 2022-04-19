@@ -11,16 +11,20 @@ from . import data
 DEFAULT_BARS_COUNT = 10
 DEFAULT_COMMISSION_PERC = 0.1
 
+
 class Actions(enum.Enum):
     Skip = 0
     Buy = 1
     Close = 2
 
 
-class State:
+class MarketWatchState:
     def __init__(self, bars_count, commission_perc,
                  reset_on_close, input_shape=tuple(), reward_on_close=True,
-                 volumes=True):
+                 volumes=True,
+                 target_index=0,
+                 weights=None
+                 ):
         assert isinstance(bars_count, int)
         assert bars_count > 0
         assert isinstance(commission_perc, float)
@@ -32,50 +36,62 @@ class State:
         self.reset_on_close = reset_on_close
         self.reward_on_close = reward_on_close
         self.volumes = volumes
-        self._steps_passed = 0
         self._input_shape = input_shape
+        self._target_index = target_index
+        self._weights = weights
 
     def reset(self, prices, offset):
-        # assert isinstance(prices, data.Prices)
         assert offset >= self.bars_count-1
         self.have_position = False
         self.open_price = 0.0
         self._prices = prices
         self._offset = offset
-        self._steps_passed = 0
 
     @property
     def shape(self):
-        # [h, l, c] * bars + position_flag + rel_profit
-        if self.volumes:
-            return 4 * self.bars_count + 1 + 1,
-        else:
-            return 3*self.bars_count + 1 + 1,
+        # conv2d
+        # [batch_size, input_channels, input_height, input_width]
+        # [1, NUM_FEAT, NUM_COMP, BARS ]
+
+        num_of_features = self._input_shape[0]
+        if self._weights is not None:
+            num_of_features += 1
+        num_of_companies = self._input_shape[2]
+        num_of_periods = self.bars_count
+        return [
+            num_of_features,
+            num_of_periods,
+            num_of_companies
+        ]
 
     def encode(self):
-        """
-        Convert current state into numpy array.
-        """
-        res = np.ndarray(shape=self.shape, dtype=np.float32)
-        shift = 0
-        for bar_idx in range(-self.bars_count+1, 1):
-            ofs = self._offset + bar_idx
-            res[shift] = self._prices.high[ofs]
-            shift += 1
-            res[shift] = self._prices.low[ofs]
-            shift += 1
-            res[shift] = self._prices.close[ofs]
-            shift += 1
-            if self.volumes:
-                res[shift] = self._prices.volume[ofs]
-                shift += 1
-        res[shift] = float(self.have_position)
-        shift += 1
-        if not self.have_position:
-            res[shift] = 0.0
-        else:
-            res[shift] = self._cur_close() / self.open_price - 1.0
-        return res
+        start = self._offset - (self.bars_count-1)
+        stop = self._offset+1
+
+        state = [0, 0]
+        if self.have_position:
+            state = [1, self.open_price]
+        state = np.array(state)
+
+        features = self._prices[:, start:stop, :]
+        traded_stock_prices = features[0, :, self._target_index].squeeze()
+
+        if self._weights is not None:
+            # repate bars_count times weights
+            # so as they can be used for convolutions
+
+            weights = np.repeat(
+                np.array(self._weights)[np.newaxis, :],
+                self.bars_count, axis=0
+            )
+            # then stack them vertically to
+            # the main features
+            features = np.vstack([
+                features,
+                weights[np.newaxis, :, :]
+            ])
+
+        return (features, state, traded_stock_prices)
 
     def _cur_close(self):
         """
@@ -85,9 +101,9 @@ class State:
         # rel_close = self._prices.close[self._offset]
 
         return self._prices[
-            0, # change this to close feature order
+            0,  # change this to close feature order
             self._offset,
-            0 # change this to company offset
+            0  # change this to company offset
         ]
 
     def step(self, action):
@@ -115,11 +131,9 @@ class State:
             self.open_price = 0.0
 
         self._offset += 1
-        self._steps_passed += 1
         prev_close = close
         close = self._cur_close()
-        # done |= self._offset >= self._prices.shape[1]-1
-        done |= self._steps_passed >= 30
+        done |= self._offset >= self._prices.shape[1]-1
 
         if self.have_position and not self.reward_on_close:
             reward += 100.0 * (close / prev_close - 1.0)
@@ -127,164 +141,30 @@ class State:
         return reward, done
 
 
-class State1D(State):
-    """
-    State with shape suitable for 1D convolution
-    """
-    @property
-    def shape(self):
-        if self.volumes:
-            return (6, self.bars_count)
-        else:
-            return (5, self.bars_count)
-
-    def encode(self):
-        res = np.zeros(shape=self.shape, dtype=np.float32)
-        start = self._offset-(self.bars_count-1)
-        stop = self._offset+1
-        res[0] = self._prices.high[start:stop]
-        res[1] = self._prices.low[start:stop]
-        res[2] = self._prices.close[start:stop]
-        if self.volumes:
-            res[3] = self._prices.volume[start:stop]
-            dst = 4
-        else:
-            dst = 3
-        if self.have_position:
-            res[dst] = 1.0
-            res[dst+1] = self._cur_close() / self.open_price - 1.0
-        return res
-
-
-class StocksEnv(gym.Env):
-    metadata = {'render.modes': ['human']}
-    spec = EnvSpec("StocksEnv-v0")
-
-    def __init__(self, prices, bars_count=DEFAULT_BARS_COUNT,
-                 commission=DEFAULT_COMMISSION_PERC,
-                 reset_on_close=True, state_1d=False,
-                 random_ofs_on_reset=True, reward_on_close=False,
-                 volumes=False):
-        assert isinstance(prices, dict)
-        self._prices = prices
-        if state_1d:
-            self._state = State1D(
-                bars_count, commission, reset_on_close,
-                reward_on_close=reward_on_close, volumes=volumes)
-        else:
-            self._state = State(
-                bars_count, commission, reset_on_close,
-                reward_on_close=reward_on_close, volumes=volumes)
-        self.action_space = gym.spaces.Discrete(n=len(Actions))
-        self.observation_space = gym.spaces.Box(
-            low=-np.inf, high=np.inf,
-            shape=self._state.shape, dtype=np.float32)
-        self.random_ofs_on_reset = random_ofs_on_reset
-        self.seed()
-
-    def reset(self):
-        # make selection of the instrument and it's offset. Then reset the state
-        self._instrument = self.np_random.choice(
-            list(self._prices.keys()))
-        prices = self._prices[self._instrument]
-        bars = self._state.bars_count
-        if self.random_ofs_on_reset:
-            offset = self.np_random.choice(
-                prices.high.shape[0]-bars*10) + bars
-        else:
-            offset = bars
-        self._state.reset(prices, offset)
-        return self._state.encode()
-
-    def step(self, action_idx):
-        action = Actions(action_idx)
-        reward, done = self._state.step(action)
-        obs = self._state.encode()
-        info = {
-            "instrument": self._instrument,
-            "offset": self._state._offset
-        }
-        return obs, reward, done, info
-
-    def render(self, mode='human', close=False):
-        pass
-
-    def close(self):
-        pass
-
-    def seed(self, seed=None):
-        self.np_random, seed1 = seeding.np_random(seed)
-        seed2 = seeding.hash_seed(seed1 + 1) % 2 ** 31
-        return [seed1, seed2]
-
-    @classmethod
-    def from_dir(cls, data_dir, **kwargs):
-        prices = {
-            file: data.load_relative(file)
-            for file in data.price_files(data_dir)
-        }
-        return StocksEnv(prices, **kwargs)
-
-
-class MarketWatchState(State):
-    """
-    State with shape suitable for market watch input
-    """
-    @property
-    def shape(self):
-        # conv2d
-        # [batch_size, input_channels, input_height, input_width]
-        # [1, NUM_FEAT, NUM_COMP, BARS ]
-
-        # conv1d
-        # [batch_size, input_channels, signal_length]
-        # [1, BARS, NUM_COMP]
-        num_of_features = self._input_shape[0]
-        num_of_companies = self._input_shape[2]
-        num_of_periods = self.bars_count
-        return [
-            num_of_features,
-            num_of_periods,
-            num_of_companies
-        ]
-
-    def encode(self):
-        start = self._offset - (self.bars_count-1)
-        stop = self._offset+1
-
-        state = [0, 0]
-        if self.have_position:
-            state = [1, self.open_price]
-        state = np.array(state)
-
-        return (self._prices[:, start:stop,:], state)
-        # return self._prices[:, start:stop,:]
-        res = np.zeros(shape=self.shape, dtype=np.float32)
-        res[0] = self._prices.high[start:stop]
-        res[1] = self._prices.low[start:stop]
-        res[2] = self._prices.close[start:stop]
-        if self.volumes:
-            res[3] = self._prices.volume[start:stop]
-            dst = 4
-        else:
-            dst = 3
-        if self.have_position:
-            res[dst] = 1.0
-            res[dst+1] = self._cur_close() / self.open_price - 1.0
-        return res
-
 class MarketWatchStocksEnv(gym.Env):
     metadata = {'render.modes': ['human']}
     spec = EnvSpec("MarketWatchStocksEnv-v0")
 
     def __init__(self, prices, bars_count=DEFAULT_BARS_COUNT,
                  commission=DEFAULT_COMMISSION_PERC,
-                 reset_on_close=True, state_1d=False,
+                 reset_on_close=True,
                  random_ofs_on_reset=True, reward_on_close=False,
-                 volumes=False):
+                 volumes=False,
+                 target_index=0,
+                 weights=None
+                 ):
         self._prices = prices
-        self._state = MarketWatchState(bars_count, commission, reset_on_close,
-                reward_on_close=reward_on_close, volumes=volumes, input_shape=prices.shape)
+        self._state = MarketWatchState(
+            bars_count,
+            commission,
+            reset_on_close,
+            reward_on_close=reward_on_close,
+            volumes=volumes,
+            input_shape=prices.shape,
+            target_index=target_index,
+            weights=weights
+
+        )
 
         self.action_space = gym.spaces.Discrete(n=len(Actions))
         self.observation_space = gym.spaces.Box(

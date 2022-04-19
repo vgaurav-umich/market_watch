@@ -14,7 +14,7 @@ METRICS = (
 
 
 def validation_run(env, net, episodes=100, device="cpu", epsilon=0.02, comission=0.1):
-    stats = { metric: [] for metric in METRICS }
+    stats = {metric: [] for metric in METRICS}
 
     for episode in range(episodes):
         obs = env.reset()
@@ -39,7 +39,8 @@ def validation_run(env, net, episodes=100, device="cpu", epsilon=0.02, comission
                 position = close_price
                 position_steps = 0
             elif action == environ.Actions.Close and position is not None:
-                profit = close_price - position - (close_price + position) * comission / 100
+                profit = close_price - position - \
+                    (close_price + position) * comission / 100
                 profit = 100.0 * profit / position
                 stats['order_profits'].append(profit)
                 stats['order_steps'].append(position_steps)
@@ -53,7 +54,8 @@ def validation_run(env, net, episodes=100, device="cpu", epsilon=0.02, comission
                 position_steps += 1
             if done:
                 if position is not None:
-                    profit = close_price - position - (close_price + position) * comission / 100
+                    profit = close_price - position - \
+                        (close_price + position) * comission / 100
                     profit = 100.0 * profit / position
                     stats['order_profits'].append(profit)
                     stats['order_steps'].append(position_steps)
@@ -62,4 +64,4 @@ def validation_run(env, net, episodes=100, device="cpu", epsilon=0.02, comission
         stats['episode_reward'].append(total_reward)
         stats['episode_steps'].append(episode_steps)
 
-    return { key: np.mean(vals) for key, vals in stats.items() }
+    return {key: np.mean(vals) for key, vals in stats.items()}
