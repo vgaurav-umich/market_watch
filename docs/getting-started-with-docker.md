@@ -11,8 +11,13 @@
   ```
  - docker run
     ```
-    docker run -it --rm -v ~/market_watch/output:/root/market_watch/output veenagaurav/market_watch:beta
+     docker run -it --rm -v ~/market_watch:/root/market_watch -p 8888:8888 veenagaurav/market_watch:rc1
     ```
+    replace ~/market_watch after -v option with your local folder. -p option does port mapping to enable jupyter notebook access.
+    
+    Once you are in Docker. issue following command to start jupyter server.
+    `jupyter notebook --ip 0.0.0.0 --no-browser --allow-root`
+    On the HOST machine access jupyter notebooks by visting the URL. For more info see this [article](https://stackoverflow.com/questions/38830610/access-jupyter-notebook-running-on-docker-container?msclkid=bdd29106c00011ecbd22cd2a0b9cf245)
     
 You will find a utility shell script that will copy your local credentials from host machine to docker container. This is needed to run sucessfull ploomber build.
 
