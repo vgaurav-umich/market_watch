@@ -21,7 +21,7 @@ upstream = ['combine_fred_yahoo']
 
 
 def train_model(
-    saves_dir="saves",
+    saves_dir="output",
     batch_size=32,
     bars_count=10,
 
