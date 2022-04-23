@@ -148,7 +148,8 @@ class MarketWatchStocksEnv(gym.Env):
     def __init__(self, prices, bars_count=DEFAULT_BARS_COUNT,
                  commission=DEFAULT_COMMISSION_PERC,
                  reset_on_close=True,
-                 random_ofs_on_reset=True, reward_on_close=False,
+                 random_ofs_on_reset=True,
+                 reward_on_close=False,
                  volumes=False,
                  target_index=0,
                  weights=None

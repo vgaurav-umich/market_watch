@@ -4,6 +4,7 @@
 import json
 from collections import defaultdict
 import os
+from re import M
 import ptan
 import pathlib
 import gym.wrappers
@@ -39,7 +40,8 @@ def train_model(
 
     cuda=torch.cuda.is_available(),
     run_name='test',
-    ticker=os.environ.get('TRADE_TICKER', 'TSLA')
+    ticker=os.environ.get('TRADE_TICKER', 'TSLA'),
+    n_val=50
 ):
     device = torch.device("cuda" if cuda else "cpu")
 
@@ -85,14 +87,15 @@ def train_model(
     data = np.array([
         dfs[feature][cols] for feature in features
     ]).astype(np.float32)
+    data_train = data[:, :-n_val, :]
+    data_validation = data[:, -n_val:, :]
 
     env = environ.MarketWatchStocksEnv(
-        data, bars_count=bars_count, target_index=target_stock_index, weights=weights)
-    env_tst = environ.MarketWatchStocksEnv(
-        data, bars_count=bars_count, target_index=target_stock_index, weights=weights)
+        data_train, bars_count=bars_count, target_index=target_stock_index, weights=weights)
+    env_val = environ.MarketWatchStocksEnv(
+        data_validation, bars_count=bars_count, target_index=target_stock_index, weights=weights)
 
-    env = gym.wrappers.TimeLimit(env, max_episode_steps=1000)
-    env_val = env_tst
+    env = gym.wrappers.TimeLimit(env, max_episode_steps=20)
 
     net = models.DQNConv1DMarketWatch(
         env.observation_space.shape, env.action_space.n, bars_count).to(device)
@@ -156,13 +159,16 @@ def train_model(
         #     print(
         #         f'mean_val ${mean_val}, less than best {engine.state.best_mean_val}')
 
-    @engine.on(ptan.ignite.PeriodEvents.ITERS_1000_COMPLETED)
+    test_metrics = []
+    validation_metrics = []
+    @engine.on(ptan.ignite.PeriodEvents.ITERS_10_COMPLETED)
     def validate(engine: Engine):
-        res = validation.validation_run(env_tst, net, device=device)
-        print("%d: tst: %s" % (engine.state.iteration, res))
-        for key, val in res.items():
-            engine.state.metrics[key + "_tst"] = val
+        res_test = validation.validation_run(env_val, net, device=device)
+        test_metrics.append(res_test)
+        with open(saves_path / 'metrics_test.json', 'w') as f:
+            json.dump(test_metrics, f)
         res = validation.validation_run(env_val, net, device=device)
+        validation_metrics.append(res)
         print("%d: val: %s" % (engine.state.iteration, res))
         for key, val in res.items():
             engine.state.metrics[key + "_val"] = val
@@ -178,6 +184,10 @@ def train_model(
             engine.state.best_val_reward = val_reward
             path = saves_path / ("val_reward-%.3f.data" % val_reward)
             torch.save(net.state_dict(), path)
+        with open(saves_path / 'metrics.json', 'w') as f:
+            json.dump(validation_metrics, f)
+
+
 
     event = ptan.ignite.PeriodEvents.ITERS_100_COMPLETED
     tst_metrics = [m + "_tst" for m in validation.METRICS]
@@ -194,7 +204,6 @@ def train_model(
     engine.run(common.batch_generator(buffer, replay_initial, batch_size))
 
 # %%
-
 
 if __name__ == '__main__':
     runner = train_model(replay_initial=10)

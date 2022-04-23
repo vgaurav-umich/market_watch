@@ -25,7 +25,9 @@ def state_preprocessor(states, device="cpu"):
 @torch.no_grad()
 def calc_values_of_states(states, net, device="cpu"):
     mean_vals = []
-    for batch in np.array_split(states, 64):
+    for batch in np.array_split(states, 5):
+        if len(batch) == 0:
+            break
         states_v = state_preprocessor(batch, device=device)
         action_values_v = net(states_v)
         best_action_values_v = action_values_v.max(1)[0]
