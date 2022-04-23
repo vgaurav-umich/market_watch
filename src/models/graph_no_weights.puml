@@ -1,0 +1,117 @@
+@startuml
+digraph g {
+	graph [
+		rankdir = "LR"
+	];
+	node [
+		fontsize = "16"
+		shape = "card"
+	];
+	edge [
+	];
+	"open" [
+		label = "<f0> open price (n x m) | t1 | ... | t_m"
+		shape = "record"
+	];
+	"close" [
+		label = "<f0> close price (n x m) | t1 | ... | t_m"
+		shape = "record"
+	];
+	"high" [
+		label = "<f0> high price (n x m) | t1 | ... | t_m"
+		shape = "record"
+	];
+	"low" [
+		label = "<f0> low price (n x m) | t1 | ... | t_m"
+		shape = "record"
+	];
+	' "weights" [
+	' 	label = "weights (m x n) | t1 | ... | t_m"
+	' 	shape = "record"
+	' ];
+	"node1" [
+		label = "Conv2d (n_features, 128, 5)"
+	];
+	"state" [
+		label = "state vector | position | open price"
+		shape = "record"
+	];
+	traded_stock_prices [
+		label = "TSLA | t1 | ... | t_m"
+		shape = "record"
+	];
+	"relu1" [
+		label = "Relu (n_features, 128, 5)"
+	];
+	"relu2" [
+		label = "Relu (128, 128, 5)"
+	];
+
+	conv2 [
+		label="Conv2d (128, 128, 5)"
+	];
+
+	fc_val_linear [
+		label="Linear (n_fully_connected, 512)"
+	]
+	fc_val_relu [
+		label="relu (512, 1)"
+	]
+	fc_val_linear2 [
+		label="Linear (512, 1)"
+	]
+
+
+	fc_adv_linear [
+		label="Linear (n_fully_connected, 512)"
+	]
+	fc_adv_relu [
+		label="relu (512, 1)"
+	]
+	fc_adv_linear2 [
+		label="Linear (512, actions_n)"
+	]
+
+	val_inp [
+		label = "value input | <f0> conv_out | <f1> state_values | <f2> traded stock prices"
+		shape = "record"
+	];
+	out [
+		label="val + (adv - adv.mean())"
+	];
+	result [
+		label = "value of action 1 | ... | value of action n"
+		shape = "record"
+	]
+
+	"open" -> "node1"
+	"close" -> "node1"
+	"high" -> "node1"
+	"low" -> "node1"
+	' "weights" -> "node1"
+
+
+
+
+	"node1" -> relu1
+	"relu1" -> conv2
+	conv2 -> relu2
+
+	relu2 -> val_inp:f0
+	state -> val_inp:f1
+	traded_stock_prices -> val_inp:f2
+
+	val_inp -> fc_adv_linear
+	fc_adv_linear -> fc_adv_relu -> fc_adv_linear2
+	
+	val_inp -> fc_val_linear
+	fc_val_linear -> fc_val_relu -> fc_val_linear2
+
+
+	fc_adv_linear2 -> out
+	fc_val_linear2 -> out
+
+	out -> result
+
+}
+@enduml
