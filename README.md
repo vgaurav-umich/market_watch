@@ -79,11 +79,11 @@ Project Organization
     │
     └── Dockerfile          <- Docker image manifest
     
-
+<p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
 
 --------
 
-## Get Started with Dockker
+## Get Started with Docker
 
 - Ensure you have Docker or Docker desktop installed. See web for details to install docker on your machine
 - you can donwload the git repo locally or run build from github URL directly. Since ti is a development image I'll be using build from github directly.
@@ -113,4 +113,15 @@ Project Organization
     
 - You will find a utility shell script that will copy your local credentials, like - key files used to authenticate with Github, Google Cloud service key file etc. from host machine to docker container. This is needed to run sucessfull ploomber build. For more details on environment variable and docker see this [article](https://aggarwal-rohan17.medium.com/docker-build-arguments-and-environment-variables-1bdca0c0ef92#:~:text=Docker%20environment%20variables%20are%20used%20to%20make%20the,be%20accessed%20in%20the%20application%20code%20as%20well.)
 
-<p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
+## Ploomber
+
+Ploomber is a better and more function rich version of the Makefile. At the very core it does what Makefile’s do i.e. execute individual tasks/scripts in order of dependency between them. 
+The Docker image already comes preloaded with Ploomber. 
+
+To get started with Ploomber we need to issue command –
+
+```
+Ploomber build
+```
+Above command will make use of pipeline.yaml file which is a ploomber’s equivalent of Makefile which contains data pipeline specification to build each individual tasks.  
+
