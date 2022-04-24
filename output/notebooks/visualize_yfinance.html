@@ -14604,7 +14604,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Parameters</span>
 <span class="n">rolling_window</span> <span class="o">=</span> <span class="mi">120</span>
 <span class="n">tickers</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;TSLA&quot;</span><span class="p">]</span>
-<span class="n">product</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;nb&quot;</span><span class="p">:</span> <span class="s2">&quot;/home/vgaurav/market_watch/output/notebooks/visualize_yfinance.html&quot;</span><span class="p">}</span>
+<span class="n">product</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;nb&quot;</span><span class="p">:</span> <span class="s2">&quot;/Users/aiujdm2/market_watch/output/notebooks/visualize_yfinance.html&quot;</span><span class="p">}</span>
 </pre></div>
 
      </div>
@@ -14612,7 +14612,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -14635,6 +14635,37 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
      </div>
 </div>
 </div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
+<pre>[nltk_data] Downloading package wordnet to /Users/aiujdm2/nltk_data...
+[nltk_data]   Package wordnet is already up-to-date!
+[nltk_data] Downloading package stopwords to
+[nltk_data]     /Users/aiujdm2/nltk_data...
+[nltk_data]   Package stopwords is already up-to-date!
+[nltk_data] Downloading package omw-1.4 to /Users/aiujdm2/nltk_data...
+[nltk_data]   Package omw-1.4 is already up-to-date!
+/Users/aiujdm2/.local/share/virtualenvs/market_watch-dtlP-L11/lib/python3.9/site-packages/fuzzywuzzy/fuzz.py:11: UserWarning: Using slow pure-python SequenceMatcher. Install python-Levenshtein to remove this warning
+  warnings.warn(&#39;Using slow pure-python SequenceMatcher. Install python-Levenshtein to remove this warning&#39;)
+</pre>
+</div>
+</div>
+
+</div>
+
 </div>
 
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
@@ -14752,13 +14783,13 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
 
-<div id="altair-viz-00972548de9042968afdd6de9097c080"></div>
+<div id="altair-viz-816318be47af4f9da6f3b6fbe80992e3"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-00972548de9042968afdd6de9097c080") {
-      outputDiv = document.getElementById("altair-viz-00972548de9042968afdd6de9097c080");
+    if (outputDiv.id !== "altair-viz-816318be47af4f9da6f3b6fbe80992e3") {
+      outputDiv = document.getElementById("altair-viz-816318be47af4f9da6f3b6fbe80992e3");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -14804,7 +14835,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
         .catch(showError)
         .then(() => displayChart(vegaEmbed));
     }
-  })({"usermeta": {"embedOptions": {"theme": "fivethirtyeight"}}, "config": {"view": {"continuousWidth": 400, "continuousHeight": 300}, "font": "monospace"}, "data": {"name": "data-5ad9090661f12f437c2c9b70eb7a23d3"}, "mark": "line", "encoding": {"color": {"field": "validation", "legend": {"title": "legend", "values": ["Traning", "Validation"]}, "scale": {"range": ["green", "orange"]}, "type": "ordinal"}, "x": {"field": "Date", "type": "temporal"}, "y": {"field": "Close", "type": "quantitative"}}, "transform": [{"calculate": "if(datum.Date > datetime(\"2021-03-01\"), \"True\", \"False\")", "as": "validation"}], "width": 900, "$schema": "https://vega.github.io/schema/vega-lite/v4.17.0.json", "datasets": {"data-5ad9090661f12f437c2c9b70eb7a23d3": [{"Date": "2021-12-20T00:00:00", "Open": 910.7000122070312, "High": 921.6900024414062, "Low": 893.3900146484375, "Close": 899.9400024414062, "Volume": 18826700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2021-12-21T00:00:00", "Open": 916.8699951171875, "High": 939.5, "Low": 886.1199951171875, "Close": 938.530029296875, "Volume": 23839300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2021-12-22T00:00:00", "Open": 965.6599731445312, "High": 1015.6599731445312, "Low": 957.0499877929688, "Close": 1008.8699951171875, "Volume": 31211400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2021-12-23T00:00:00", "Open": 1006.7999877929688, "High": 1072.97998046875, "Low": 997.5599975585938, "Close": 1067.0, "Volume": 30904400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2021-12-27T00:00:00", "Open": 1073.6700439453125, "High": 1117.0, "Low": 1070.719970703125, "Close": 1093.93994140625, "Volume": 23715300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2021-12-28T00:00:00", "Open": 1109.489990234375, "High": 1119.0, "Low": 1078.4200439453125, "Close": 1088.469970703125, "Volume": 20108000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2021-12-29T00:00:00", "Open": 1098.6400146484375, "High": 1104.0, "Low": 1064.1400146484375, "Close": 1086.18994140625, "Volume": 18718000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2021-12-30T00:00:00", "Open": 1061.3299560546875, "High": 1095.550048828125, "Low": 1053.1500244140625, "Close": 1070.3399658203125, "Volume": 15680300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2021-12-31T00:00:00", "Open": 1073.43994140625, "High": 1082.0, "Low": 1054.5899658203125, "Close": 1056.780029296875, "Volume": 13577900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-03T00:00:00", "Open": 1147.75, "High": 1201.0699462890625, "Low": 1136.0400390625, "Close": 1199.780029296875, "Volume": 34643800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-04T00:00:00", "Open": 1189.550048828125, "High": 1208.0, "Low": 1123.050048828125, "Close": 1149.5899658203125, "Volume": 33416100, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-05T00:00:00", "Open": 1146.6500244140625, "High": 1170.3399658203125, "Low": 1081.010009765625, "Close": 1088.1199951171875, "Volume": 26706600, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-06T00:00:00", "Open": 1077.0, "High": 1088.0, "Low": 1020.5, "Close": 1064.699951171875, "Volume": 30112200, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-07T00:00:00", "Open": 1080.3699951171875, "High": 1080.9300537109375, "Low": 1010.0, "Close": 1026.9599609375, "Volume": 28054900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-10T00:00:00", "Open": 1000.0, "High": 1059.0999755859375, "Low": 980.0, "Close": 1058.1199951171875, "Volume": 30605000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-11T00:00:00", "Open": 1053.6700439453125, "High": 1075.8499755859375, "Low": 1038.8199462890625, "Close": 1064.4000244140625, "Volume": 22021100, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-12T00:00:00", "Open": 1078.8499755859375, "High": 1114.8399658203125, "Low": 1072.5899658203125, "Close": 1106.219970703125, "Volume": 27913000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-13T00:00:00", "Open": 1109.0699462890625, "High": 1115.5999755859375, "Low": 1026.5400390625, "Close": 1031.56005859375, "Volume": 32403300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-14T00:00:00", "Open": 1019.8800048828125, "High": 1052.0, "Low": 1013.3800048828125, "Close": 1049.6099853515625, "Volume": 24308100, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-18T00:00:00", "Open": 1026.6099853515625, "High": 1070.7900390625, "Low": 1016.0599975585938, "Close": 1030.510009765625, "Volume": 22247800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-19T00:00:00", "Open": 1041.7099609375, "High": 1054.6700439453125, "Low": 995.0, "Close": 995.6500244140625, "Volume": 25147500, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-20T00:00:00", "Open": 1009.72998046875, "High": 1041.6600341796875, "Low": 994.0, "Close": 996.27001953125, "Volume": 23496200, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-21T00:00:00", "Open": 996.3400268554688, "High": 1004.5499877929688, "Low": 940.5, "Close": 943.9000244140625, "Volume": 34472000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-24T00:00:00", "Open": 904.760009765625, "High": 933.510009765625, "Low": 851.469970703125, "Close": 930.0, "Volume": 50521900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-25T00:00:00", "Open": 914.2000122070312, "High": 951.260009765625, "Low": 903.2100219726562, "Close": 918.4000244140625, "Volume": 28865300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-26T00:00:00", "Open": 952.4299926757812, "High": 987.6900024414062, "Low": 906.0, "Close": 937.4099731445312, "Volume": 34955800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-27T00:00:00", "Open": 933.3599853515625, "High": 935.3900146484375, "Low": 829.0, "Close": 829.0999755859375, "Volume": 49036500, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-28T00:00:00", "Open": 831.5599975585938, "High": 857.5, "Low": 792.010009765625, "Close": 846.3499755859375, "Volume": 44929700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-31T00:00:00", "Open": 872.7100219726562, "High": 937.989990234375, "Low": 862.0499877929688, "Close": 936.719970703125, "Volume": 34812000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-01T00:00:00", "Open": 935.2100219726562, "High": 943.7000122070312, "Low": 905.0, "Close": 931.25, "Volume": 24379400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-02T00:00:00", "Open": 928.1799926757812, "High": 931.5, "Low": 889.4099731445312, "Close": 905.6599731445312, "Volume": 22264300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-03T00:00:00", "Open": 882.0, "High": 937.0, "Low": 880.52001953125, "Close": 891.1400146484375, "Volume": 26285200, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-04T00:00:00", "Open": 897.219970703125, "High": 936.5, "Low": 881.1699829101562, "Close": 923.3200073242188, "Volume": 24541800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-07T00:00:00", "Open": 923.7899780273438, "High": 947.77001953125, "Low": 902.7100219726562, "Close": 907.3400268554688, "Volume": 20331500, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-08T00:00:00", "Open": 905.530029296875, "High": 926.2899780273438, "Low": 894.7999877929688, "Close": 922.0, "Volume": 16909700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-09T00:00:00", "Open": 935.0, "High": 946.27001953125, "Low": 920.0, "Close": 932.0, "Volume": 17419800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-10T00:00:00", "Open": 908.3699951171875, "High": 943.8099975585938, "Low": 896.7000122070312, "Close": 904.5499877929688, "Volume": 22042300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-11T00:00:00", "Open": 909.6300048828125, "High": 915.9600219726562, "Low": 850.7000122070312, "Close": 860.0, "Volume": 26548600, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-14T00:00:00", "Open": 861.5700073242188, "High": 898.8800048828125, "Low": 853.1500244140625, "Close": 875.760009765625, "Volume": 22585500, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-15T00:00:00", "Open": 900.0, "High": 923.0, "Low": 893.3800048828125, "Close": 922.4299926757812, "Volume": 19095400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-16T00:00:00", "Open": 914.0499877929688, "High": 926.4299926757812, "Low": 901.2100219726562, "Close": 923.3900146484375, "Volume": 17098100, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-17T00:00:00", "Open": 913.260009765625, "High": 918.5, "Low": 874.0999755859375, "Close": 876.3499755859375, "Volume": 18392800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-18T00:00:00", "Open": 886.0, "High": 886.8699951171875, "Low": 837.6099853515625, "Close": 856.97998046875, "Volume": 22833900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-22T00:00:00", "Open": 834.1300048828125, "High": 856.72998046875, "Low": 801.0999755859375, "Close": 821.530029296875, "Volume": 27762700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-23T00:00:00", "Open": 830.4299926757812, "High": 835.2999877929688, "Low": 760.5599975585938, "Close": 764.0399780273438, "Volume": 31752300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-24T00:00:00", "Open": 700.3900146484375, "High": 802.47998046875, "Low": 700.0, "Close": 800.77001953125, "Volume": 45107400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-25T00:00:00", "Open": 809.22998046875, "High": 819.5, "Low": 782.4000244140625, "Close": 809.8699951171875, "Volume": 25355900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-28T00:00:00", "Open": 815.010009765625, "High": 876.8599853515625, "Low": 814.7100219726562, "Close": 870.4299926757812, "Volume": 33002300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-01T00:00:00", "Open": 869.6799926757812, "High": 889.8800048828125, "Low": 853.780029296875, "Close": 864.3699951171875, "Volume": 24922300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-02T00:00:00", "Open": 872.1300048828125, "High": 886.47998046875, "Low": 844.27001953125, "Close": 879.8900146484375, "Volume": 24881100, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-03T00:00:00", "Open": 878.77001953125, "High": 886.4400024414062, "Low": 832.5999755859375, "Close": 839.2899780273438, "Volume": 20541200, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-04T00:00:00", "Open": 849.0999755859375, "High": 855.6500244140625, "Low": 825.1599731445312, "Close": 838.2899780273438, "Volume": 22333200, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-07T00:00:00", "Open": 856.2999877929688, "High": 866.1400146484375, "Low": 804.5700073242188, "Close": 804.5800170898438, "Volume": 24164700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-08T00:00:00", "Open": 795.530029296875, "High": 849.989990234375, "Low": 782.1699829101562, "Close": 824.4000244140625, "Volume": 26799700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-09T00:00:00", "Open": 839.47998046875, "High": 860.5599975585938, "Low": 832.010009765625, "Close": 858.969970703125, "Volume": 19728000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-10T00:00:00", "Open": 851.4500122070312, "High": 854.4500122070312, "Low": 810.3599853515625, "Close": 838.2999877929688, "Volume": 19549500, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-11T00:00:00", "Open": 840.2000122070312, "High": 843.7999877929688, "Low": 793.77001953125, "Close": 795.3499755859375, "Volume": 22345700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-14T00:00:00", "Open": 780.6099853515625, "High": 800.7000122070312, "Low": 756.0399780273438, "Close": 766.3699951171875, "Volume": 23717400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-15T00:00:00", "Open": 775.27001953125, "High": 805.5700073242188, "Low": 756.5700073242188, "Close": 801.8900146484375, "Volume": 22280400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-16T00:00:00", "Open": 809.0, "High": 842.0, "Low": 802.260009765625, "Close": 840.22998046875, "Volume": 28009600, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-17T00:00:00", "Open": 830.989990234375, "High": 875.0, "Low": 825.719970703125, "Close": 871.5999755859375, "Volume": 22194300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-18T00:00:00", "Open": 874.489990234375, "High": 907.8499755859375, "Low": 867.3900146484375, "Close": 905.3900146484375, "Volume": 33471400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-21T00:00:00", "Open": 914.97998046875, "High": 942.8499755859375, "Low": 907.0900268554688, "Close": 921.1599731445312, "Volume": 27327200, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-22T00:00:00", "Open": 930.0, "High": 997.8599853515625, "Low": 921.75, "Close": 993.97998046875, "Volume": 35289500, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-23T00:00:00", "Open": 979.9400024414062, "High": 1040.699951171875, "Low": 976.4000244140625, "Close": 999.1099853515625, "Volume": 40225400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-24T00:00:00", "Open": 1009.72998046875, "High": 1024.489990234375, "Low": 988.7999877929688, "Close": 1013.9199829101562, "Volume": 22973600, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-25T00:00:00", "Open": 1008.0, "High": 1021.7999877929688, "Low": 997.3200073242188, "Close": 1010.6400146484375, "Volume": 20677200, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-28T00:00:00", "Open": 1065.0999755859375, "High": 1097.8800048828125, "Low": 1053.5999755859375, "Close": 1091.8399658203125, "Volume": 34168700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-29T00:00:00", "Open": 1107.989990234375, "High": 1114.77001953125, "Low": 1073.1099853515625, "Close": 1099.5699462890625, "Volume": 24538300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-30T00:00:00", "Open": 1091.1700439453125, "High": 1113.949951171875, "Low": 1084.0, "Close": 1093.989990234375, "Volume": 19955000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-31T00:00:00", "Open": 1094.5699462890625, "High": 1103.1400146484375, "Low": 1076.6400146484375, "Close": 1077.5999755859375, "Volume": 16330900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-01T00:00:00", "Open": 1081.1500244140625, "High": 1094.75, "Low": 1066.6400146484375, "Close": 1084.5899658203125, "Volume": 18012900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-04T00:00:00", "Open": 1089.3800048828125, "High": 1149.9100341796875, "Low": 1072.530029296875, "Close": 1145.449951171875, "Volume": 27345300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-05T00:00:00", "Open": 1136.300048828125, "High": 1152.8699951171875, "Low": 1087.300048828125, "Close": 1091.260009765625, "Volume": 26691700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-06T00:00:00", "Open": 1073.469970703125, "High": 1079.0, "Low": 1027.699951171875, "Close": 1045.760009765625, "Volume": 29782800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-07T00:00:00", "Open": 1052.3900146484375, "High": 1076.5899658203125, "Low": 1021.5399780273438, "Close": 1057.260009765625, "Volume": 26482400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-08T00:00:00", "Open": 1043.2099609375, "High": 1048.43994140625, "Low": 1022.4400024414062, "Close": 1025.489990234375, "Volume": 18293300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-11T00:00:00", "Open": 980.4000244140625, "High": 1008.469970703125, "Low": 974.6400146484375, "Close": 975.9299926757812, "Volume": 19785700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-12T00:00:00", "Open": 997.6400146484375, "High": 1021.1900024414062, "Low": 976.5999755859375, "Close": 986.9500122070312, "Volume": 21992000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-13T00:00:00", "Open": 981.0800170898438, "High": 1026.239990234375, "Low": 973.0999755859375, "Close": 1022.3699951171875, "Volume": 18373700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-14T00:00:00", "Open": 999.2899780273438, "High": 1012.7100219726562, "Low": 982.1900024414062, "Close": 985.0, "Volume": 19444000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-18T00:00:00", "Open": 989.030029296875, "High": 1014.9199829101562, "Low": 973.4099731445312, "Close": 1004.2899780273438, "Volume": 17182300, "Dividends": 0, "Stock Splits": 0}]}}, {"mode": "vega-lite"});
+  })({"usermeta": {"embedOptions": {"theme": "fivethirtyeight"}}, "config": {"view": {"continuousWidth": 400, "continuousHeight": 300}, "font": "monospace"}, "data": {"name": "data-6ed28287b456678bc4f6feb27ad98bd7"}, "mark": "line", "encoding": {"color": {"field": "validation", "legend": {"title": "legend", "values": ["Traning", "Validation"]}, "scale": {"range": ["green", "orange"]}, "type": "ordinal"}, "x": {"field": "Date", "type": "temporal"}, "y": {"field": "Close", "type": "quantitative"}}, "transform": [{"calculate": "if(datum.Date > datetime(\"2021-03-01\"), \"True\", \"False\")", "as": "validation"}], "width": 900, "$schema": "https://vega.github.io/schema/vega-lite/v4.17.0.json", "datasets": {"data-6ed28287b456678bc4f6feb27ad98bd7": [{"Date": "2021-12-27T00:00:00", "Open": 1073.6700439453125, "High": 1117.0, "Low": 1070.719970703125, "Close": 1093.93994140625, "Volume": 23715300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2021-12-28T00:00:00", "Open": 1109.489990234375, "High": 1119.0, "Low": 1078.4200439453125, "Close": 1088.469970703125, "Volume": 20108000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2021-12-29T00:00:00", "Open": 1098.6400146484375, "High": 1104.0, "Low": 1064.1400146484375, "Close": 1086.18994140625, "Volume": 18718000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2021-12-30T00:00:00", "Open": 1061.3299560546875, "High": 1095.550048828125, "Low": 1053.1500244140625, "Close": 1070.3399658203125, "Volume": 15680300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2021-12-31T00:00:00", "Open": 1073.43994140625, "High": 1082.0, "Low": 1054.5899658203125, "Close": 1056.780029296875, "Volume": 13577900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-03T00:00:00", "Open": 1147.75, "High": 1201.0699462890625, "Low": 1136.0400390625, "Close": 1199.780029296875, "Volume": 34643800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-04T00:00:00", "Open": 1189.550048828125, "High": 1208.0, "Low": 1123.050048828125, "Close": 1149.5899658203125, "Volume": 33416100, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-05T00:00:00", "Open": 1146.6500244140625, "High": 1170.3399658203125, "Low": 1081.010009765625, "Close": 1088.1199951171875, "Volume": 26706600, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-06T00:00:00", "Open": 1077.0, "High": 1088.0, "Low": 1020.5, "Close": 1064.699951171875, "Volume": 30112200, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-07T00:00:00", "Open": 1080.3699951171875, "High": 1080.9300537109375, "Low": 1010.0, "Close": 1026.9599609375, "Volume": 28054900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-10T00:00:00", "Open": 1000.0, "High": 1059.0999755859375, "Low": 980.0, "Close": 1058.1199951171875, "Volume": 30605000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-11T00:00:00", "Open": 1053.6700439453125, "High": 1075.8499755859375, "Low": 1038.8199462890625, "Close": 1064.4000244140625, "Volume": 22021100, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-12T00:00:00", "Open": 1078.8499755859375, "High": 1114.8399658203125, "Low": 1072.5899658203125, "Close": 1106.219970703125, "Volume": 27913000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-13T00:00:00", "Open": 1109.0699462890625, "High": 1115.5999755859375, "Low": 1026.5400390625, "Close": 1031.56005859375, "Volume": 32403300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-14T00:00:00", "Open": 1019.8800048828125, "High": 1052.0, "Low": 1013.3800048828125, "Close": 1049.6099853515625, "Volume": 24308100, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-18T00:00:00", "Open": 1026.6099853515625, "High": 1070.7900390625, "Low": 1016.0599975585938, "Close": 1030.510009765625, "Volume": 22247800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-19T00:00:00", "Open": 1041.7099609375, "High": 1054.6700439453125, "Low": 995.0, "Close": 995.6500244140625, "Volume": 25147500, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-20T00:00:00", "Open": 1009.72998046875, "High": 1041.6600341796875, "Low": 994.0, "Close": 996.27001953125, "Volume": 23496200, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-21T00:00:00", "Open": 996.3400268554688, "High": 1004.5499877929688, "Low": 940.5, "Close": 943.9000244140625, "Volume": 34472000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-24T00:00:00", "Open": 904.760009765625, "High": 933.510009765625, "Low": 851.469970703125, "Close": 930.0, "Volume": 50521900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-25T00:00:00", "Open": 914.2000122070312, "High": 951.260009765625, "Low": 903.2100219726562, "Close": 918.4000244140625, "Volume": 28865300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-26T00:00:00", "Open": 952.4299926757812, "High": 987.6900024414062, "Low": 906.0, "Close": 937.4099731445312, "Volume": 34955800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-27T00:00:00", "Open": 933.3599853515625, "High": 935.3900146484375, "Low": 829.0, "Close": 829.0999755859375, "Volume": 49036500, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-28T00:00:00", "Open": 831.5599975585938, "High": 857.5, "Low": 792.010009765625, "Close": 846.3499755859375, "Volume": 44929700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-31T00:00:00", "Open": 872.7100219726562, "High": 937.989990234375, "Low": 862.0499877929688, "Close": 936.719970703125, "Volume": 34812000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-01T00:00:00", "Open": 935.2100219726562, "High": 943.7000122070312, "Low": 905.0, "Close": 931.25, "Volume": 24379400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-02T00:00:00", "Open": 928.1799926757812, "High": 931.5, "Low": 889.4099731445312, "Close": 905.6599731445312, "Volume": 22264300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-03T00:00:00", "Open": 882.0, "High": 937.0, "Low": 880.52001953125, "Close": 891.1400146484375, "Volume": 26285200, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-04T00:00:00", "Open": 897.219970703125, "High": 936.5, "Low": 881.1699829101562, "Close": 923.3200073242188, "Volume": 24541800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-07T00:00:00", "Open": 923.7899780273438, "High": 947.77001953125, "Low": 902.7100219726562, "Close": 907.3400268554688, "Volume": 20331500, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-08T00:00:00", "Open": 905.530029296875, "High": 926.2899780273438, "Low": 894.7999877929688, "Close": 922.0, "Volume": 16909700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-09T00:00:00", "Open": 935.0, "High": 946.27001953125, "Low": 920.0, "Close": 932.0, "Volume": 17419800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-10T00:00:00", "Open": 908.3699951171875, "High": 943.8099975585938, "Low": 896.7000122070312, "Close": 904.5499877929688, "Volume": 22042300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-11T00:00:00", "Open": 909.6300048828125, "High": 915.9600219726562, "Low": 850.7000122070312, "Close": 860.0, "Volume": 26548600, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-14T00:00:00", "Open": 861.5700073242188, "High": 898.8800048828125, "Low": 853.1500244140625, "Close": 875.760009765625, "Volume": 22585500, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-15T00:00:00", "Open": 900.0, "High": 923.0, "Low": 893.3800048828125, "Close": 922.4299926757812, "Volume": 19095400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-16T00:00:00", "Open": 914.0499877929688, "High": 926.4299926757812, "Low": 901.2100219726562, "Close": 923.3900146484375, "Volume": 17098100, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-17T00:00:00", "Open": 913.260009765625, "High": 918.5, "Low": 874.0999755859375, "Close": 876.3499755859375, "Volume": 18392800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-18T00:00:00", "Open": 886.0, "High": 886.8699951171875, "Low": 837.6099853515625, "Close": 856.97998046875, "Volume": 22833900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-22T00:00:00", "Open": 834.1300048828125, "High": 856.72998046875, "Low": 801.0999755859375, "Close": 821.530029296875, "Volume": 27762700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-23T00:00:00", "Open": 830.4299926757812, "High": 835.2999877929688, "Low": 760.5599975585938, "Close": 764.0399780273438, "Volume": 31752300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-24T00:00:00", "Open": 700.3900146484375, "High": 802.47998046875, "Low": 700.0, "Close": 800.77001953125, "Volume": 45107400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-25T00:00:00", "Open": 809.22998046875, "High": 819.5, "Low": 782.4000244140625, "Close": 809.8699951171875, "Volume": 25355900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-28T00:00:00", "Open": 815.010009765625, "High": 876.8599853515625, "Low": 814.7100219726562, "Close": 870.4299926757812, "Volume": 33002300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-01T00:00:00", "Open": 869.6799926757812, "High": 889.8800048828125, "Low": 853.780029296875, "Close": 864.3699951171875, "Volume": 24922300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-02T00:00:00", "Open": 872.1300048828125, "High": 886.47998046875, "Low": 844.27001953125, "Close": 879.8900146484375, "Volume": 24881100, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-03T00:00:00", "Open": 878.77001953125, "High": 886.4400024414062, "Low": 832.5999755859375, "Close": 839.2899780273438, "Volume": 20541200, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-04T00:00:00", "Open": 849.0999755859375, "High": 855.6500244140625, "Low": 825.1599731445312, "Close": 838.2899780273438, "Volume": 22333200, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-07T00:00:00", "Open": 856.2999877929688, "High": 866.1400146484375, "Low": 804.5700073242188, "Close": 804.5800170898438, "Volume": 24164700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-08T00:00:00", "Open": 795.530029296875, "High": 849.989990234375, "Low": 782.1699829101562, "Close": 824.4000244140625, "Volume": 26799700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-09T00:00:00", "Open": 839.47998046875, "High": 860.5599975585938, "Low": 832.010009765625, "Close": 858.969970703125, "Volume": 19728000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-10T00:00:00", "Open": 851.4500122070312, "High": 854.4500122070312, "Low": 810.3599853515625, "Close": 838.2999877929688, "Volume": 19549500, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-11T00:00:00", "Open": 840.2000122070312, "High": 843.7999877929688, "Low": 793.77001953125, "Close": 795.3499755859375, "Volume": 22345700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-14T00:00:00", "Open": 780.6099853515625, "High": 800.7000122070312, "Low": 756.0399780273438, "Close": 766.3699951171875, "Volume": 23717400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-15T00:00:00", "Open": 775.27001953125, "High": 805.5700073242188, "Low": 756.5700073242188, "Close": 801.8900146484375, "Volume": 22280400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-16T00:00:00", "Open": 809.0, "High": 842.0, "Low": 802.260009765625, "Close": 840.22998046875, "Volume": 28009600, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-17T00:00:00", "Open": 830.989990234375, "High": 875.0, "Low": 825.719970703125, "Close": 871.5999755859375, "Volume": 22194300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-18T00:00:00", "Open": 874.489990234375, "High": 907.8499755859375, "Low": 867.3900146484375, "Close": 905.3900146484375, "Volume": 33471400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-21T00:00:00", "Open": 914.97998046875, "High": 942.8499755859375, "Low": 907.0900268554688, "Close": 921.1599731445312, "Volume": 27327200, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-22T00:00:00", "Open": 930.0, "High": 997.8599853515625, "Low": 921.75, "Close": 993.97998046875, "Volume": 35289500, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-23T00:00:00", "Open": 979.9400024414062, "High": 1040.699951171875, "Low": 976.4000244140625, "Close": 999.1099853515625, "Volume": 40225400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-24T00:00:00", "Open": 1009.72998046875, "High": 1024.489990234375, "Low": 988.7999877929688, "Close": 1013.9199829101562, "Volume": 22973600, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-25T00:00:00", "Open": 1008.0, "High": 1021.7999877929688, "Low": 997.3200073242188, "Close": 1010.6400146484375, "Volume": 20677200, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-28T00:00:00", "Open": 1065.0999755859375, "High": 1097.8800048828125, "Low": 1053.5999755859375, "Close": 1091.8399658203125, "Volume": 34168700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-29T00:00:00", "Open": 1107.989990234375, "High": 1114.77001953125, "Low": 1073.1099853515625, "Close": 1099.5699462890625, "Volume": 24538300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-30T00:00:00", "Open": 1091.1700439453125, "High": 1113.949951171875, "Low": 1084.0, "Close": 1093.989990234375, "Volume": 19955000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-31T00:00:00", "Open": 1094.5699462890625, "High": 1103.1400146484375, "Low": 1076.6400146484375, "Close": 1077.5999755859375, "Volume": 16330900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-01T00:00:00", "Open": 1081.1500244140625, "High": 1094.75, "Low": 1066.6400146484375, "Close": 1084.5899658203125, "Volume": 18012900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-04T00:00:00", "Open": 1089.3800048828125, "High": 1149.9100341796875, "Low": 1072.530029296875, "Close": 1145.449951171875, "Volume": 27345300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-05T00:00:00", "Open": 1136.300048828125, "High": 1152.8699951171875, "Low": 1087.300048828125, "Close": 1091.260009765625, "Volume": 26691700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-06T00:00:00", "Open": 1073.469970703125, "High": 1079.0, "Low": 1027.699951171875, "Close": 1045.760009765625, "Volume": 29782800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-07T00:00:00", "Open": 1052.3900146484375, "High": 1076.5899658203125, "Low": 1021.5399780273438, "Close": 1057.260009765625, "Volume": 26482400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-08T00:00:00", "Open": 1043.2099609375, "High": 1048.43994140625, "Low": 1022.4400024414062, "Close": 1025.489990234375, "Volume": 18293300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-11T00:00:00", "Open": 980.4000244140625, "High": 1008.469970703125, "Low": 974.6400146484375, "Close": 975.9299926757812, "Volume": 19785700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-12T00:00:00", "Open": 997.6400146484375, "High": 1021.1900024414062, "Low": 976.5999755859375, "Close": 986.9500122070312, "Volume": 21992000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-13T00:00:00", "Open": 981.0800170898438, "High": 1026.239990234375, "Low": 973.0999755859375, "Close": 1022.3699951171875, "Volume": 18373700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-14T00:00:00", "Open": 999.2899780273438, "High": 1012.7100219726562, "Low": 982.1900024414062, "Close": 985.0, "Volume": 19444000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-18T00:00:00", "Open": 989.030029296875, "High": 1014.9199829101562, "Low": 973.4099731445312, "Close": 1004.2899780273438, "Volume": 17238400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-19T00:00:00", "Open": 1005.0599975585938, "High": 1034.93994140625, "Low": 995.3300170898438, "Close": 1028.1500244140625, "Volume": 16615900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-20T00:00:00", "Open": 1030.0, "High": 1034.0, "Low": 975.25, "Close": 977.2000122070312, "Volume": 23570400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-21T00:00:00", "Open": 1074.72998046875, "High": 1092.219970703125, "Low": 996.4199829101562, "Close": 1008.780029296875, "Volume": 35138800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-22T00:00:00", "Open": 1014.9099731445312, "High": 1034.8499755859375, "Low": 994.0, "Close": 1005.0499877929688, "Volume": 23181600, "Dividends": 0, "Stock Splits": 0}]}}, {"mode": "vega-lite"});
 </script>
 </div>
 
@@ -14854,13 +14885,13 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
 
-<div id="altair-viz-e152129919534f9fa2833afa19babfc1"></div>
+<div id="altair-viz-a6b3a8165b3345e6bcb1ad67850b4b2e"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-e152129919534f9fa2833afa19babfc1") {
-      outputDiv = document.getElementById("altair-viz-e152129919534f9fa2833afa19babfc1");
+    if (outputDiv.id !== "altair-viz-a6b3a8165b3345e6bcb1ad67850b4b2e") {
+      outputDiv = document.getElementById("altair-viz-a6b3a8165b3345e6bcb1ad67850b4b2e");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -14906,7 +14937,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
         .catch(showError)
         .then(() => displayChart(vegaEmbed));
     }
-  })({"usermeta": {"embedOptions": {"theme": "fivethirtyeight"}}, "config": {"view": {"continuousWidth": 400, "continuousHeight": 300}, "font": "monospace"}, "data": {"name": "data-5ad9090661f12f437c2c9b70eb7a23d3"}, "mark": "bar", "encoding": {"x": {"field": "Stock Price (Binned)", "type": "nominal"}, "y": {"aggregate": "count", "title": "Number of Days", "type": "quantitative"}}, "transform": [{"bin": {"maxbins": 25}, "field": "Close", "as": "Stock Price (Binned)"}], "$schema": "https://vega.github.io/schema/vega-lite/v4.17.0.json", "datasets": {"data-5ad9090661f12f437c2c9b70eb7a23d3": [{"Date": "2021-12-20T00:00:00", "Open": 910.7000122070312, "High": 921.6900024414062, "Low": 893.3900146484375, "Close": 899.9400024414062, "Volume": 18826700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2021-12-21T00:00:00", "Open": 916.8699951171875, "High": 939.5, "Low": 886.1199951171875, "Close": 938.530029296875, "Volume": 23839300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2021-12-22T00:00:00", "Open": 965.6599731445312, "High": 1015.6599731445312, "Low": 957.0499877929688, "Close": 1008.8699951171875, "Volume": 31211400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2021-12-23T00:00:00", "Open": 1006.7999877929688, "High": 1072.97998046875, "Low": 997.5599975585938, "Close": 1067.0, "Volume": 30904400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2021-12-27T00:00:00", "Open": 1073.6700439453125, "High": 1117.0, "Low": 1070.719970703125, "Close": 1093.93994140625, "Volume": 23715300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2021-12-28T00:00:00", "Open": 1109.489990234375, "High": 1119.0, "Low": 1078.4200439453125, "Close": 1088.469970703125, "Volume": 20108000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2021-12-29T00:00:00", "Open": 1098.6400146484375, "High": 1104.0, "Low": 1064.1400146484375, "Close": 1086.18994140625, "Volume": 18718000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2021-12-30T00:00:00", "Open": 1061.3299560546875, "High": 1095.550048828125, "Low": 1053.1500244140625, "Close": 1070.3399658203125, "Volume": 15680300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2021-12-31T00:00:00", "Open": 1073.43994140625, "High": 1082.0, "Low": 1054.5899658203125, "Close": 1056.780029296875, "Volume": 13577900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-03T00:00:00", "Open": 1147.75, "High": 1201.0699462890625, "Low": 1136.0400390625, "Close": 1199.780029296875, "Volume": 34643800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-04T00:00:00", "Open": 1189.550048828125, "High": 1208.0, "Low": 1123.050048828125, "Close": 1149.5899658203125, "Volume": 33416100, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-05T00:00:00", "Open": 1146.6500244140625, "High": 1170.3399658203125, "Low": 1081.010009765625, "Close": 1088.1199951171875, "Volume": 26706600, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-06T00:00:00", "Open": 1077.0, "High": 1088.0, "Low": 1020.5, "Close": 1064.699951171875, "Volume": 30112200, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-07T00:00:00", "Open": 1080.3699951171875, "High": 1080.9300537109375, "Low": 1010.0, "Close": 1026.9599609375, "Volume": 28054900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-10T00:00:00", "Open": 1000.0, "High": 1059.0999755859375, "Low": 980.0, "Close": 1058.1199951171875, "Volume": 30605000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-11T00:00:00", "Open": 1053.6700439453125, "High": 1075.8499755859375, "Low": 1038.8199462890625, "Close": 1064.4000244140625, "Volume": 22021100, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-12T00:00:00", "Open": 1078.8499755859375, "High": 1114.8399658203125, "Low": 1072.5899658203125, "Close": 1106.219970703125, "Volume": 27913000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-13T00:00:00", "Open": 1109.0699462890625, "High": 1115.5999755859375, "Low": 1026.5400390625, "Close": 1031.56005859375, "Volume": 32403300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-14T00:00:00", "Open": 1019.8800048828125, "High": 1052.0, "Low": 1013.3800048828125, "Close": 1049.6099853515625, "Volume": 24308100, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-18T00:00:00", "Open": 1026.6099853515625, "High": 1070.7900390625, "Low": 1016.0599975585938, "Close": 1030.510009765625, "Volume": 22247800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-19T00:00:00", "Open": 1041.7099609375, "High": 1054.6700439453125, "Low": 995.0, "Close": 995.6500244140625, "Volume": 25147500, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-20T00:00:00", "Open": 1009.72998046875, "High": 1041.6600341796875, "Low": 994.0, "Close": 996.27001953125, "Volume": 23496200, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-21T00:00:00", "Open": 996.3400268554688, "High": 1004.5499877929688, "Low": 940.5, "Close": 943.9000244140625, "Volume": 34472000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-24T00:00:00", "Open": 904.760009765625, "High": 933.510009765625, "Low": 851.469970703125, "Close": 930.0, "Volume": 50521900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-25T00:00:00", "Open": 914.2000122070312, "High": 951.260009765625, "Low": 903.2100219726562, "Close": 918.4000244140625, "Volume": 28865300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-26T00:00:00", "Open": 952.4299926757812, "High": 987.6900024414062, "Low": 906.0, "Close": 937.4099731445312, "Volume": 34955800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-27T00:00:00", "Open": 933.3599853515625, "High": 935.3900146484375, "Low": 829.0, "Close": 829.0999755859375, "Volume": 49036500, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-28T00:00:00", "Open": 831.5599975585938, "High": 857.5, "Low": 792.010009765625, "Close": 846.3499755859375, "Volume": 44929700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-31T00:00:00", "Open": 872.7100219726562, "High": 937.989990234375, "Low": 862.0499877929688, "Close": 936.719970703125, "Volume": 34812000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-01T00:00:00", "Open": 935.2100219726562, "High": 943.7000122070312, "Low": 905.0, "Close": 931.25, "Volume": 24379400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-02T00:00:00", "Open": 928.1799926757812, "High": 931.5, "Low": 889.4099731445312, "Close": 905.6599731445312, "Volume": 22264300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-03T00:00:00", "Open": 882.0, "High": 937.0, "Low": 880.52001953125, "Close": 891.1400146484375, "Volume": 26285200, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-04T00:00:00", "Open": 897.219970703125, "High": 936.5, "Low": 881.1699829101562, "Close": 923.3200073242188, "Volume": 24541800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-07T00:00:00", "Open": 923.7899780273438, "High": 947.77001953125, "Low": 902.7100219726562, "Close": 907.3400268554688, "Volume": 20331500, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-08T00:00:00", "Open": 905.530029296875, "High": 926.2899780273438, "Low": 894.7999877929688, "Close": 922.0, "Volume": 16909700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-09T00:00:00", "Open": 935.0, "High": 946.27001953125, "Low": 920.0, "Close": 932.0, "Volume": 17419800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-10T00:00:00", "Open": 908.3699951171875, "High": 943.8099975585938, "Low": 896.7000122070312, "Close": 904.5499877929688, "Volume": 22042300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-11T00:00:00", "Open": 909.6300048828125, "High": 915.9600219726562, "Low": 850.7000122070312, "Close": 860.0, "Volume": 26548600, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-14T00:00:00", "Open": 861.5700073242188, "High": 898.8800048828125, "Low": 853.1500244140625, "Close": 875.760009765625, "Volume": 22585500, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-15T00:00:00", "Open": 900.0, "High": 923.0, "Low": 893.3800048828125, "Close": 922.4299926757812, "Volume": 19095400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-16T00:00:00", "Open": 914.0499877929688, "High": 926.4299926757812, "Low": 901.2100219726562, "Close": 923.3900146484375, "Volume": 17098100, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-17T00:00:00", "Open": 913.260009765625, "High": 918.5, "Low": 874.0999755859375, "Close": 876.3499755859375, "Volume": 18392800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-18T00:00:00", "Open": 886.0, "High": 886.8699951171875, "Low": 837.6099853515625, "Close": 856.97998046875, "Volume": 22833900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-22T00:00:00", "Open": 834.1300048828125, "High": 856.72998046875, "Low": 801.0999755859375, "Close": 821.530029296875, "Volume": 27762700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-23T00:00:00", "Open": 830.4299926757812, "High": 835.2999877929688, "Low": 760.5599975585938, "Close": 764.0399780273438, "Volume": 31752300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-24T00:00:00", "Open": 700.3900146484375, "High": 802.47998046875, "Low": 700.0, "Close": 800.77001953125, "Volume": 45107400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-25T00:00:00", "Open": 809.22998046875, "High": 819.5, "Low": 782.4000244140625, "Close": 809.8699951171875, "Volume": 25355900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-28T00:00:00", "Open": 815.010009765625, "High": 876.8599853515625, "Low": 814.7100219726562, "Close": 870.4299926757812, "Volume": 33002300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-01T00:00:00", "Open": 869.6799926757812, "High": 889.8800048828125, "Low": 853.780029296875, "Close": 864.3699951171875, "Volume": 24922300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-02T00:00:00", "Open": 872.1300048828125, "High": 886.47998046875, "Low": 844.27001953125, "Close": 879.8900146484375, "Volume": 24881100, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-03T00:00:00", "Open": 878.77001953125, "High": 886.4400024414062, "Low": 832.5999755859375, "Close": 839.2899780273438, "Volume": 20541200, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-04T00:00:00", "Open": 849.0999755859375, "High": 855.6500244140625, "Low": 825.1599731445312, "Close": 838.2899780273438, "Volume": 22333200, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-07T00:00:00", "Open": 856.2999877929688, "High": 866.1400146484375, "Low": 804.5700073242188, "Close": 804.5800170898438, "Volume": 24164700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-08T00:00:00", "Open": 795.530029296875, "High": 849.989990234375, "Low": 782.1699829101562, "Close": 824.4000244140625, "Volume": 26799700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-09T00:00:00", "Open": 839.47998046875, "High": 860.5599975585938, "Low": 832.010009765625, "Close": 858.969970703125, "Volume": 19728000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-10T00:00:00", "Open": 851.4500122070312, "High": 854.4500122070312, "Low": 810.3599853515625, "Close": 838.2999877929688, "Volume": 19549500, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-11T00:00:00", "Open": 840.2000122070312, "High": 843.7999877929688, "Low": 793.77001953125, "Close": 795.3499755859375, "Volume": 22345700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-14T00:00:00", "Open": 780.6099853515625, "High": 800.7000122070312, "Low": 756.0399780273438, "Close": 766.3699951171875, "Volume": 23717400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-15T00:00:00", "Open": 775.27001953125, "High": 805.5700073242188, "Low": 756.5700073242188, "Close": 801.8900146484375, "Volume": 22280400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-16T00:00:00", "Open": 809.0, "High": 842.0, "Low": 802.260009765625, "Close": 840.22998046875, "Volume": 28009600, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-17T00:00:00", "Open": 830.989990234375, "High": 875.0, "Low": 825.719970703125, "Close": 871.5999755859375, "Volume": 22194300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-18T00:00:00", "Open": 874.489990234375, "High": 907.8499755859375, "Low": 867.3900146484375, "Close": 905.3900146484375, "Volume": 33471400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-21T00:00:00", "Open": 914.97998046875, "High": 942.8499755859375, "Low": 907.0900268554688, "Close": 921.1599731445312, "Volume": 27327200, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-22T00:00:00", "Open": 930.0, "High": 997.8599853515625, "Low": 921.75, "Close": 993.97998046875, "Volume": 35289500, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-23T00:00:00", "Open": 979.9400024414062, "High": 1040.699951171875, "Low": 976.4000244140625, "Close": 999.1099853515625, "Volume": 40225400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-24T00:00:00", "Open": 1009.72998046875, "High": 1024.489990234375, "Low": 988.7999877929688, "Close": 1013.9199829101562, "Volume": 22973600, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-25T00:00:00", "Open": 1008.0, "High": 1021.7999877929688, "Low": 997.3200073242188, "Close": 1010.6400146484375, "Volume": 20677200, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-28T00:00:00", "Open": 1065.0999755859375, "High": 1097.8800048828125, "Low": 1053.5999755859375, "Close": 1091.8399658203125, "Volume": 34168700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-29T00:00:00", "Open": 1107.989990234375, "High": 1114.77001953125, "Low": 1073.1099853515625, "Close": 1099.5699462890625, "Volume": 24538300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-30T00:00:00", "Open": 1091.1700439453125, "High": 1113.949951171875, "Low": 1084.0, "Close": 1093.989990234375, "Volume": 19955000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-31T00:00:00", "Open": 1094.5699462890625, "High": 1103.1400146484375, "Low": 1076.6400146484375, "Close": 1077.5999755859375, "Volume": 16330900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-01T00:00:00", "Open": 1081.1500244140625, "High": 1094.75, "Low": 1066.6400146484375, "Close": 1084.5899658203125, "Volume": 18012900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-04T00:00:00", "Open": 1089.3800048828125, "High": 1149.9100341796875, "Low": 1072.530029296875, "Close": 1145.449951171875, "Volume": 27345300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-05T00:00:00", "Open": 1136.300048828125, "High": 1152.8699951171875, "Low": 1087.300048828125, "Close": 1091.260009765625, "Volume": 26691700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-06T00:00:00", "Open": 1073.469970703125, "High": 1079.0, "Low": 1027.699951171875, "Close": 1045.760009765625, "Volume": 29782800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-07T00:00:00", "Open": 1052.3900146484375, "High": 1076.5899658203125, "Low": 1021.5399780273438, "Close": 1057.260009765625, "Volume": 26482400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-08T00:00:00", "Open": 1043.2099609375, "High": 1048.43994140625, "Low": 1022.4400024414062, "Close": 1025.489990234375, "Volume": 18293300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-11T00:00:00", "Open": 980.4000244140625, "High": 1008.469970703125, "Low": 974.6400146484375, "Close": 975.9299926757812, "Volume": 19785700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-12T00:00:00", "Open": 997.6400146484375, "High": 1021.1900024414062, "Low": 976.5999755859375, "Close": 986.9500122070312, "Volume": 21992000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-13T00:00:00", "Open": 981.0800170898438, "High": 1026.239990234375, "Low": 973.0999755859375, "Close": 1022.3699951171875, "Volume": 18373700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-14T00:00:00", "Open": 999.2899780273438, "High": 1012.7100219726562, "Low": 982.1900024414062, "Close": 985.0, "Volume": 19444000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-18T00:00:00", "Open": 989.030029296875, "High": 1014.9199829101562, "Low": 973.4099731445312, "Close": 1004.2899780273438, "Volume": 17182300, "Dividends": 0, "Stock Splits": 0}]}}, {"mode": "vega-lite"});
+  })({"usermeta": {"embedOptions": {"theme": "fivethirtyeight"}}, "config": {"view": {"continuousWidth": 400, "continuousHeight": 300}, "font": "monospace"}, "data": {"name": "data-6ed28287b456678bc4f6feb27ad98bd7"}, "mark": "bar", "encoding": {"x": {"field": "Stock Price (Binned)", "type": "nominal"}, "y": {"aggregate": "count", "title": "Number of Days", "type": "quantitative"}}, "transform": [{"bin": {"maxbins": 25}, "field": "Close", "as": "Stock Price (Binned)"}], "$schema": "https://vega.github.io/schema/vega-lite/v4.17.0.json", "datasets": {"data-6ed28287b456678bc4f6feb27ad98bd7": [{"Date": "2021-12-27T00:00:00", "Open": 1073.6700439453125, "High": 1117.0, "Low": 1070.719970703125, "Close": 1093.93994140625, "Volume": 23715300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2021-12-28T00:00:00", "Open": 1109.489990234375, "High": 1119.0, "Low": 1078.4200439453125, "Close": 1088.469970703125, "Volume": 20108000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2021-12-29T00:00:00", "Open": 1098.6400146484375, "High": 1104.0, "Low": 1064.1400146484375, "Close": 1086.18994140625, "Volume": 18718000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2021-12-30T00:00:00", "Open": 1061.3299560546875, "High": 1095.550048828125, "Low": 1053.1500244140625, "Close": 1070.3399658203125, "Volume": 15680300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2021-12-31T00:00:00", "Open": 1073.43994140625, "High": 1082.0, "Low": 1054.5899658203125, "Close": 1056.780029296875, "Volume": 13577900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-03T00:00:00", "Open": 1147.75, "High": 1201.0699462890625, "Low": 1136.0400390625, "Close": 1199.780029296875, "Volume": 34643800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-04T00:00:00", "Open": 1189.550048828125, "High": 1208.0, "Low": 1123.050048828125, "Close": 1149.5899658203125, "Volume": 33416100, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-05T00:00:00", "Open": 1146.6500244140625, "High": 1170.3399658203125, "Low": 1081.010009765625, "Close": 1088.1199951171875, "Volume": 26706600, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-06T00:00:00", "Open": 1077.0, "High": 1088.0, "Low": 1020.5, "Close": 1064.699951171875, "Volume": 30112200, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-07T00:00:00", "Open": 1080.3699951171875, "High": 1080.9300537109375, "Low": 1010.0, "Close": 1026.9599609375, "Volume": 28054900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-10T00:00:00", "Open": 1000.0, "High": 1059.0999755859375, "Low": 980.0, "Close": 1058.1199951171875, "Volume": 30605000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-11T00:00:00", "Open": 1053.6700439453125, "High": 1075.8499755859375, "Low": 1038.8199462890625, "Close": 1064.4000244140625, "Volume": 22021100, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-12T00:00:00", "Open": 1078.8499755859375, "High": 1114.8399658203125, "Low": 1072.5899658203125, "Close": 1106.219970703125, "Volume": 27913000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-13T00:00:00", "Open": 1109.0699462890625, "High": 1115.5999755859375, "Low": 1026.5400390625, "Close": 1031.56005859375, "Volume": 32403300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-14T00:00:00", "Open": 1019.8800048828125, "High": 1052.0, "Low": 1013.3800048828125, "Close": 1049.6099853515625, "Volume": 24308100, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-18T00:00:00", "Open": 1026.6099853515625, "High": 1070.7900390625, "Low": 1016.0599975585938, "Close": 1030.510009765625, "Volume": 22247800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-19T00:00:00", "Open": 1041.7099609375, "High": 1054.6700439453125, "Low": 995.0, "Close": 995.6500244140625, "Volume": 25147500, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-20T00:00:00", "Open": 1009.72998046875, "High": 1041.6600341796875, "Low": 994.0, "Close": 996.27001953125, "Volume": 23496200, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-21T00:00:00", "Open": 996.3400268554688, "High": 1004.5499877929688, "Low": 940.5, "Close": 943.9000244140625, "Volume": 34472000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-24T00:00:00", "Open": 904.760009765625, "High": 933.510009765625, "Low": 851.469970703125, "Close": 930.0, "Volume": 50521900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-25T00:00:00", "Open": 914.2000122070312, "High": 951.260009765625, "Low": 903.2100219726562, "Close": 918.4000244140625, "Volume": 28865300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-26T00:00:00", "Open": 952.4299926757812, "High": 987.6900024414062, "Low": 906.0, "Close": 937.4099731445312, "Volume": 34955800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-27T00:00:00", "Open": 933.3599853515625, "High": 935.3900146484375, "Low": 829.0, "Close": 829.0999755859375, "Volume": 49036500, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-28T00:00:00", "Open": 831.5599975585938, "High": 857.5, "Low": 792.010009765625, "Close": 846.3499755859375, "Volume": 44929700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-01-31T00:00:00", "Open": 872.7100219726562, "High": 937.989990234375, "Low": 862.0499877929688, "Close": 936.719970703125, "Volume": 34812000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-01T00:00:00", "Open": 935.2100219726562, "High": 943.7000122070312, "Low": 905.0, "Close": 931.25, "Volume": 24379400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-02T00:00:00", "Open": 928.1799926757812, "High": 931.5, "Low": 889.4099731445312, "Close": 905.6599731445312, "Volume": 22264300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-03T00:00:00", "Open": 882.0, "High": 937.0, "Low": 880.52001953125, "Close": 891.1400146484375, "Volume": 26285200, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-04T00:00:00", "Open": 897.219970703125, "High": 936.5, "Low": 881.1699829101562, "Close": 923.3200073242188, "Volume": 24541800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-07T00:00:00", "Open": 923.7899780273438, "High": 947.77001953125, "Low": 902.7100219726562, "Close": 907.3400268554688, "Volume": 20331500, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-08T00:00:00", "Open": 905.530029296875, "High": 926.2899780273438, "Low": 894.7999877929688, "Close": 922.0, "Volume": 16909700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-09T00:00:00", "Open": 935.0, "High": 946.27001953125, "Low": 920.0, "Close": 932.0, "Volume": 17419800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-10T00:00:00", "Open": 908.3699951171875, "High": 943.8099975585938, "Low": 896.7000122070312, "Close": 904.5499877929688, "Volume": 22042300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-11T00:00:00", "Open": 909.6300048828125, "High": 915.9600219726562, "Low": 850.7000122070312, "Close": 860.0, "Volume": 26548600, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-14T00:00:00", "Open": 861.5700073242188, "High": 898.8800048828125, "Low": 853.1500244140625, "Close": 875.760009765625, "Volume": 22585500, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-15T00:00:00", "Open": 900.0, "High": 923.0, "Low": 893.3800048828125, "Close": 922.4299926757812, "Volume": 19095400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-16T00:00:00", "Open": 914.0499877929688, "High": 926.4299926757812, "Low": 901.2100219726562, "Close": 923.3900146484375, "Volume": 17098100, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-17T00:00:00", "Open": 913.260009765625, "High": 918.5, "Low": 874.0999755859375, "Close": 876.3499755859375, "Volume": 18392800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-18T00:00:00", "Open": 886.0, "High": 886.8699951171875, "Low": 837.6099853515625, "Close": 856.97998046875, "Volume": 22833900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-22T00:00:00", "Open": 834.1300048828125, "High": 856.72998046875, "Low": 801.0999755859375, "Close": 821.530029296875, "Volume": 27762700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-23T00:00:00", "Open": 830.4299926757812, "High": 835.2999877929688, "Low": 760.5599975585938, "Close": 764.0399780273438, "Volume": 31752300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-24T00:00:00", "Open": 700.3900146484375, "High": 802.47998046875, "Low": 700.0, "Close": 800.77001953125, "Volume": 45107400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-25T00:00:00", "Open": 809.22998046875, "High": 819.5, "Low": 782.4000244140625, "Close": 809.8699951171875, "Volume": 25355900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-02-28T00:00:00", "Open": 815.010009765625, "High": 876.8599853515625, "Low": 814.7100219726562, "Close": 870.4299926757812, "Volume": 33002300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-01T00:00:00", "Open": 869.6799926757812, "High": 889.8800048828125, "Low": 853.780029296875, "Close": 864.3699951171875, "Volume": 24922300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-02T00:00:00", "Open": 872.1300048828125, "High": 886.47998046875, "Low": 844.27001953125, "Close": 879.8900146484375, "Volume": 24881100, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-03T00:00:00", "Open": 878.77001953125, "High": 886.4400024414062, "Low": 832.5999755859375, "Close": 839.2899780273438, "Volume": 20541200, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-04T00:00:00", "Open": 849.0999755859375, "High": 855.6500244140625, "Low": 825.1599731445312, "Close": 838.2899780273438, "Volume": 22333200, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-07T00:00:00", "Open": 856.2999877929688, "High": 866.1400146484375, "Low": 804.5700073242188, "Close": 804.5800170898438, "Volume": 24164700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-08T00:00:00", "Open": 795.530029296875, "High": 849.989990234375, "Low": 782.1699829101562, "Close": 824.4000244140625, "Volume": 26799700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-09T00:00:00", "Open": 839.47998046875, "High": 860.5599975585938, "Low": 832.010009765625, "Close": 858.969970703125, "Volume": 19728000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-10T00:00:00", "Open": 851.4500122070312, "High": 854.4500122070312, "Low": 810.3599853515625, "Close": 838.2999877929688, "Volume": 19549500, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-11T00:00:00", "Open": 840.2000122070312, "High": 843.7999877929688, "Low": 793.77001953125, "Close": 795.3499755859375, "Volume": 22345700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-14T00:00:00", "Open": 780.6099853515625, "High": 800.7000122070312, "Low": 756.0399780273438, "Close": 766.3699951171875, "Volume": 23717400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-15T00:00:00", "Open": 775.27001953125, "High": 805.5700073242188, "Low": 756.5700073242188, "Close": 801.8900146484375, "Volume": 22280400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-16T00:00:00", "Open": 809.0, "High": 842.0, "Low": 802.260009765625, "Close": 840.22998046875, "Volume": 28009600, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-17T00:00:00", "Open": 830.989990234375, "High": 875.0, "Low": 825.719970703125, "Close": 871.5999755859375, "Volume": 22194300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-18T00:00:00", "Open": 874.489990234375, "High": 907.8499755859375, "Low": 867.3900146484375, "Close": 905.3900146484375, "Volume": 33471400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-21T00:00:00", "Open": 914.97998046875, "High": 942.8499755859375, "Low": 907.0900268554688, "Close": 921.1599731445312, "Volume": 27327200, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-22T00:00:00", "Open": 930.0, "High": 997.8599853515625, "Low": 921.75, "Close": 993.97998046875, "Volume": 35289500, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-23T00:00:00", "Open": 979.9400024414062, "High": 1040.699951171875, "Low": 976.4000244140625, "Close": 999.1099853515625, "Volume": 40225400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-24T00:00:00", "Open": 1009.72998046875, "High": 1024.489990234375, "Low": 988.7999877929688, "Close": 1013.9199829101562, "Volume": 22973600, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-25T00:00:00", "Open": 1008.0, "High": 1021.7999877929688, "Low": 997.3200073242188, "Close": 1010.6400146484375, "Volume": 20677200, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-28T00:00:00", "Open": 1065.0999755859375, "High": 1097.8800048828125, "Low": 1053.5999755859375, "Close": 1091.8399658203125, "Volume": 34168700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-29T00:00:00", "Open": 1107.989990234375, "High": 1114.77001953125, "Low": 1073.1099853515625, "Close": 1099.5699462890625, "Volume": 24538300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-30T00:00:00", "Open": 1091.1700439453125, "High": 1113.949951171875, "Low": 1084.0, "Close": 1093.989990234375, "Volume": 19955000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-03-31T00:00:00", "Open": 1094.5699462890625, "High": 1103.1400146484375, "Low": 1076.6400146484375, "Close": 1077.5999755859375, "Volume": 16330900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-01T00:00:00", "Open": 1081.1500244140625, "High": 1094.75, "Low": 1066.6400146484375, "Close": 1084.5899658203125, "Volume": 18012900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-04T00:00:00", "Open": 1089.3800048828125, "High": 1149.9100341796875, "Low": 1072.530029296875, "Close": 1145.449951171875, "Volume": 27345300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-05T00:00:00", "Open": 1136.300048828125, "High": 1152.8699951171875, "Low": 1087.300048828125, "Close": 1091.260009765625, "Volume": 26691700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-06T00:00:00", "Open": 1073.469970703125, "High": 1079.0, "Low": 1027.699951171875, "Close": 1045.760009765625, "Volume": 29782800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-07T00:00:00", "Open": 1052.3900146484375, "High": 1076.5899658203125, "Low": 1021.5399780273438, "Close": 1057.260009765625, "Volume": 26482400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-08T00:00:00", "Open": 1043.2099609375, "High": 1048.43994140625, "Low": 1022.4400024414062, "Close": 1025.489990234375, "Volume": 18293300, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-11T00:00:00", "Open": 980.4000244140625, "High": 1008.469970703125, "Low": 974.6400146484375, "Close": 975.9299926757812, "Volume": 19785700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-12T00:00:00", "Open": 997.6400146484375, "High": 1021.1900024414062, "Low": 976.5999755859375, "Close": 986.9500122070312, "Volume": 21992000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-13T00:00:00", "Open": 981.0800170898438, "High": 1026.239990234375, "Low": 973.0999755859375, "Close": 1022.3699951171875, "Volume": 18373700, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-14T00:00:00", "Open": 999.2899780273438, "High": 1012.7100219726562, "Low": 982.1900024414062, "Close": 985.0, "Volume": 19444000, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-18T00:00:00", "Open": 989.030029296875, "High": 1014.9199829101562, "Low": 973.4099731445312, "Close": 1004.2899780273438, "Volume": 17238400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-19T00:00:00", "Open": 1005.0599975585938, "High": 1034.93994140625, "Low": 995.3300170898438, "Close": 1028.1500244140625, "Volume": 16615900, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-20T00:00:00", "Open": 1030.0, "High": 1034.0, "Low": 975.25, "Close": 977.2000122070312, "Volume": 23570400, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-21T00:00:00", "Open": 1074.72998046875, "High": 1092.219970703125, "Low": 996.4199829101562, "Close": 1008.780029296875, "Volume": 35138800, "Dividends": 0, "Stock Splits": 0}, {"Date": "2022-04-22T00:00:00", "Open": 1014.9099731445312, "High": 1034.8499755859375, "Low": 994.0, "Close": 1005.0499877929688, "Volume": 23181600, "Dividends": 0, "Stock Splits": 0}]}}, {"mode": "vega-lite"});
 </script>
 </div>
 
@@ -15385,20 +15416,20 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
  &#39;revenueGrowth&#39;: 0.649,
  &#39;operatingMargins&#39;: 0.121190004,
  &#39;ebitda&#39;: 9333000192,
- &#39;targetLowPrice&#39;: 250,
+ &#39;targetLowPrice&#39;: 67,
  &#39;recommendationKey&#39;: &#39;buy&#39;,
  &#39;grossProfits&#39;: 13606000000,
  &#39;freeCashflow&#39;: 4628125184,
- &#39;targetMedianPrice&#39;: 1088.5,
- &#39;currentPrice&#39;: 1004.29,
+ &#39;targetMedianPrice&#39;: 1100,
+ &#39;currentPrice&#39;: 1005.05,
  &#39;earningsGrowth&#39;: 7.538,
  &#39;currentRatio&#39;: 1.375,
  &#39;returnOnAssets&#39;: 0.07135,
- &#39;numberOfAnalystOpinions&#39;: 36,
- &#39;targetMeanPrice&#39;: 978.19,
+ &#39;numberOfAnalystOpinions&#39;: 37,
+ &#39;targetMeanPrice&#39;: 980.13,
  &#39;debtToEquity&#39;: 28.192,
  &#39;returnOnEquity&#39;: 0.20426,
- &#39;targetHighPrice&#39;: 1480,
+ &#39;targetHighPrice&#39;: 1620,
  &#39;totalCash&#39;: 17706999808,
  &#39;totalDebt&#39;: 8903999488,
  &#39;totalRevenue&#39;: 53823000576,
@@ -15419,12 +15450,12 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
  &#39;messageBoardId&#39;: &#39;finmb_27444752&#39;,
  &#39;market&#39;: &#39;us_market&#39;,
  &#39;annualHoldingsTurnover&#39;: None,
- &#39;enterpriseToRevenue&#39;: 19.147,
+ &#39;enterpriseToRevenue&#39;: 19.161,
  &#39;beta3Year&#39;: None,
- &#39;enterpriseToEbitda&#39;: 110.418,
- &#39;52WeekChange&#39;: 0.3968066,
+ &#39;enterpriseToEbitda&#39;: 110.502,
+ &#39;52WeekChange&#39;: 0.3614874,
  &#39;morningStarRiskRating&#39;: None,
- &#39;forwardEps&#39;: 13.7,
+ &#39;forwardEps&#39;: 15.23,
  &#39;revenueQuarterlyGrowth&#39;: None,
  &#39;sharesOutstanding&#39;: 1033510016,
  &#39;fundInceptionDate&#39;: None,
@@ -15435,12 +15466,12 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
  &#39;sharesPercentSharesOut&#39;: 0.024500001,
  &#39;fundFamily&#39;: None,
  &#39;lastFiscalYearEnd&#39;: 1640908800,
- &#39;heldPercentInstitutions&#39;: 0.42681998,
+ &#39;heldPercentInstitutions&#39;: 0.42663,
  &#39;netIncomeToCommon&#39;: 5523999744,
  &#39;trailingEps&#39;: 4.901,
  &#39;lastDividendValue&#39;: None,
- &#39;SandP52WeekChange&#39;: 0.06209278,
- &#39;priceToBook&#39;: 34.36407,
+ &#39;SandP52WeekChange&#39;: 0.020097375,
+ &#39;priceToBook&#39;: 34.390076,
  &#39;heldPercentInsiders&#39;: 0.18375999,
  &#39;nextFiscalYearEnd&#39;: 1703980800,
  &#39;yield&#39;: None,
@@ -15449,7 +15480,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
  &#39;sharesShortPreviousMonthDate&#39;: 1646006400,
  &#39;floatShares&#39;: 843228525,
  &#39;beta&#39;: 2.079411,
- &#39;enterpriseValue&#39;: 1030532366336,
+ &#39;enterpriseValue&#39;: 1031317815296,
  &#39;priceHint&#39;: 2,
  &#39;threeYearAverageReturn&#39;: None,
  &#39;lastSplitDate&#39;: 1598832000,
@@ -15458,66 +15489,66 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
  &#39;lastDividendDate&#39;: None,
  &#39;morningStarOverallRating&#39;: None,
  &#39;earningsQuarterlyGrowth&#39;: 7.596,
- &#39;priceToSalesTrailing12Months&#39;: 19.284391,
+ &#39;priceToSalesTrailing12Months&#39;: 19.298985,
  &#39;dateShortInterest&#39;: 1648684800,
- &#39;pegRatio&#39;: 2.45,
+ &#39;pegRatio&#39;: 2.16,
  &#39;ytdReturn&#39;: None,
- &#39;forwardPE&#39;: 73.30584,
+ &#39;forwardPE&#39;: 65.99146,
  &#39;lastCapGain&#39;: None,
  &#39;shortPercentOfFloat&#39;: 0.03,
  &#39;sharesShortPriorMonth&#39;: 24557958,
  &#39;impliedSharesOutstanding&#39;: 0,
  &#39;category&#39;: None,
  &#39;fiveYearAverageReturn&#39;: None,
- &#39;previousClose&#39;: 985,
- &#39;regularMarketOpen&#39;: 989.03,
- &#39;twoHundredDayAverage&#39;: 891.3217,
+ &#39;previousClose&#39;: 1008.78,
+ &#39;regularMarketOpen&#39;: 1014.91,
+ &#39;twoHundredDayAverage&#39;: 898.2379,
  &#39;trailingAnnualDividendYield&#39;: 0,
  &#39;payoutRatio&#39;: 0,
  &#39;volume24Hr&#39;: None,
- &#39;regularMarketDayHigh&#39;: 1014.92,
+ &#39;regularMarketDayHigh&#39;: 1034.85,
  &#39;navPrice&#39;: None,
- &#39;averageDailyVolume10Day&#39;: 22537320,
- &#39;regularMarketPreviousClose&#39;: 985,
- &#39;fiftyDayAverage&#39;: 928.5168,
+ &#39;averageDailyVolume10Day&#39;: 21363380,
+ &#39;regularMarketPreviousClose&#39;: 1008.78,
+ &#39;fiftyDayAverage&#39;: 935.2072,
  &#39;trailingAnnualDividendRate&#39;: 0,
- &#39;open&#39;: 989.03,
+ &#39;open&#39;: 1014.91,
  &#39;toCurrency&#39;: None,
- &#39;averageVolume10days&#39;: 22537320,
+ &#39;averageVolume10days&#39;: 21363380,
  &#39;expireDate&#39;: None,
  &#39;algorithm&#39;: None,
  &#39;dividendRate&#39;: None,
  &#39;exDividendDate&#39;: None,
  &#39;circulatingSupply&#39;: None,
  &#39;startDate&#39;: None,
- &#39;regularMarketDayLow&#39;: 973.43,
+ &#39;regularMarketDayLow&#39;: 994.0101,
  &#39;currency&#39;: &#39;USD&#39;,
- &#39;trailingPE&#39;: 204.91531,
- &#39;regularMarketVolume&#39;: 16798548,
+ &#39;trailingPE&#39;: 205.07039,
+ &#39;regularMarketVolume&#39;: 23146919,
  &#39;lastMarket&#39;: None,
  &#39;maxSupply&#39;: None,
  &#39;openInterest&#39;: None,
- &#39;marketCap&#39;: 1037943767040,
+ &#39;marketCap&#39;: 1038729216000,
  &#39;volumeAllCurrencies&#39;: None,
  &#39;strikePrice&#39;: None,
- &#39;averageVolume&#39;: 25977191,
- &#39;dayLow&#39;: 973.43,
- &#39;ask&#39;: 1011,
- &#39;askSize&#39;: 2200,
- &#39;volume&#39;: 16798548,
+ &#39;averageVolume&#39;: 25398087,
+ &#39;dayLow&#39;: 994.0101,
+ &#39;ask&#39;: 1000.98,
+ &#39;askSize&#39;: 1300,
+ &#39;volume&#39;: 23146919,
  &#39;fiftyTwoWeekHigh&#39;: 1243.49,
  &#39;fromCurrency&#39;: None,
  &#39;fiveYearAvgDividendYield&#39;: None,
  &#39;fiftyTwoWeekLow&#39;: 546.98,
- &#39;bid&#39;: 1010.5,
+ &#39;bid&#39;: 1000.69,
  &#39;tradeable&#39;: False,
  &#39;dividendYield&#39;: None,
- &#39;bidSize&#39;: 800,
- &#39;dayHigh&#39;: 1014.92,
- &#39;regularMarketPrice&#39;: 1004.29,
- &#39;preMarketPrice&#39;: 1006.48,
+ &#39;bidSize&#39;: 2200,
+ &#39;dayHigh&#39;: 1034.85,
+ &#39;regularMarketPrice&#39;: 1005.05,
+ &#39;preMarketPrice&#39;: None,
  &#39;logo_url&#39;: &#39;https://logo.clearbit.com/tesla.com&#39;,
- &#39;trailingPegRatio&#39;: 2.7527}</pre>
+ &#39;trailingPegRatio&#39;: 2.4562}</pre>
 </div>
 
 </div>
@@ -16075,73 +16106,73 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
     <tr>
       <th>0Q</th>
       <td>1</td>
-      <td>2022-03-31</td>
-      <td>1.43</td>
-      <td>2.26</td>
-      <td>1.56</td>
-      <td>2.62</td>
-      <td>0.93</td>
-      <td>25.00</td>
-      <td>1.43</td>
-      <td>17,762,500,000.00</td>
+      <td>2022-06-30</td>
+      <td>0.60</td>
+      <td>2.32</td>
+      <td>1.65</td>
+      <td>3.13</td>
+      <td>1.45</td>
+      <td>23.00</td>
+      <td>0.60</td>
+      <td>18,722,200,000.00</td>
       <td>...</td>
-      <td>0.71</td>
+      <td>0.57</td>
+      <td>2.32</td>
+      <td>2.44</td>
+      <td>2.47</td>
+      <td>2.47</td>
       <td>2.26</td>
-      <td>2.27</td>
-      <td>2.24</td>
-      <td>2.25</td>
-      <td>2.05</td>
-      <td>0.00</td>
-      <td>5.00</td>
-      <td>1.00</td>
+      <td>7.00</td>
+      <td>8.00</td>
+      <td>12.00</td>
       <td>NaN</td>
     </tr>
     <tr>
       <th>+1Q</th>
       <td>1</td>
-      <td>2022-06-30</td>
+      <td>2022-09-30</td>
       <td>0.68</td>
-      <td>2.44</td>
-      <td>1.46</td>
-      <td>3.13</td>
-      <td>1.45</td>
+      <td>3.12</td>
+      <td>2.26</td>
+      <td>4.10</td>
+      <td>1.86</td>
       <td>23.00</td>
       <td>0.68</td>
-      <td>19,303,900,000.00</td>
+      <td>22,919,700,000.00</td>
       <td>...</td>
-      <td>0.61</td>
-      <td>2.44</td>
-      <td>2.47</td>
-      <td>2.47</td>
-      <td>2.47</td>
-      <td>2.22</td>
-      <td>0.00</td>
-      <td>3.00</td>
-      <td>1.00</td>
+      <td>NaN</td>
+      <td>3.12</td>
+      <td>2.86</td>
+      <td>2.81</td>
+      <td>2.80</td>
+      <td>2.53</td>
+      <td>15.00</td>
+      <td>16.00</td>
+      <td>4.00</td>
       <td>NaN</td>
     </tr>
     <tr>
       <th>0Y</th>
       <td>1</td>
       <td>2022-12-31</td>
-      <td>0.57</td>
-      <td>10.64</td>
-      <td>6.89</td>
-      <td>13.74</td>
+      <td>0.74</td>
+      <td>11.77</td>
+      <td>9.55</td>
+      <td>14.60</td>
       <td>6.78</td>
       <td>31.00</td>
-      <td>0.57</td>
-      <td>83,931,200,000.00</td>
+      <td>0.74</td>
+      <td>85,841,700,000.00</td>
       <td>...</td>
-      <td>0.56</td>
+      <td>0.59</td>
+      <td>11.77</td>
       <td>10.64</td>
-      <td>10.67</td>
-      <td>10.48</td>
-      <td>10.29</td>
-      <td>8.92</td>
-      <td>0.00</td>
-      <td>8.00</td>
-      <td>2.00</td>
+      <td>10.50</td>
+      <td>10.43</td>
+      <td>9.04</td>
+      <td>17.00</td>
+      <td>19.00</td>
+      <td>4.00</td>
       <td>NaN</td>
     </tr>
     <tr>
@@ -16149,30 +16180,30 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>1</td>
       <td>2023-12-31</td>
       <td>0.29</td>
-      <td>13.70</td>
-      <td>6.00</td>
-      <td>20.26</td>
-      <td>10.64</td>
-      <td>28.00</td>
+      <td>15.23</td>
+      <td>11.15</td>
+      <td>21.35</td>
+      <td>11.77</td>
+      <td>27.00</td>
       <td>0.29</td>
-      <td>108,590,000,000.00</td>
+      <td>114,076,000,000.00</td>
       <td>...</td>
-      <td>0.29</td>
+      <td>0.33</td>
+      <td>15.23</td>
       <td>13.70</td>
-      <td>13.71</td>
+      <td>12.80</td>
       <td>12.73</td>
-      <td>12.56</td>
-      <td>11.47</td>
-      <td>1.00</td>
-      <td>9.00</td>
-      <td>1.00</td>
+      <td>11.70</td>
+      <td>19.00</td>
+      <td>20.00</td>
+      <td>2.00</td>
       <td>NaN</td>
     </tr>
     <tr>
       <th>+5Y</th>
       <td>1</td>
       <td>NaT</td>
-      <td>0.38</td>
+      <td>0.40</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -16283,31 +16314,31 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
   <tbody>
     <tr>
       <th>Earnings Date</th>
-      <td>2022-04-20 20:00:00</td>
+      <td>2022-04-20 16:09:00</td>
     </tr>
     <tr>
       <th>Earnings Average</th>
-      <td>2.26</td>
+      <td>2.32</td>
     </tr>
     <tr>
       <th>Earnings Low</th>
-      <td>1.56</td>
+      <td>1.65</td>
     </tr>
     <tr>
       <th>Earnings High</th>
-      <td>2.62</td>
+      <td>3.13</td>
     </tr>
     <tr>
       <th>Revenue Average</th>
-      <td>17762500000</td>
+      <td>18722200000</td>
     </tr>
     <tr>
       <th>Revenue Low</th>
-      <td>14331000000</td>
+      <td>16072000000</td>
     </tr>
     <tr>
       <th>Revenue High</th>
-      <td>19642800000</td>
+      <td>21932200000</td>
     </tr>
   </tbody>
 </table>
@@ -16663,54 +16694,54 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 
 
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>[{&#39;uuid&#39;: &#39;967a33e3-2e57-33be-b167-09e7cf593254&#39;,
-  &#39;title&#39;: &#39;Tesla Reports Earnings Wednesday. Prepare for Disappointment.&#39;,
-  &#39;publisher&#39;: &#39;Barrons.com&#39;,
-  &#39;link&#39;: &#39;https://finance.yahoo.com/m/967a33e3-2e57-33be-b167-09e7cf593254/tesla-reports-earnings.html&#39;,
-  &#39;providerPublishTime&#39;: 1650370860,
+<pre>[{&#39;uuid&#39;: &#39;04b7af05-f636-49da-b16c-8a9a2ff21c65&#39;,
+  &#39;title&#39;: &#34;Electric vehicle demand spurs ‘white gold’ rush at California&#39;s largest lake&#34;,
+  &#39;publisher&#39;: &#39;Yahoo Finance&#39;,
+  &#39;link&#39;: &#39;https://finance.yahoo.com/news/electric-vehicles-white-gold-rush-lithium-140400829.html&#39;,
+  &#39;providerPublishTime&#39;: 1650809040,
   &#39;type&#39;: &#39;STORY&#39;},
- {&#39;uuid&#39;: &#39;3c363d07-5b15-3675-bfea-aff32bc985b4&#39;,
-  &#39;title&#39;: &#39;Elon Musk Says Twitter’s Board Owns Almost No Stock. How It Compares to Tesla and Others.&#39;,
-  &#39;publisher&#39;: &#39;Barrons.com&#39;,
-  &#39;link&#39;: &#39;https://finance.yahoo.com/m/3c363d07-5b15-3675-bfea-aff32bc985b4/elon-musk-says-twitter%E2%80%99s.html&#39;,
-  &#39;providerPublishTime&#39;: 1650370380,
+ {&#39;uuid&#39;: &#39;8d98a3fc-68d6-3146-8231-ab04fd4a77e4&#39;,
+  &#39;title&#39;: &#39;Battery prices are soaring. So why are electric vehicles doing record sales?&#39;,
+  &#39;publisher&#39;: &#39;Fortune&#39;,
+  &#39;link&#39;: &#39;https://finance.yahoo.com/news/surge-battery-prices-isn-t-120000070.html&#39;,
+  &#39;providerPublishTime&#39;: 1650715200,
   &#39;type&#39;: &#39;STORY&#39;},
- {&#39;uuid&#39;: &#39;e7a1fc7f-f09e-3f18-a39c-c6c0b8cfc0bb&#39;,
-  &#39;title&#39;: &#39;Rivian Predicts a Shortage for EVs Far Bigger Than Chips&#39;,
-  &#39;publisher&#39;: &#39;Barrons.com&#39;,
-  &#39;link&#39;: &#39;https://finance.yahoo.com/m/e7a1fc7f-f09e-3f18-a39c-c6c0b8cfc0bb/rivian-predicts-a-shortage.html&#39;,
-  &#39;providerPublishTime&#39;: 1650370140,
+ {&#39;uuid&#39;: &#39;f70d4290-4e22-32e7-9100-785f2f830e1e&#39;,
+  &#39;title&#39;: &#39;Musk Swayed Wall Street by Pitching His Vision for Twitter&#39;,
+  &#39;publisher&#39;: &#39;Bloomberg&#39;,
+  &#39;link&#39;: &#39;https://finance.yahoo.com/news/musk-swayed-wall-street-pitching-200021722.html&#39;,
+  &#39;providerPublishTime&#39;: 1650670423,
   &#39;type&#39;: &#39;STORY&#39;},
- {&#39;uuid&#39;: &#39;5d8dff0f-e583-3a97-9afa-9dc947ff6c5b&#39;,
-  &#39;title&#39;: &#39;Tesla resumes production at Shanghai factory, Xinhua reports&#39;,
-  &#39;publisher&#39;: &#39;Reuters&#39;,
-  &#39;link&#39;: &#39;https://finance.yahoo.com/news/tesla-resumes-production-shanghai-factory-115917871.html&#39;,
-  &#39;providerPublishTime&#39;: 1650369557,
-  &#39;type&#39;: &#39;STORY&#39;},
- {&#39;uuid&#39;: &#39;10752234-5ddb-3728-b732-189501bcfb8b&#39;,
-  &#39;title&#39;: &#39;5 Things to Know About Tesla Stock&#39;,
-  &#39;publisher&#39;: &#39;Motley Fool&#39;,
-  &#39;link&#39;: &#39;https://finance.yahoo.com/m/10752234-5ddb-3728-b732-189501bcfb8b/5-things-to-know-about-tesla.html&#39;,
-  &#39;providerPublishTime&#39;: 1650367200,
-  &#39;type&#39;: &#39;STORY&#39;},
- {&#39;uuid&#39;: &#39;d6d2ff59-cec0-30ca-8397-ae0ba33232f7&#39;,
-  &#39;title&#39;: &#39;Tesla earnings under pressure from Shanghai factory halt&#39;,
-  &#39;publisher&#39;: &#39;Reuters&#39;,
-  &#39;link&#39;: &#39;https://finance.yahoo.com/news/tesla-earnings-under-pressure-shanghai-110349911.html&#39;,
-  &#39;providerPublishTime&#39;: 1650366229,
-  &#39;type&#39;: &#39;STORY&#39;},
- {&#39;uuid&#39;: &#39;0ee12c37-a4da-3569-a27f-2eeaababb156&#39;,
-  &#39;title&#39;: &#34;Dow Jones Futures: What To Do After Monday&#39;s Stock Market Fall; Netflix, Tesla Earnings Ahead&#34;,
+ {&#39;uuid&#39;: &#39;1290d6ab-a5b1-3718-86d9-d4814e62c904&#39;,
+  &#39;title&#39;: &#39;Tesla Stock Vs. BYD Stock: Tesla Earnings Boom, But BYD Set To Seize EV Crown&#39;,
   &#39;publisher&#39;: &#34;Investor&#39;s Business Daily&#34;,
-  &#39;link&#39;: &#39;https://finance.yahoo.com/m/0ee12c37-a4da-3569-a27f-2eeaababb156/dow-jones-futures%3A-what-to-do.html&#39;,
-  &#39;providerPublishTime&#39;: 1650366104,
+  &#39;link&#39;: &#39;https://finance.yahoo.com/m/1290d6ab-a5b1-3718-86d9-d4814e62c904/tesla-stock-vs.-byd-stock%3A.html&#39;,
+  &#39;providerPublishTime&#39;: 1650665244,
   &#39;type&#39;: &#39;STORY&#39;},
- {&#39;uuid&#39;: &#39;96e70f35-13b4-3415-9c71-3918852067a0&#39;,
-  &#39;title&#39;: &#39;Top 5 U.S. Giants Likely to Win Big on Q1 Earnings This Week&#39;,
-  &#39;publisher&#39;: &#39;Zacks&#39;,
-  &#39;link&#39;: &#39;https://finance.yahoo.com/news/top-5-u-giants-likely-104210364.html&#39;,
-  &#39;providerPublishTime&#39;: 1650364930,
-  &#39;type&#39;: &#39;STORY&#39;}]</pre>
+ {&#39;uuid&#39;: &#39;f48d40f6-c366-333d-8bdf-068c35e26a60&#39;,
+  &#39;title&#39;: &#39;Investing in Tesla Stock (TSLA)&#39;,
+  &#39;publisher&#39;: &#39;Investopedia&#39;,
+  &#39;link&#39;: &#39;https://finance.yahoo.com/m/f48d40f6-c366-333d-8bdf-068c35e26a60/investing-in-tesla-stock.html&#39;,
+  &#39;providerPublishTime&#39;: 1650661779,
+  &#39;type&#39;: &#39;STORY&#39;},
+ {&#39;uuid&#39;: &#39;5676f11e-13eb-3858-be56-82a2892532c6&#39;,
+  &#39;title&#39;: &#39;Stocks sell off into the close, S&amp;P 500 on pace for third-straight losing week&#39;,
+  &#39;publisher&#39;: &#39;Yahoo Finance Video&#39;,
+  &#39;link&#39;: &#39;https://finance.yahoo.com/video/stocks-sell-off-close-p-202604839.html&#39;,
+  &#39;providerPublishTime&#39;: 1650659164,
+  &#39;type&#39;: &#39;VIDEO&#39;},
+ {&#39;uuid&#39;: &#39;ebad2be6-c78a-304f-9eb9-e2ded829fefe&#39;,
+  &#39;title&#39;: &#34;Republicans ask Twitter board to preserve records of Elon Musk&#39;s bid&#34;,
+  &#39;publisher&#39;: &#39;Yahoo Finance Video&#39;,
+  &#39;link&#39;: &#39;https://finance.yahoo.com/video/republicans-ask-twitter-board-preserve-194432746.html&#39;,
+  &#39;providerPublishTime&#39;: 1650656672,
+  &#39;type&#39;: &#39;VIDEO&#39;},
+ {&#39;uuid&#39;: &#39;371df387-f952-3261-877b-57b1407fd37a&#39;,
+  &#39;title&#39;: &#39;Markets check: Stocks extend losses as Dow eyes worst day of 2022&#39;,
+  &#39;publisher&#39;: &#39;Yahoo Finance Video&#39;,
+  &#39;link&#39;: &#39;https://finance.yahoo.com/video/markets-check-stocks-extend-losses-192939479.html&#39;,
+  &#39;providerPublishTime&#39;: 1650655779,
+  &#39;type&#39;: &#39;VIDEO&#39;}]</pre>
 </div>
 
 </div>
@@ -16825,43 +16856,43 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
       <td>...</td>
     </tr>
     <tr>
-      <th>2022-04-04 10:49:23</th>
+      <th>2022-04-21 10:45:24</th>
       <td>JP Morgan</td>
       <td>Underweight</td>
       <td></td>
       <td>main</td>
     </tr>
     <tr>
-      <th>2022-04-04 11:51:39</th>
-      <td>UBS</td>
-      <td>Neutral</td>
+      <th>2022-04-21 10:49:34</th>
+      <td>Citigroup</td>
+      <td>Sell</td>
       <td></td>
       <td>main</td>
     </tr>
     <tr>
-      <th>2022-04-04 12:59:29</th>
-      <td>Cowen &amp; Co.</td>
-      <td>Market Perform</td>
+      <th>2022-04-21 11:40:47</th>
+      <td>Wells Fargo</td>
+      <td>Equal-Weight</td>
       <td></td>
       <td>main</td>
     </tr>
     <tr>
-      <th>2022-04-18 12:55:24</th>
-      <td>Piper Sandler</td>
-      <td>Overweight</td>
-      <td></td>
-      <td>main</td>
-    </tr>
-    <tr>
-      <th>2022-04-19 10:19:13</th>
-      <td>Credit Suisse</td>
+      <th>2022-04-21 12:41:08</th>
+      <td>Oppenheimer</td>
       <td>Outperform</td>
+      <td></td>
+      <td>main</td>
+    </tr>
+    <tr>
+      <th>2022-04-22 12:36:05</th>
+      <td>Deutsche Bank</td>
+      <td>Buy</td>
       <td></td>
       <td>main</td>
     </tr>
   </tbody>
 </table>
-<p>439 rows × 4 columns</p>
+<p>445 rows × 4 columns</p>
 </div>
 </div>
 

@@ -59,13 +59,14 @@ def train_model(
         # try to fetch data from ploomber build step
         stock_data_path = upstream['combine_fred_yahoo']['data']
         # TODO: weights upstream
+        weights_data_path = os.path.expanduser(os.environ.get(
+            'WEIGHTS_PATH', 
+'~/market_watch/data/tfidf_vals.txt'))
         # weights_data_path = upstream['combine_fred_yahoo']['data']
     except Exception:
         # fallbalck to env variables
         stock_data_path = os.environ.get(
             'DATA_PATH', '~/Downloads/fred_yahoo-2.xlsx')
-        weights_data_path = os.path.expanduser(os.environ.get(
-            'WEIGHTS_PATH', '~/Downloads/tfidf_vals.txt'))
 
     dfs = pd.read_excel(stock_data_path, sheet_name=features)
 

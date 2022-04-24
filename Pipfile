@@ -32,18 +32,19 @@ altair = "*"
 matplotlib = "*"
 openpyxl = "*"
 yfinance = "*"
-market-watch = {editable = true, path = "."}
-ptan = "==0.7"
+#ptan = "==0.7"
 sparse-dot-topn = "*"
+market-watch = {editable = true, path = "."}
 fuzzywuzzy = "*"
-python-levenshtein = "*"
+graphviz = "*"
+pygraphviz = "*"
+ptan = {git = "https://github.com/vgaurav-umich/ptan.git"}
 
 [dev-packages]
 graphviz = "*"
 pygraphviz = "*"
 pytest-runner = "*"
 pytest = "*"
-jupyterlab = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.9"
