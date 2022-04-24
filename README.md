@@ -118,10 +118,12 @@ Project Organization
 Ploomber is a better and more function rich version of the Makefile. At the very core it does what Makefile’s do i.e. execute individual tasks/scripts in order of dependency between them. 
 The Docker image already comes preloaded with Ploomber. 
 
-To get started with Ploomber we need to issue command –
-
+To get started with Ploomber we need run Ploomber build with this command –
+* Please pip install ploomber if not already done.
 ```
 Ploomber build
 ```
 Above command will make use of pipeline.yaml file which is a ploomber’s equivalent of Makefile which contains data pipeline specification to build each individual tasks.  
+
+Our full pipeline is found in the pipeline.yaml file which ploomber uses. It is a convenient way to walk step by step thru the code.
 
