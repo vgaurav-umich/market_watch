@@ -5,6 +5,7 @@ import json
 from collections import defaultdict
 import os
 from re import M
+from reprlib import recursive_repr
 import ptan
 import pathlib
 import gym.wrappers
@@ -41,7 +42,10 @@ def train_model(
     cuda=torch.cuda.is_available(),
     run_name='test',
     ticker=os.environ.get('TRADE_TICKER', 'TSLA'),
-    n_val=50
+    n_val=50,
+    use_weights=True,
+    use_direct_prices=True,
+    random_ofs_on_reset=True
 ):
     device = torch.device("cuda" if cuda else "cpu")
 
@@ -81,7 +85,7 @@ def train_model(
     with open(weights_data_path) as f:
         weights_json.update(json.loads(f.read()))
 
-    weights = [weights_json[c] for c in cols]
+    weights = [weights_json[c] for c in cols] if use_weights else None
 
     target_stock_index = cols.index(ticker)
     data = np.array([
@@ -91,14 +95,20 @@ def train_model(
     data_validation = data[:, -n_val:, :]
 
     env = environ.MarketWatchStocksEnv(
-        data_train, bars_count=bars_count, target_index=target_stock_index, weights=weights)
+        data_train, bars_count=bars_count, target_index=target_stock_index, weights=weights,
+        random_ofs_on_reset=random_ofs_on_reset
+    )
     env_val = environ.MarketWatchStocksEnv(
-        data_validation, bars_count=bars_count, target_index=target_stock_index, weights=weights)
+        data_validation, bars_count=bars_count, target_index=target_stock_index, weights=weights,
+        random_ofs_on_reset=random_ofs_on_reset
+    )
 
     env = gym.wrappers.TimeLimit(env, max_episode_steps=20)
 
     net = models.DQNConv1DMarketWatch(
-        env.observation_space.shape, env.action_space.n, bars_count).to(device)
+        env.observation_space.shape, env.action_space.n, bars_count,
+        use_direct_prices=use_direct_prices
+    ).to(device)
     tgt_net = ptan.agent.TargetNet(net)
 
     selector = ptan.actions.EpsilonGreedyActionSelector(eps_start)
@@ -153,7 +163,7 @@ def train_model(
                 engine.state.iteration, engine.state.best_mean_val,
                 mean_val))
             path = saves_path / ("mean_value_%.3f.data" % mean_val)
-            torch.save(net.state_dict(), path)
+            # torch.save(net.state_dict(), path)
             engine.state.best_mean_val = mean_val
         # else:
         #     print(
@@ -183,10 +193,10 @@ def train_model(
             ))
             engine.state.best_val_reward = val_reward
             path = saves_path / ("val_reward-%.3f.data" % val_reward)
-            torch.save(net.state_dict(), path)
+            # torch.save(net.state_dict(), path)
         with open(saves_path / 'metrics.json', 'w') as f:
             json.dump(validation_metrics, f)
-
+# 
 
 
     event = ptan.ignite.PeriodEvents.ITERS_100_COMPLETED

@@ -179,11 +179,11 @@ class MarketWatchStocksEnv(gym.Env):
         prices = self._prices
         bars = self._state.bars_count
         offset = bars
-        # if self.random_ofs_on_reset:
-        #     offset = self.np_random.choice(
-        #         prices.high.shape[0]-bars*10) + bars
-        # else:
-        #     offset = bars
+        if self.random_ofs_on_reset:
+            offset = self.np_random.choice(
+                prices[0].shape[0]-bars - 30) + bars
+        else:
+            offset = bars
         self._state.reset(prices, offset)
         return self._state.encode()
 

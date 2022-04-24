@@ -65,8 +65,9 @@ class SimpleFFDQN(nn.Module):
 
 
 class DQNConv1DMarketWatch(nn.Module):
-    def __init__(self, shape, actions_n, bars_count):
+    def __init__(self, shape, actions_n, bars_count, use_direct_prices=True):
         super(DQNConv1DMarketWatch, self).__init__()
+        self._use_direct_prices = use_direct_prices
 
         self.conv = nn.Sequential(
             nn.Conv2d(shape[0], 128, 5),
@@ -91,7 +92,7 @@ class DQNConv1DMarketWatch(nn.Module):
     def _get_fc_params_n(self, shape, bars_count):
         conv_out = self.conv(torch.zeros(1, *shape))
         state_len = 2
-        traded_stock_prices_len = bars_count
+        traded_stock_prices_len = bars_count if self._use_direct_prices else 0
 
         # out of conv layer + state values
         return int(np.prod(conv_out.size())) + state_len + traded_stock_prices_len
@@ -101,7 +102,11 @@ class DQNConv1DMarketWatch(nn.Module):
 
         conv_out = replacenan(self.conv(stocks_values).view(
             stocks_values.size()[0], -1))
-        val_inp = torch.hstack([conv_out, state_values, traded_stock_prices])
+        val_inp = [conv_out, state_values]
+        if self._use_direct_prices:
+            val_inp.append(traded_stock_prices)
+
+        val_inp = torch.hstack(val_inp)
 
         val = replacenan(self.fc_val(val_inp))
         adv = replacenan(self.fc_adv(val_inp))
