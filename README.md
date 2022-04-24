@@ -98,11 +98,11 @@ Project Organization
   ```
  - docker run for GPU enabled machines
     ```
-     docker run --gpus all -it -v ~/market_watch:/root/market_watch -p 8888:8888 veenagaurav/market_watch:rc1
+     docker run --gpus all -it -p 8888:8888 veenagaurav/market_watch:rc1
     ```
   - docker run for non GPU enabled machines
     ```
-     docker run -it -v ~/market_watch:/root/market_watch -p 8888:8888 veenagaurav/market_watch:rc1
+     docker run -it -p 8888:8888 veenagaurav/market_watch:rc1
     ```
 #### Notes
 - The -p option does port mapping to enable jupyter notebook access. We are using --gpus flag to indicate that container should be able to use all available gpus from host machine. See this [article](https://docs.nvidia.com/cuda/wsl-user-guide/index.html#:~:text=Getting%20started%20with%20running%20CUDA%20on%20WSL%20requires,that%20you%20install%20Build%20version%2020145%20or%20higher.?msclkid=006e44f5c1ae11ec907e2c04a54f448a) for help related to CUDA enablement on WSL.
